@@ -44,8 +44,17 @@ Form.prototype.xsl = function() {
     return "xsl/frm."+ this.name +".xsl";
 };
 
+Form.prototype.startLoading = function() {
+    $('.loader').show();
+};
+
+Form.prototype.stopLoading = function() {
+   setTimeout(function() { $('.loader').hide(); }, 300);
+};
+
 Form.prototype.show = function(args) {
 
+    this.startLoading();
     var defs = {
         xml : null,
         anchor : this.anchor,
@@ -80,19 +89,20 @@ Form.prototype.show = function(args) {
     $.when(calls).done(function(data) {
         xml = null;
         xsl = data['xsl'].responseXML;
-        
+
         if (!args.xml) {
             xml = data['xml'].responseXML;
         } else {
             xml = args.xml;
         }
+        args.form.stopLoading();
         $(args.anchor).empty();
         var callback = function() {
             if (args.form.shown) args.form.shown();
             if (args.complete) args.complete();
             if (args.form.handleErrors) args.form.handleErrors(xml);
         };
-        
+
         $(args.anchor).transform({
             xmlobj: xml,
             xslobj: xsl,

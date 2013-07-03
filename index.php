@@ -21,7 +21,7 @@ session_start();
         <script type="text/javascript" src="lib/jquery/jquery-ui-1.9.2.custom.min.js"></script>
         <script type="text/javascript" src="lib/jquery/jquery.form.js"></script>
         <script type="text/javascript" src="lib/jquery/jquery.transform.js"></script>
-        <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>        
+        <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
         <script type="text/javascript" src="js/forms.js"></script>
         <script type="text/javascript" src="js/frm.login.js"></script>        
         <script type="text/javascript" src="js/frm.user.js"></script>
@@ -52,5 +52,6 @@ session_start();
         <footer>
 	[testing]
         </footer>
+        <div class="loader">loading ...</div>
     </body>
 </html>
