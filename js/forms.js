@@ -12,7 +12,7 @@ Function.prototype.inherits = function( param ){
         this.prototype.parent = param;
     } 
     return this;
-}
+};
 
 //form
 function Form() {
@@ -30,11 +30,11 @@ Form.prototype.handleErrors = function(xml) {
         $(prefix + $(value)[0].tagName.replace('_','-'))
         .addClass('input-error')
         .focus(function() {
-            $(this).removeClass('input-error')
+            $(this).removeClass('input-error');
         })
-        .attr('alt',$(value).text())
+        .attr('alt',$(value).text());
     });
-}
+};
 
 Form.prototype.source = function() {
     return "api.php?id="+ this.id +"&type=" + this.name;
@@ -99,4 +99,4 @@ Form.prototype.show = function(args) {
             complete : callback
         });
     });
-}
+};
