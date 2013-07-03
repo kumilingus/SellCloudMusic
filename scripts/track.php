@@ -8,7 +8,7 @@ $trackFrm = new Form($track, array(
 
 $track->setID($_GET['track']);
 
-if ($conn->loadEntity($track)) {
+if ($conn->loadEntity($track) && $track->getID() > 0) {
     echo $trackFrm->toHTML();
 } else {
     include('./errors/track-not-found.html');
