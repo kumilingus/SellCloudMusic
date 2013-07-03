@@ -1,0 +1,813 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.9
+-- Dumped by pg_dump version 9.1.9
+-- Started on 2013-07-03 14:01:29 BST
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 176 (class 3079 OID 11679)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1997 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 175 (class 3079 OID 16385)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1998 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 499 (class 1247 OID 16394)
+-- Dependencies: 500 6
+-- Name: email_address; Type: DOMAIN; Schema: public; Owner: postgres
+--
+
+CREATE DOMAIN email_address AS character varying(84)
+	CONSTRAINT email_address_check CHECK (((VALUE)::text ~ '^[A-Za-z0-9](([_.-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([.-]?[a-zA-Z0-9]+)*).([A-Za-z]{2,})$'::text));
+
+
+ALTER DOMAIN public.email_address OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1255 OID 16396)
+-- Dependencies: 6 535
+-- Name: check_count_orders(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION check_count_orders() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+	IF (TG_OP = 'DELETE') THEN
+		IF (OLD.count_orders > 0) THEN
+			RAISE EXCEPTION 'Track can not be deleted. An order containing this track exists.';
+			END IF;
+                RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+		IF (OLD.count_orders > 0 AND NEW.exclusive = 1) THEN
+			RAISE EXCEPTION 'Track can not be exclusive. An order already exists.';
+			END IF;
+            RETURN NEW;                    
+	END IF;
+END;
+
+$$;
+
+
+ALTER FUNCTION public.check_count_orders() OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1255 OID 16397)
+-- Dependencies: 6 535
+-- Name: inc_count_orders(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION inc_count_orders() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+	UPDATE tracks SET count_orders = count_orders + 1 WHERE id_track = NEW.item_number;
+        RETURN NEW;
+    END;
+$$;
+
+
+ALTER FUNCTION public.inc_count_orders() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 161 (class 1259 OID 16398)
+-- Dependencies: 6
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE groups (
+    id_group integer NOT NULL,
+    label character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- TOC entry 162 (class 1259 OID 16401)
+-- Dependencies: 6 161
+-- Name: groups_id_group_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE groups_id_group_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.groups_id_group_seq OWNER TO postgres;
+
+--
+-- TOC entry 1999 (class 0 OID 0)
+-- Dependencies: 162
+-- Name: groups_id_group_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE groups_id_group_seq OWNED BY groups.id_group;
+
+
+--
+-- TOC entry 163 (class 1259 OID 16403)
+-- Dependencies: 6
+-- Name: items; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE items (
+    id_item integer NOT NULL,
+    id_order integer,
+    item_name character varying,
+    item_number integer,
+    mc_gross_ numeric
+);
+
+
+ALTER TABLE public.items OWNER TO postgres;
+
+--
+-- TOC entry 164 (class 1259 OID 16409)
+-- Dependencies: 163 6
+-- Name: items_id_item_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE items_id_item_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.items_id_item_seq OWNER TO postgres;
+
+--
+-- TOC entry 2000 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: items_id_item_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE items_id_item_seq OWNED BY items.id_item;
+
+
+--
+-- TOC entry 165 (class 1259 OID 16411)
+-- Dependencies: 6
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE orders (
+    id_order integer NOT NULL,
+    txn_id character varying
+);
+
+
+ALTER TABLE public.orders OWNER TO postgres;
+
+--
+-- TOC entry 166 (class 1259 OID 16417)
+-- Dependencies: 165 6
+-- Name: orders_id_order_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE orders_id_order_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_order_seq OWNER TO postgres;
+
+--
+-- TOC entry 2001 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: orders_id_order_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE orders_id_order_seq OWNED BY orders.id_order;
+
+
+--
+-- TOC entry 167 (class 1259 OID 16419)
+-- Dependencies: 6
+-- Name: roles; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE roles (
+    id_role integer NOT NULL,
+    label character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.roles OWNER TO postgres;
+
+--
+-- TOC entry 168 (class 1259 OID 16422)
+-- Dependencies: 6 167
+-- Name: roles_id_role_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE roles_id_role_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.roles_id_role_seq OWNER TO postgres;
+
+--
+-- TOC entry 2002 (class 0 OID 0)
+-- Dependencies: 168
+-- Name: roles_id_role_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE roles_id_role_seq OWNED BY roles.id_role;
+
+
+--
+-- TOC entry 169 (class 1259 OID 16424)
+-- Dependencies: 6
+-- Name: rolesngroups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE rolesngroups (
+    id_role integer NOT NULL,
+    id_group integer NOT NULL
+);
+
+
+ALTER TABLE public.rolesngroups OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 16427)
+-- Dependencies: 1937 1938 6
+-- Name: tracks; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tracks (
+    id_track integer NOT NULL,
+    price numeric,
+    exclusive smallint DEFAULT 0 NOT NULL,
+    id_user integer,
+    id_soundcloud integer,
+    count_orders integer DEFAULT 0
+);
+
+
+ALTER TABLE public.tracks OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 16435)
+-- Dependencies: 170 6
+-- Name: tracks_id_track_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tracks_id_track_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_id_track_seq OWNER TO postgres;
+
+--
+-- TOC entry 2003 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: tracks_id_track_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE tracks_id_track_seq OWNED BY tracks.id_track;
+
+
+--
+-- TOC entry 172 (class 1259 OID 16437)
+-- Dependencies: 1941 6
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users (
+    id_user integer NOT NULL,
+    email character varying(200) NOT NULL,
+    password character varying(50),
+    id_soundcloud integer,
+    soundcloud_oauth_token character varying,
+    CONSTRAINT users_id_user_check CHECK ((id_user > (-1)))
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 16444)
+-- Dependencies: 6 172
+-- Name: users_id_user_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE users_id_user_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_user_seq OWNER TO postgres;
+
+--
+-- TOC entry 2004 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: users_id_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE users_id_user_seq OWNED BY users.id_user;
+
+
+--
+-- TOC entry 174 (class 1259 OID 16446)
+-- Dependencies: 6
+-- Name: usersngroups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE usersngroups (
+    id_user integer NOT NULL,
+    id_group integer NOT NULL
+);
+
+
+ALTER TABLE public.usersngroups OWNER TO postgres;
+
+--
+-- TOC entry 1933 (class 2604 OID 16449)
+-- Dependencies: 162 161
+-- Name: id_group; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY groups ALTER COLUMN id_group SET DEFAULT nextval('groups_id_group_seq'::regclass);
+
+
+--
+-- TOC entry 1934 (class 2604 OID 16450)
+-- Dependencies: 164 163
+-- Name: id_item; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items ALTER COLUMN id_item SET DEFAULT nextval('items_id_item_seq'::regclass);
+
+
+--
+-- TOC entry 1935 (class 2604 OID 16451)
+-- Dependencies: 166 165
+-- Name: id_order; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders ALTER COLUMN id_order SET DEFAULT nextval('orders_id_order_seq'::regclass);
+
+
+--
+-- TOC entry 1936 (class 2604 OID 16452)
+-- Dependencies: 168 167
+-- Name: id_role; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY roles ALTER COLUMN id_role SET DEFAULT nextval('roles_id_role_seq'::regclass);
+
+
+--
+-- TOC entry 1939 (class 2604 OID 16453)
+-- Dependencies: 171 170
+-- Name: id_track; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tracks ALTER COLUMN id_track SET DEFAULT nextval('tracks_id_track_seq'::regclass);
+
+
+--
+-- TOC entry 1940 (class 2604 OID 16454)
+-- Dependencies: 173 172
+-- Name: id_user; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id_user SET DEFAULT nextval('users_id_user_seq'::regclass);
+
+
+--
+-- TOC entry 1976 (class 0 OID 16398)
+-- Dependencies: 161 1990
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY groups (id_group, label) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2005 (class 0 OID 0)
+-- Dependencies: 162
+-- Name: groups_id_group_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('groups_id_group_seq', 1, false);
+
+
+--
+-- TOC entry 1978 (class 0 OID 16403)
+-- Dependencies: 163 1990
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY items (id_item, id_order, item_name, item_number, mc_gross_) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2006 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: items_id_item_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('items_id_item_seq', 6, true);
+
+
+--
+-- TOC entry 1980 (class 0 OID 16411)
+-- Dependencies: 165 1990
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY orders (id_order, txn_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2007 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: orders_id_order_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('orders_id_order_seq', 29, true);
+
+
+--
+-- TOC entry 1982 (class 0 OID 16419)
+-- Dependencies: 167 1990
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY roles (id_role, label) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2008 (class 0 OID 0)
+-- Dependencies: 168
+-- Name: roles_id_role_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('roles_id_role_seq', 3, true);
+
+
+--
+-- TOC entry 1984 (class 0 OID 16424)
+-- Dependencies: 169 1990
+-- Data for Name: rolesngroups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY rolesngroups (id_role, id_group) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1985 (class 0 OID 16427)
+-- Dependencies: 170 1990
+-- Data for Name: tracks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tracks (id_track, price, exclusive, id_user, id_soundcloud, count_orders) FROM stdin;
+172	85	1	58	77477331	0
+173	91	1	58	44957701	0
+171	109	2	58	77477570	0
+175	15	2	58	77477636	0
+\.
+
+
+--
+-- TOC entry 2009 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: tracks_id_track_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tracks_id_track_seq', 175, true);
+
+
+--
+-- TOC entry 1987 (class 0 OID 16437)
+-- Dependencies: 172 1990
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users (id_user, email, password, id_soundcloud, soundcloud_oauth_token) FROM stdin;
+59	info@hitmaker.cz	cd733ade2250822a0892e7ec0a3ae9f2486f0bf1	4815894	1-32399-4815894-a77357f78f4682af
+58	a@aa.aa	ddfe9964a5f8d6f74d35dbde9b3a54f1735bc8b8	16187306	1-32399-16187306-fc61e52faf02429
+\.
+
+
+--
+-- TOC entry 2010 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: users_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('users_id_user_seq', 59, true);
+
+
+--
+-- TOC entry 1989 (class 0 OID 16446)
+-- Dependencies: 174 1990
+-- Data for Name: usersngroups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY usersngroups (id_user, id_group) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1943 (class 2606 OID 16456)
+-- Dependencies: 161 161 1991
+-- Name: groups_label_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY groups
+    ADD CONSTRAINT groups_label_key UNIQUE (label);
+
+
+--
+-- TOC entry 1945 (class 2606 OID 16458)
+-- Dependencies: 161 161 1991
+-- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id_group);
+
+
+--
+-- TOC entry 1949 (class 2606 OID 16460)
+-- Dependencies: 163 163 1991
+-- Name: id_item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT id_item_pkey PRIMARY KEY (id_item);
+
+
+--
+-- TOC entry 1951 (class 2606 OID 16462)
+-- Dependencies: 165 165 1991
+-- Name: id_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT id_user_pkey PRIMARY KEY (id_order);
+
+
+--
+-- TOC entry 1955 (class 2606 OID 16464)
+-- Dependencies: 167 167 1991
+-- Name: roles_label_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_label_key UNIQUE (label);
+
+
+--
+-- TOC entry 1957 (class 2606 OID 16466)
+-- Dependencies: 167 167 1991
+-- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id_role);
+
+
+--
+-- TOC entry 1959 (class 2606 OID 16468)
+-- Dependencies: 169 169 169 1991
+-- Name: rolesngroups_id_role_id_group_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY rolesngroups
+    ADD CONSTRAINT rolesngroups_id_role_id_group_key UNIQUE (id_role, id_group);
+
+
+--
+-- TOC entry 1961 (class 2606 OID 16470)
+-- Dependencies: 170 170 1991
+-- Name: tracks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tracks
+    ADD CONSTRAINT tracks_pkey PRIMARY KEY (id_track);
+
+
+--
+-- TOC entry 1953 (class 2606 OID 16472)
+-- Dependencies: 165 165 1991
+-- Name: txn_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT txn_id_unique UNIQUE (txn_id);
+
+
+--
+-- TOC entry 1963 (class 2606 OID 16474)
+-- Dependencies: 172 172 1991
+-- Name: users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 1965 (class 2606 OID 16476)
+-- Dependencies: 172 172 1991
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id_user);
+
+
+--
+-- TOC entry 1967 (class 2606 OID 16478)
+-- Dependencies: 174 174 174 1991
+-- Name: usersngroups_id_user_id_group_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY usersngroups
+    ADD CONSTRAINT usersngroups_id_user_id_group_key UNIQUE (id_user, id_group);
+
+
+--
+-- TOC entry 1946 (class 1259 OID 16479)
+-- Dependencies: 163 1991
+-- Name: fki_id_order_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_id_order_fkey ON items USING btree (id_order);
+
+
+--
+-- TOC entry 1947 (class 1259 OID 16480)
+-- Dependencies: 163 1991
+-- Name: fki_item_number_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_item_number_fkey ON items USING btree (item_number);
+
+
+--
+-- TOC entry 1975 (class 2620 OID 16481)
+-- Dependencies: 170 188 1991
+-- Name: body; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER body BEFORE DELETE OR UPDATE ON tracks FOR EACH ROW EXECUTE PROCEDURE check_count_orders();
+
+
+--
+-- TOC entry 1974 (class 2620 OID 16482)
+-- Dependencies: 163 189 1991
+-- Name: inc_count_orders; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER inc_count_orders BEFORE INSERT ON items FOR EACH ROW EXECUTE PROCEDURE inc_count_orders();
+
+
+--
+-- TOC entry 1968 (class 2606 OID 16483)
+-- Dependencies: 1950 163 165 1991
+-- Name: id_order_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT id_order_fkey FOREIGN KEY (id_order) REFERENCES orders(id_order) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1969 (class 2606 OID 16488)
+-- Dependencies: 1960 170 163 1991
+-- Name: item_number_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT item_number_fkey FOREIGN KEY (item_number) REFERENCES tracks(id_track) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 1970 (class 2606 OID 16493)
+-- Dependencies: 1944 169 161 1991
+-- Name: rolesngroups_id_group_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY rolesngroups
+    ADD CONSTRAINT rolesngroups_id_group_fkey FOREIGN KEY (id_group) REFERENCES groups(id_group) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1971 (class 2606 OID 16498)
+-- Dependencies: 167 169 1956 1991
+-- Name: rolesngroups_id_role_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY rolesngroups
+    ADD CONSTRAINT rolesngroups_id_role_fkey FOREIGN KEY (id_role) REFERENCES roles(id_role) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1972 (class 2606 OID 16503)
+-- Dependencies: 161 174 1944 1991
+-- Name: usersngroups_id_group_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usersngroups
+    ADD CONSTRAINT usersngroups_id_group_fkey FOREIGN KEY (id_group) REFERENCES groups(id_group) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1973 (class 2606 OID 16508)
+-- Dependencies: 1964 172 174 1991
+-- Name: usersngroups_id_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usersngroups
+    ADD CONSTRAINT usersngroups_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1996 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2013-07-03 14:01:29 BST
+
+--
+-- PostgreSQL database dump complete
+--
+

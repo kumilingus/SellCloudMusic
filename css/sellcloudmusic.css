@@ -1,0 +1,346 @@
+/* 
+    Document   : scs
+    Created on : Jun 26, 2013, 11:43:09 AM
+    Author     : robur
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    
+    border: 2px solid #bdc3c7;
+    color: #34495e;
+    font-family: "Lato", sans-serif;
+    font-size: 14px;
+    padding: 8px 5px;
+    height: 31px;
+    text-indent: 6px;
+    -webkit-appearance: none;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: border .25s linear, color .25s linear;
+    -moz-transition: border .25s linear, color .25s linear;
+    -o-transition: border .25s linear, color .25s linear;
+    transition: border .25s linear, color .25s linear;
+    -webkit-backface-visibility: hidden;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus {
+  border-color: #27AE60;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+input[type="submit"],button {
+    background-color: #27AE60;
+    font-size: 12.996px;
+    line-height: 10px;
+    padding: 12px 18px 13px; 
+    border: none;
+    color: #ffffff;
+    padding: 9px 12px 10px;
+    text-decoration: none;
+    text-shadow: none;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: 0.25s;
+    -moz-transition: 0.25s;
+    -o-transition: 0.25s;
+    transition: 0.25s;
+    -webkit-backface-visibility: hidden;
+}
+
+input[type="submit"]:hover,button:hover {
+    background-color: #2ECC71;
+}
+
+#login {
+
+}
+
+#login-form {
+    float: left;
+}
+
+.logged-email {
+    
+    margin: 5px;
+}
+
+.logout-menu, .login-menu {
+    padding-top: 6px;    
+}
+.logout-menu span, .login-menu span{
+    margin: 10px;        
+    color: #27AE60;
+}
+
+.logout-menu span:hover, .login-menu span:hover{
+    color: #2ECC71;
+}
+
+.track-label {
+    float: left;
+    background-color: #7F8C8D;
+    margin: 10px;
+    padding: 10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.track-label.track-imported {
+    background-color: #2980B9;
+    color: #ffffff;
+}
+
+.track-label:hover {
+    background-color: #95A5A6;
+}
+
+.track-label.track-imported:hover {
+    background-color: #3498DB;
+}
+
+.track-label.on, .track-label.on:hover {
+    background-color: #F1C40F;    
+}
+
+#track-list {
+    clear: both;
+    width: 100%;    
+}
+
+#track-list-nav {
+    float: left;
+    clear: both;
+    margin: 20px;
+    padding: 20px;
+    background-color: #ECF0F1;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+#track-list-nav a, .more-tracks a{
+    background-color: #c0392b;
+    padding: 3px;
+    margin: 5px;
+    color: white;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+#track-list-nav a:hover, .more-tracks a:hover{
+    background-color: #E74C3C;
+}
+
+#track-list-nav a:active, .more-tracks a:active {
+    background-color: #f39c12;    
+}
+
+#track-panel {
+    clear: both;
+    width: 100%;
+}
+
+#track-edit, #track-info {
+    float: left;
+    margin: 20px;
+    padding: 20px;
+    background-color: #ECF0F1;
+    width: 40%;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;    
+}
+
+
+.form-info, .form-error {
+
+    font-size: 12.996px;
+    line-height: 10px;
+    padding: 12px 18px 13px; 
+    border: none;
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: none;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: 0.25s;
+    -moz-transition: 0.25s;
+    -o-transition: 0.25s;
+    transition: 0.25s;
+    -webkit-backface-visibility: hidden;
+}
+.form-info {
+    background-color: #1ABC9C;
+    margin: 3px;
+}
+
+.form-error {
+    background-color: #E74C3C;
+    margin: 3px;
+}
+
+input.input-error {
+  border-color: #E74C3C;
+}
+
+div .input-error {
+    border: 2px solid;
+    border-color: #E74C3C;
+}
+
+#slider-range-min {
+    
+    margin: 10px;
+    width: 100px;
+    float: right;
+}
+
+#exclusive-radio {
+    
+    margin: 20px;
+    float: right;
+}
+
+#track-exclusive {
+    
+    position: relative;
+    top: 30px;
+    margin: 20px;
+}
+
+.trackview-form {
+    margin: 20px;
+    padding: 20px;
+    background-color: #ECF0F1;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;        
+    clear: both;
+}
+
+.trackview-form fieldset {
+    border: none;
+}
+
+.trackview-form span {
+    padding: 5px;
+    margin: 10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    font-size: x-large;
+    float: left;
+    color: white;
+}
+
+.trackview-form .title,
+.trackview-form .username {
+    background-color: #2c3e50;
+}
+
+.trackview-form .text {
+    color: #2c3e50;
+}
+
+.trackview-form .exclusivity {
+    background-color: #1abc9c;
+    float: right;
+}
+
+.trackview-form .currency {
+    font-weight: bold;
+}
+
+.trackview-form .price {
+    background-color: #f1c40f;
+}
+
+.trackview-form input[type="submit"] {
+    float: right;
+}
+
+.trackview-form .track-player {
+    margin: 10px;
+}
+
+.more-tracks {
+    margin: 20px;
+}
+
+.more-tracks .text{
+    padding: 3px;
+    margin: 5px;
+    font-style: oblique;
+}
+
+footer {
+    clear: both;
+    background-color: #27AE60;
+    border-top-style: solid;
+    border-top-width: 5px;
+    border-top-color: #2ECC71;
+    padding: 10px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;    
+}
+
+#soundcloud-connect {
+    background: url(btn-connect-s.png) no-repeat;
+    cursor:pointer;
+    width: 93px;
+    height: 21px;
+    border: none;
+    margin: 5px;
+} 
+
+#soundcloud-connected {
+    color: #2ECC71;    
+    margin: 5px;
+    padding: 3px;
+    bottom: 5px;
+    position: relative;
+}
+
+#PPMiniCart .quantity
+{
+    visibility: hidden;
+}
+
+html,body {
+    margin: 0px;
+    padding: 0px;
+}
