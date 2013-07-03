@@ -319,7 +319,7 @@ footer {
 }
 
 #soundcloud-connect {
-    background: url(btn-connect-s.png) no-repeat;
+    background: url(../images/sc-button.png) no-repeat;
     cursor:pointer;
     width: 93px;
     height: 21px;
