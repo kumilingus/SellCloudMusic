@@ -39,7 +39,11 @@
                 <input type="hidden" name="cmd" value="_cart" />
                 <input type="hidden" name="add" value="1" />
                 <input type="hidden" name="business" value="bruckner.roman-facilitator@gmail.com" />
-                <input type="hidden" name="cancel_return" value="http://86.21.126.98/sellcloudmusic/" />
+                <input type="hidden" name="cancel_return">
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="return_url"/>
+                    </xsl:attribute>
+                </input>
                 <input type="hidden" name="return">
                     <xsl:attribute name="value">
                         <xsl:value-of select="return_url"/>
