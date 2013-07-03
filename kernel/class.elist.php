@@ -49,25 +49,4 @@ abstract class Elist extends Transformer implements Iterator {
     }
     
 }
-
-class TrackList extends EList {
-    
-    public function __construct() {
-        parent::__construct('track');
-    }
-}
-
-class TrackviewList extends EList {
-    
-    public function __construct() {
-        parent::__construct('trackview');
-    }    
-}
-
-class OrderList extends EList {
-    
-    public function __construct() {
-        parent::__construct('order');
-    }
-}
 ?>
