@@ -192,6 +192,7 @@ class dbCommon extends dbConnection {
 
             $a = null;
             while ($a = $r->fetch(PDO::FETCH_ASSOC)) {
+                $entity->beforeLoad();
                 $entity->loadArray($a);
                 $entity->afterLoad();
                 $entity = $list->allocate();
