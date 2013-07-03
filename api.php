@@ -4,6 +4,7 @@ require_once('kernel/class.form.php');
 require_once('kernel/class.elist.php');
 require_once('src/ent.global.php');
 require_once('src/ent.order.php');
+require_once('src/ent.list.php');
 include_once('./cfg/configuration.php');
 
 if (!@isset($_GET)) exit;

@@ -25,6 +25,7 @@ session_start();
         <script type="text/javascript" src="js/forms.js"></script>
         <script type="text/javascript" src="js/frm.login.js"></script>        
         <script type="text/javascript" src="js/frm.user.js"></script>
+        <script type="text/javascript" src="js/lst.order.js"></script>
         <header id="login">
 <?php
           $login = new Form(new Login(), array("action" => "login.php"));

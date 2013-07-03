@@ -33,7 +33,12 @@ Login.active = function() {
     $('#my-tracks-button').click(function() {
        document.location.href = "?import=0";
     });
-    
+
+    $('#view-orders-button').click(function() {
+        var o = new OrderList($('#id-user').val());
+        o.show({});
+    });
+
     $('#edit-account-button').click(function() {
         var u = new User($('#id-user').val());
         u.show({
@@ -41,7 +46,7 @@ Login.active = function() {
         });
     });    
 
-}
+};
 
 $(function() {
 

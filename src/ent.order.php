@@ -35,6 +35,7 @@ class Order extends Entity {
     const NUMBER_ITEMS = 'num_cart_items';
 
     public $id_order;
+    public $id_user;
     public $txn_id;
     public $items;
 
@@ -57,7 +58,7 @@ class Order extends Entity {
         parent::loadArray($param);
     }
 
-    public function beforeLoad() {
+    public function afterLoad() {
         $conn = new dbCommon();
         $r = $conn->query(sprintf(Items::QUERY_SELECT, $conn->quote($this->id_order)));
         if ($r instanceof dbError) {

@@ -328,7 +328,7 @@ footer {
 } 
 
 #soundcloud-connected {
-    color: #2ECC71;    
+    color: #2ECC71;
     margin: 5px;
     padding: 3px;
     bottom: 5px;
@@ -344,3 +344,49 @@ html,body {
     margin: 0px;
     padding: 0px;
 }
+
+#content {
+    clear: both;
+}
+
+.order-row {
+    padding: 5px;
+    margin: 10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    font-size: small;
+    color: white;
+    background-color: #f39c12;
+}
+
+.order-row > span {
+    margin: 10px;
+    font-size: x-large;
+}
+
+.item-list {
+   list-style:none;
+}
+.item-list-row {
+    padding: 5px;
+    margin: 10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    font-size: x-large;
+    color: black;
+    background-color: #ecf0f1;
+ }
+
+ .item-list-row.item-list-row-total {
+     background-color: #bdc3c7;
+ }
+
+ .item-list-row > span {
+     margin: 10px;
+ }
+
+ .item-list-row > span.price {
+     color: red;
+ }
