@@ -38,10 +38,14 @@
                                 
                 <input type="hidden" name="cmd" value="_cart" />
                 <input type="hidden" name="add" value="1" />
-                <input type="hidden" name="business" value="test3_1361172789_biz@gmail.com" />
-                <input type="hidden" name="cancel_return" value="http://86.21.126.98/soundcloudsell/" />                
-                <input type="hidden" name="return" value="http://86.21.126.98/soundcloudsell/test2.php" />
-                <input type="hidden" name="notify_url" value="http://86.21.126.98/soundcloudsell/order.php" />
+                <input type="hidden" name="business" value="bruckner.roman-facilitator@gmail.com" />
+                <input type="hidden" name="cancel_return" value="http://86.21.126.98/sellcloudmusic/" />
+                <input type="hidden" name="return">
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="return_url"/>
+                    </xsl:attribute>
+                </input>
+                <input type="hidden" name="notify_url" value="http://86.21.126.98/sellcloudmusic/order.php" />
                 <input type="hidden" name="item_name">
                     <xsl:attribute name="value">
                         <xsl:value-of select="trackview/track/title"/>                        
