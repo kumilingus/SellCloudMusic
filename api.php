@@ -40,13 +40,10 @@ if (@isset($_GET['type'])) {
                     $e = $conn->saveEntity($ent);
                     if ($e instanceof dbError) {
                         $frm->errors->db = @sprintf("%s %s.", @get_class($ent), $e->message);
-                        $ent->clear();
                     } elseif ($e instanceof ntError) {
                         $frm->errors->{$e->slot} = @sprintf($e->message);
-                        $ent->clear(FRM_FLG_PWD);
-                    } else {
-                        $ent->clear(FRM_FLG_PWD);
                     }
+                    $ent->clear(FRM_FLG_PWD);
                 }
 
                 break;
