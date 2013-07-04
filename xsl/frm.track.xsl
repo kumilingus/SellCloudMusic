@@ -103,7 +103,12 @@
                     </tr>
                 </tbody>
             </table>
-
         </form>
+        <xsl:if test="track/count_orders &gt; 0">
+            <div class="white-box">
+                Orders ( <xsl:value-of select="track/count_orders"/> )
+                <span id="display-orders" class="button"> Display </span>
+            </div>
+        </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

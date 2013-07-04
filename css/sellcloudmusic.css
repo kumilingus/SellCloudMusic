@@ -169,7 +169,7 @@ input[type="submit"]:hover,button:hover {
     width: 100%;
 }
 
-#track-edit, #track-info, .error-box {
+.gray-box, #track-edit, #track-info, .error-box {
     float: left;
     margin: 20px;
     padding: 20px;
@@ -314,7 +314,7 @@ footer {
     border-top-color: #2ECC71;
     padding: 10px;
     width: 100%;
-    position: absolute;
+    position: relative;
     bottom: 0px;    
 }
 
@@ -406,4 +406,22 @@ span.ui-button-text {
     -moz-user-select: moz-none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.white-box {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+span.button{
+    margin: 10px;
+    color: #27AE60;
+}
+
+span.button:hover{
+    color: #2ECC71;
 }

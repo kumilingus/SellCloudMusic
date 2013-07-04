@@ -52,6 +52,10 @@ Form.prototype.stopLoading = function() {
    setTimeout(function() { $('.loader').hide(); }, 300);
 };
 
+Form.prototype.processData = function(data) {
+   return data;
+};
+
 Form.prototype.show = function(args) {
 
     this.startLoading();
@@ -91,7 +95,7 @@ Form.prototype.show = function(args) {
         xsl = data['xsl'].responseXML;
 
         if (!args.xml) {
-            xml = data['xml'].responseXML;
+            xml = args.form.processData(data['xml'].responseXML);
         } else {
             xml = args.xml;
         }

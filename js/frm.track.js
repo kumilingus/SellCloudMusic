@@ -74,6 +74,12 @@ Track.prototype.shown = function() {
         
         return false;
     });
+
+    $('#display-orders').click(function() {
+        var o = new OrderList($('#id-user').val());
+        o.trackID = $('.track-label.on').data('import-track-id');
+        o.show({ anchor: '#display-orders' });
+    });
         
 };    
     
