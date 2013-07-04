@@ -68,6 +68,18 @@
                 </tr>
                 <tr>
                     <td>
+                        <label for="paypal-email">Paypal account:</label>
+                    </td>
+                    <td>
+                        <input id="paypal-email" type="text" name="paypal_email">
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="user/paypal_email"/>
+                            </xsl:attribute>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <label for="soundcloud-connect">Soundcloud account:</label>                        
                     </td>
                     <td>

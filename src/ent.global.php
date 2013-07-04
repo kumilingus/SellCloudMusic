@@ -138,6 +138,7 @@ class User extends Login {
     public $soundcloud_username;
     public $password_re;
     public $track_count = 0;
+    public $paypal_email;
 
     public function __construct($type = __CLASS__) {
         parent::__construct();
@@ -148,6 +149,7 @@ class User extends Login {
         $this->setFlags('password_re', FRM_NOT_MT | FRM_FLG_PWD | FRM_FLG_MATCH | DBC_FLG_NODB);
         $this->addFlags('password', FRM_FLG_MATCH | DBC_FLG_KEY);
         $this->addFlags('email', DBC_FLG_KEY);
+        $this->setFlags('paypal_email', FRM_NOT_MT | FRM_FLG_EMAIL);
         $this->setFlags('soundcloud_username', DBC_FLG_NODB);
         $this->setFlags('track_count', DBC_FLG_NODB);
     }
