@@ -47,6 +47,9 @@ if (!$fp) {
             $order = new Order();
             $order->loadArray($_POST);
 
+            //id user is kept in custom variable. see frm.trackview.xsl
+            $order->id_user = $_POST['custom'];
+
             $conn = new dbCommon();
             $e = $conn->saveEntity($order);
             if ($e instanceof dbError || $e instanceof ntError) {

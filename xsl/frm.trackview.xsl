@@ -35,10 +35,16 @@
                         <xsl:value-of select = "concat('https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F',trackview/id_soundcloud)"/>
                     </xsl:attribute>
                 </iframe>
-                                
+
                 <input type="hidden" name="cmd" value="_cart" />
                 <input type="hidden" name="add" value="1" />
                 <input type="hidden" name="business" value="bruckner.roman-facilitator@gmail.com" />
+                <!-- custom attribute passes the user id -->
+                <input type="hidden" name="custom">
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="trackview/id_user"/>
+                    </xsl:attribute>
+                </input>
                 <input type="hidden" name="cancel_return">
                     <xsl:attribute name="value">
                         <xsl:value-of select="return_url"/>
