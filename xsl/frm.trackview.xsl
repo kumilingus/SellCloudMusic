@@ -38,7 +38,11 @@
 
                 <input type="hidden" name="cmd" value="_cart" />
                 <input type="hidden" name="add" value="1" />
-                <input type="hidden" name="business" value="bruckner.roman-facilitator@gmail.com" />
+                <input type="hidden" name="business">
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="paypal_account"/>
+                    </xsl:attribute>
+                </input>
                 <!-- custom attribute passes the user id -->
                 <input type="hidden" name="custom">
                     <xsl:attribute name="value">
