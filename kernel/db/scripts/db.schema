@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.1.9
 -- Dumped by pg_dump version 9.1.9
--- Started on 2013-07-04 19:30:46 BST
+-- Started on 2013-07-11 12:50:32 BST
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -21,7 +21,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 1999 (class 0 OID 0)
+-- TOC entry 2000 (class 0 OID 0)
 -- Dependencies: 176
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -38,7 +38,7 @@ CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2000 (class 0 OID 0)
+-- TOC entry 2001 (class 0 OID 0)
 -- Dependencies: 175
 -- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
 --
@@ -62,7 +62,7 @@ ALTER DOMAIN public.email_address OWNER TO postgres;
 
 --
 -- TOC entry 189 (class 1255 OID 16396)
--- Dependencies: 535 6
+-- Dependencies: 6 535
 -- Name: check_count_orders(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -87,7 +87,7 @@ ALTER FUNCTION public.check_count_orders() OWNER TO postgres;
 
 --
 -- TOC entry 188 (class 1255 OID 16397)
--- Dependencies: 535 6
+-- Dependencies: 6 535
 -- Name: inc_count_orders(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -123,7 +123,7 @@ ALTER TABLE public.groups OWNER TO postgres;
 
 --
 -- TOC entry 162 (class 1259 OID 16401)
--- Dependencies: 161 6
+-- Dependencies: 6 161
 -- Name: groups_id_group_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -138,7 +138,7 @@ CREATE SEQUENCE groups_id_group_seq
 ALTER TABLE public.groups_id_group_seq OWNER TO postgres;
 
 --
--- TOC entry 2001 (class 0 OID 0)
+-- TOC entry 2002 (class 0 OID 0)
 -- Dependencies: 162
 -- Name: groups_id_group_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -165,7 +165,7 @@ ALTER TABLE public.items OWNER TO postgres;
 
 --
 -- TOC entry 164 (class 1259 OID 16409)
--- Dependencies: 163 6
+-- Dependencies: 6 163
 -- Name: items_id_item_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -180,7 +180,7 @@ CREATE SEQUENCE items_id_item_seq
 ALTER TABLE public.items_id_item_seq OWNER TO postgres;
 
 --
--- TOC entry 2002 (class 0 OID 0)
+-- TOC entry 2003 (class 0 OID 0)
 -- Dependencies: 164
 -- Name: items_id_item_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -190,14 +190,15 @@ ALTER SEQUENCE items_id_item_seq OWNED BY items.id_item;
 
 --
 -- TOC entry 165 (class 1259 OID 16411)
--- Dependencies: 6
+-- Dependencies: 1936 6
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE orders (
     id_order integer NOT NULL,
     txn_id character varying,
-    id_user integer
+    id_user integer,
+    "timestamp" timestamp without time zone DEFAULT now()
 );
 
 
@@ -205,7 +206,7 @@ ALTER TABLE public.orders OWNER TO postgres;
 
 --
 -- TOC entry 166 (class 1259 OID 16417)
--- Dependencies: 6 165
+-- Dependencies: 165 6
 -- Name: orders_id_order_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -220,7 +221,7 @@ CREATE SEQUENCE orders_id_order_seq
 ALTER TABLE public.orders_id_order_seq OWNER TO postgres;
 
 --
--- TOC entry 2003 (class 0 OID 0)
+-- TOC entry 2004 (class 0 OID 0)
 -- Dependencies: 166
 -- Name: orders_id_order_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -244,7 +245,7 @@ ALTER TABLE public.roles OWNER TO postgres;
 
 --
 -- TOC entry 168 (class 1259 OID 16422)
--- Dependencies: 6 167
+-- Dependencies: 167 6
 -- Name: roles_id_role_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -259,7 +260,7 @@ CREATE SEQUENCE roles_id_role_seq
 ALTER TABLE public.roles_id_role_seq OWNER TO postgres;
 
 --
--- TOC entry 2004 (class 0 OID 0)
+-- TOC entry 2005 (class 0 OID 0)
 -- Dependencies: 168
 -- Name: roles_id_role_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -283,7 +284,7 @@ ALTER TABLE public.rolesngroups OWNER TO postgres;
 
 --
 -- TOC entry 170 (class 1259 OID 16427)
--- Dependencies: 1937 1938 6
+-- Dependencies: 1938 1939 6
 -- Name: tracks; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -301,7 +302,7 @@ ALTER TABLE public.tracks OWNER TO postgres;
 
 --
 -- TOC entry 171 (class 1259 OID 16435)
--- Dependencies: 6 170
+-- Dependencies: 170 6
 -- Name: tracks_id_track_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -316,7 +317,7 @@ CREATE SEQUENCE tracks_id_track_seq
 ALTER TABLE public.tracks_id_track_seq OWNER TO postgres;
 
 --
--- TOC entry 2005 (class 0 OID 0)
+-- TOC entry 2006 (class 0 OID 0)
 -- Dependencies: 171
 -- Name: tracks_id_track_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -326,7 +327,7 @@ ALTER SEQUENCE tracks_id_track_seq OWNED BY tracks.id_track;
 
 --
 -- TOC entry 172 (class 1259 OID 16437)
--- Dependencies: 1941 6
+-- Dependencies: 1942 6
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -345,7 +346,7 @@ ALTER TABLE public.users OWNER TO postgres;
 
 --
 -- TOC entry 173 (class 1259 OID 16444)
--- Dependencies: 6 172
+-- Dependencies: 172 6
 -- Name: users_id_user_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -360,7 +361,7 @@ CREATE SEQUENCE users_id_user_seq
 ALTER TABLE public.users_id_user_seq OWNER TO postgres;
 
 --
--- TOC entry 2006 (class 0 OID 0)
+-- TOC entry 2007 (class 0 OID 0)
 -- Dependencies: 173
 -- Name: users_id_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -410,7 +411,7 @@ ALTER TABLE ONLY orders ALTER COLUMN id_order SET DEFAULT nextval('orders_id_ord
 
 
 --
--- TOC entry 1936 (class 2604 OID 16452)
+-- TOC entry 1937 (class 2604 OID 16452)
 -- Dependencies: 168 167
 -- Name: id_role; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -419,7 +420,7 @@ ALTER TABLE ONLY roles ALTER COLUMN id_role SET DEFAULT nextval('roles_id_role_s
 
 
 --
--- TOC entry 1939 (class 2604 OID 16453)
+-- TOC entry 1940 (class 2604 OID 16453)
 -- Dependencies: 171 170
 -- Name: id_track; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -428,7 +429,7 @@ ALTER TABLE ONLY tracks ALTER COLUMN id_track SET DEFAULT nextval('tracks_id_tra
 
 
 --
--- TOC entry 1940 (class 2604 OID 16454)
+-- TOC entry 1941 (class 2604 OID 16454)
 -- Dependencies: 173 172
 -- Name: id_user; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -437,8 +438,8 @@ ALTER TABLE ONLY users ALTER COLUMN id_user SET DEFAULT nextval('users_id_user_s
 
 
 --
--- TOC entry 1978 (class 0 OID 16398)
--- Dependencies: 161 1992
+-- TOC entry 1979 (class 0 OID 16398)
+-- Dependencies: 161 1993
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -447,7 +448,7 @@ COPY groups (id_group, label) FROM stdin;
 
 
 --
--- TOC entry 2007 (class 0 OID 0)
+-- TOC entry 2008 (class 0 OID 0)
 -- Dependencies: 162
 -- Name: groups_id_group_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -456,8 +457,8 @@ SELECT pg_catalog.setval('groups_id_group_seq', 1, false);
 
 
 --
--- TOC entry 1980 (class 0 OID 16403)
--- Dependencies: 163 1992
+-- TOC entry 1981 (class 0 OID 16403)
+-- Dependencies: 163 1993
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -476,7 +477,7 @@ COPY items (id_item, id_order, item_name, item_number, mc_gross_) FROM stdin;
 
 
 --
--- TOC entry 2008 (class 0 OID 0)
+-- TOC entry 2009 (class 0 OID 0)
 -- Dependencies: 164
 -- Name: items_id_item_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -485,25 +486,25 @@ SELECT pg_catalog.setval('items_id_item_seq', 43, true);
 
 
 --
--- TOC entry 1982 (class 0 OID 16411)
--- Dependencies: 165 1992
+-- TOC entry 1983 (class 0 OID 16411)
+-- Dependencies: 165 1993
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY orders (id_order, txn_id, id_user) FROM stdin;
-30	1XU26221DM2641933	58
-31	5B9757284K6248317	58
-34	93L547953M308705S	58
-35	0L4123907H326274J	58
-36	8DS64131MV187271J	58
-38	5PM897582L013601B	58
-41	45C90888WT7168213	58
-43	54C32860WG912300F	58
+COPY orders (id_order, txn_id, id_user, "timestamp") FROM stdin;
+30	1XU26221DM2641933	58	2013-07-11 12:01:36.491166
+31	5B9757284K6248317	58	2013-07-11 12:01:36.491166
+34	93L547953M308705S	58	2013-07-11 12:01:36.491166
+35	0L4123907H326274J	58	2013-07-11 12:01:36.491166
+36	8DS64131MV187271J	58	2013-07-11 12:01:36.491166
+38	5PM897582L013601B	58	2013-07-11 12:01:36.491166
+41	45C90888WT7168213	58	2013-07-11 12:01:36.491166
+43	54C32860WG912300F	58	2013-07-11 12:01:36.491166
 \.
 
 
 --
--- TOC entry 2009 (class 0 OID 0)
+-- TOC entry 2010 (class 0 OID 0)
 -- Dependencies: 166
 -- Name: orders_id_order_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -512,8 +513,8 @@ SELECT pg_catalog.setval('orders_id_order_seq', 48, true);
 
 
 --
--- TOC entry 1984 (class 0 OID 16419)
--- Dependencies: 167 1992
+-- TOC entry 1985 (class 0 OID 16419)
+-- Dependencies: 167 1993
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -522,7 +523,7 @@ COPY roles (id_role, label) FROM stdin;
 
 
 --
--- TOC entry 2010 (class 0 OID 0)
+-- TOC entry 2011 (class 0 OID 0)
 -- Dependencies: 168
 -- Name: roles_id_role_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -531,8 +532,8 @@ SELECT pg_catalog.setval('roles_id_role_seq', 3, true);
 
 
 --
--- TOC entry 1986 (class 0 OID 16424)
--- Dependencies: 169 1992
+-- TOC entry 1987 (class 0 OID 16424)
+-- Dependencies: 169 1993
 -- Data for Name: rolesngroups; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -541,8 +542,8 @@ COPY rolesngroups (id_role, id_group) FROM stdin;
 
 
 --
--- TOC entry 1987 (class 0 OID 16427)
--- Dependencies: 170 1992
+-- TOC entry 1988 (class 0 OID 16427)
+-- Dependencies: 170 1993
 -- Data for Name: tracks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -556,7 +557,7 @@ COPY tracks (id_track, price, exclusive, id_user, id_soundcloud, count_orders) F
 
 
 --
--- TOC entry 2011 (class 0 OID 0)
+-- TOC entry 2012 (class 0 OID 0)
 -- Dependencies: 171
 -- Name: tracks_id_track_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -565,8 +566,8 @@ SELECT pg_catalog.setval('tracks_id_track_seq', 177, true);
 
 
 --
--- TOC entry 1989 (class 0 OID 16437)
--- Dependencies: 172 1992
+-- TOC entry 1990 (class 0 OID 16437)
+-- Dependencies: 172 1993
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -577,7 +578,7 @@ COPY users (id_user, email, password, id_soundcloud, soundcloud_oauth_token, pay
 
 
 --
--- TOC entry 2012 (class 0 OID 0)
+-- TOC entry 2013 (class 0 OID 0)
 -- Dependencies: 173
 -- Name: users_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -586,8 +587,8 @@ SELECT pg_catalog.setval('users_id_user_seq', 59, true);
 
 
 --
--- TOC entry 1991 (class 0 OID 16446)
--- Dependencies: 174 1992
+-- TOC entry 1992 (class 0 OID 16446)
+-- Dependencies: 174 1993
 -- Data for Name: usersngroups; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -596,8 +597,8 @@ COPY usersngroups (id_user, id_group) FROM stdin;
 
 
 --
--- TOC entry 1943 (class 2606 OID 16456)
--- Dependencies: 161 161 1993
+-- TOC entry 1944 (class 2606 OID 16456)
+-- Dependencies: 161 161 1994
 -- Name: groups_label_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -606,8 +607,8 @@ ALTER TABLE ONLY groups
 
 
 --
--- TOC entry 1945 (class 2606 OID 16458)
--- Dependencies: 161 161 1993
+-- TOC entry 1946 (class 2606 OID 16458)
+-- Dependencies: 161 161 1994
 -- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -616,8 +617,8 @@ ALTER TABLE ONLY groups
 
 
 --
--- TOC entry 1949 (class 2606 OID 16460)
--- Dependencies: 163 163 1993
+-- TOC entry 1950 (class 2606 OID 16460)
+-- Dependencies: 163 163 1994
 -- Name: id_item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -626,8 +627,8 @@ ALTER TABLE ONLY items
 
 
 --
--- TOC entry 1951 (class 2606 OID 16462)
--- Dependencies: 165 165 1993
+-- TOC entry 1952 (class 2606 OID 16462)
+-- Dependencies: 165 165 1994
 -- Name: id_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -636,8 +637,8 @@ ALTER TABLE ONLY orders
 
 
 --
--- TOC entry 1955 (class 2606 OID 16464)
--- Dependencies: 167 167 1993
+-- TOC entry 1956 (class 2606 OID 16464)
+-- Dependencies: 167 167 1994
 -- Name: roles_label_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -646,8 +647,8 @@ ALTER TABLE ONLY roles
 
 
 --
--- TOC entry 1957 (class 2606 OID 16466)
--- Dependencies: 167 167 1993
+-- TOC entry 1958 (class 2606 OID 16466)
+-- Dependencies: 167 167 1994
 -- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -656,8 +657,8 @@ ALTER TABLE ONLY roles
 
 
 --
--- TOC entry 1959 (class 2606 OID 16468)
--- Dependencies: 169 169 169 1993
+-- TOC entry 1960 (class 2606 OID 16468)
+-- Dependencies: 169 169 169 1994
 -- Name: rolesngroups_id_role_id_group_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -666,8 +667,8 @@ ALTER TABLE ONLY rolesngroups
 
 
 --
--- TOC entry 1961 (class 2606 OID 16470)
--- Dependencies: 170 170 1993
+-- TOC entry 1962 (class 2606 OID 16470)
+-- Dependencies: 170 170 1994
 -- Name: tracks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -676,8 +677,8 @@ ALTER TABLE ONLY tracks
 
 
 --
--- TOC entry 1953 (class 2606 OID 16472)
--- Dependencies: 165 165 1993
+-- TOC entry 1954 (class 2606 OID 16472)
+-- Dependencies: 165 165 1994
 -- Name: txn_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -686,8 +687,8 @@ ALTER TABLE ONLY orders
 
 
 --
--- TOC entry 1963 (class 2606 OID 16474)
--- Dependencies: 172 172 1993
+-- TOC entry 1964 (class 2606 OID 16474)
+-- Dependencies: 172 172 1994
 -- Name: users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -696,8 +697,8 @@ ALTER TABLE ONLY users
 
 
 --
--- TOC entry 1965 (class 2606 OID 16476)
--- Dependencies: 172 172 1993
+-- TOC entry 1966 (class 2606 OID 16476)
+-- Dependencies: 172 172 1994
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -706,8 +707,8 @@ ALTER TABLE ONLY users
 
 
 --
--- TOC entry 1967 (class 2606 OID 16478)
--- Dependencies: 174 174 174 1993
+-- TOC entry 1968 (class 2606 OID 16478)
+-- Dependencies: 174 174 174 1994
 -- Name: usersngroups_id_user_id_group_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -716,8 +717,8 @@ ALTER TABLE ONLY usersngroups
 
 
 --
--- TOC entry 1946 (class 1259 OID 16479)
--- Dependencies: 163 1993
+-- TOC entry 1947 (class 1259 OID 16479)
+-- Dependencies: 163 1994
 -- Name: fki_id_order_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -725,8 +726,8 @@ CREATE INDEX fki_id_order_fkey ON items USING btree (id_order);
 
 
 --
--- TOC entry 1947 (class 1259 OID 16480)
--- Dependencies: 163 1993
+-- TOC entry 1948 (class 1259 OID 16480)
+-- Dependencies: 163 1994
 -- Name: fki_item_number_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -734,8 +735,8 @@ CREATE INDEX fki_item_number_fkey ON items USING btree (item_number);
 
 
 --
--- TOC entry 1976 (class 2620 OID 16481)
--- Dependencies: 170 189 1993
+-- TOC entry 1977 (class 2620 OID 16481)
+-- Dependencies: 189 170 1994
 -- Name: body; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -743,8 +744,8 @@ CREATE TRIGGER body BEFORE DELETE OR UPDATE ON tracks FOR EACH ROW EXECUTE PROCE
 
 
 --
--- TOC entry 1977 (class 2620 OID 24591)
--- Dependencies: 170 189 1993
+-- TOC entry 1978 (class 2620 OID 24591)
+-- Dependencies: 189 170 1994
 -- Name: check_count_orders; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -752,8 +753,8 @@ CREATE TRIGGER check_count_orders BEFORE DELETE OR UPDATE ON tracks FOR EACH ROW
 
 
 --
--- TOC entry 1975 (class 2620 OID 16482)
--- Dependencies: 163 188 1993
+-- TOC entry 1976 (class 2620 OID 16482)
+-- Dependencies: 188 163 1994
 -- Name: inc_count_orders; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -761,8 +762,8 @@ CREATE TRIGGER inc_count_orders BEFORE INSERT ON items FOR EACH ROW EXECUTE PROC
 
 
 --
--- TOC entry 1968 (class 2606 OID 16483)
--- Dependencies: 1950 163 165 1993
+-- TOC entry 1969 (class 2606 OID 16483)
+-- Dependencies: 165 1951 163 1994
 -- Name: id_order_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -771,8 +772,8 @@ ALTER TABLE ONLY items
 
 
 --
--- TOC entry 1970 (class 2606 OID 24586)
--- Dependencies: 1964 172 165 1993
+-- TOC entry 1971 (class 2606 OID 24586)
+-- Dependencies: 165 1965 172 1994
 -- Name: id_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -781,8 +782,8 @@ ALTER TABLE ONLY orders
 
 
 --
--- TOC entry 1969 (class 2606 OID 16488)
--- Dependencies: 170 163 1960 1993
+-- TOC entry 1970 (class 2606 OID 16488)
+-- Dependencies: 170 1961 163 1994
 -- Name: item_number_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -791,8 +792,8 @@ ALTER TABLE ONLY items
 
 
 --
--- TOC entry 1971 (class 2606 OID 16493)
--- Dependencies: 1944 161 169 1993
+-- TOC entry 1972 (class 2606 OID 16493)
+-- Dependencies: 169 161 1945 1994
 -- Name: rolesngroups_id_group_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -801,8 +802,8 @@ ALTER TABLE ONLY rolesngroups
 
 
 --
--- TOC entry 1972 (class 2606 OID 16498)
--- Dependencies: 169 167 1956 1993
+-- TOC entry 1973 (class 2606 OID 16498)
+-- Dependencies: 167 1957 169 1994
 -- Name: rolesngroups_id_role_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -811,8 +812,8 @@ ALTER TABLE ONLY rolesngroups
 
 
 --
--- TOC entry 1973 (class 2606 OID 16503)
--- Dependencies: 174 1944 161 1993
+-- TOC entry 1974 (class 2606 OID 16503)
+-- Dependencies: 161 1945 174 1994
 -- Name: usersngroups_id_group_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -821,8 +822,8 @@ ALTER TABLE ONLY usersngroups
 
 
 --
--- TOC entry 1974 (class 2606 OID 16508)
--- Dependencies: 1964 174 172 1993
+-- TOC entry 1975 (class 2606 OID 16508)
+-- Dependencies: 172 174 1965 1994
 -- Name: usersngroups_id_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -831,7 +832,7 @@ ALTER TABLE ONLY usersngroups
 
 
 --
--- TOC entry 1998 (class 0 OID 0)
+-- TOC entry 1999 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -842,7 +843,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2013-07-04 19:30:47 BST
+-- Completed on 2013-07-11 12:50:32 BST
 
 --
 -- PostgreSQL database dump complete
