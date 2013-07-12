@@ -26,32 +26,34 @@ session_start();
         <script type="text/javascript" src="js/frm.login.js"></script>        
         <script type="text/javascript" src="js/frm.user.js"></script>
         <script type="text/javascript" src="js/lst.order.js"></script>
-        <header id="login">
-<?php
-          $login = new Form(new Login(), array("action" => "login.php"));
-          $usr = User::restore();
-          if ($usr->getID() > 0) {
-	    $login->data()->loadObject($usr);
-	    $login->data()->type = Login::OUT;
-	    $login->data()->id_user = $usr->getID();
-	  }
-          echo $login->toHTML();
-?>
-        </header>
-        <section id="content">
-<?php
-	  if (isset($_GET)) {
-	    if (isset($_GET['track'])) {
-	      include("scripts/track.php");
-	    } if (isset($_GET['import'])) {
-	      include("scripts/list.php");
-	    }
-	  }
-?>
-        </section>
-        <footer>
-	[testing]
-        </footer>
-        <div class="loader">loading ...</div>
+        <div id="container">
+            <header id="login">
+                <?php
+                $login = new Form(new Login(), array("action" => "login.php"));
+                $usr = User::restore();
+                if ($usr->getID() > 0) {
+                    $login->data()->loadObject($usr);
+                    $login->data()->type = Login::OUT;
+                    $login->data()->id_user = $usr->getID();
+                }
+                echo $login->toHTML();
+                ?>
+            </header>
+            <section id="content">
+                <?php
+                if (isset($_GET)) {
+                    if (isset($_GET['track'])) {
+                        include("scripts/track.php");
+                    } if (isset($_GET['import'])) {
+                        include("scripts/list.php");
+                    }
+                }
+                ?>
+            </section>
+            <footer>
+                [testing]
+            </footer>
+            <div class="loader">loading ...</div>
+        </div>
     </body>
 </html>
