@@ -13,7 +13,7 @@ class Config {
         if (!@isset(self::$__conf)) {
             $r = false;
             if (function_exists('apc_fetch')) {
-                self::$__conf = apc_fetch(__CLASS__, $r);
+//                self::$__conf = apc_fetch(__CLASS__, $r);
             }
             if (!$r) {
                 try {

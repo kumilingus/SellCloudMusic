@@ -36,7 +36,7 @@ Track.prototype.shown = function() {
 
             var id = $(response).find('id_track').text();
 
-            if ($(response).find('status:contains("insert")').length > 0) {
+            if ($(response).find('status').text() === 'insert') {
                 container.addClass('track-imported');
                 container.data('import-track-id',id);
             }
