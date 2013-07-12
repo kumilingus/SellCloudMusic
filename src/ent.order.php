@@ -37,6 +37,7 @@ class Order extends Entity {
     public $id_order;
     public $id_user;
     public $txn_id;
+    public $timestamp;
     public $items;
 
     public function __construct() {
@@ -68,6 +69,16 @@ class Order extends Entity {
                 $this->items->add($item);
             }
         }
+    }
+
+    public function beforeInsert() {
+        // Avoid manual setting of timestamp. Value must be always time when
+        // the order is created.
+        unset($this->timestamp);
+    }
+
+    public function beforeUpdate() {
+        $this->beforeInsert();
     }
 
     public function afterInsert() {

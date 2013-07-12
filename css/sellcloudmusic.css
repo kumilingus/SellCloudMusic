@@ -360,9 +360,13 @@ html,body {
     background-color: #f39c12;
 }
 
-.order-row > span {
+.order-row > span.values {
     margin: 10px;
     font-size: x-large;
+}
+
+.order-row > span.keys {
+    white-space: nowrap;
 }
 
 .item-list {
@@ -381,6 +385,7 @@ html,body {
 
  .item-list-row.item-list-row-total {
      background-color: #bdc3c7;
+     margin-bottom: 50px;
  }
 
  .item-list-row > span {
