@@ -61,11 +61,13 @@ Track.prototype.shown = function() {
                 $(anchor).fadeOut();
             },
             success: function(response) {
-                container.data('import-track-id',NaN);
-                container.removeClass('track-imported');
                 t.show({
                     xml: response,
-                    complete: function() {
+                    complete: function(xml) {
+                        if ($(xml).find('status').text() === "delete") {
+                            container.data('import-track-id', NaN);
+                            container.removeClass('track-imported');
+                        }
                         $(anchor).fadeIn();
                     }
                 });

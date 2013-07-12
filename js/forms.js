@@ -103,7 +103,7 @@ Form.prototype.show = function(args) {
         $(args.anchor).empty();
         var callback = function() {
             if (args.form.shown) args.form.shown();
-            if (args.complete) args.complete();
+            if (args.complete) args.complete(xml);
             if (args.form.handleErrors) args.form.handleErrors(xml);
         };
 
