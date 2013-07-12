@@ -16,7 +16,8 @@ OrderList.prototype.source = function() {
 
 OrderList.prototype.processData = function(xml) {
     if (this.trackID) {
-        $(xml).find('order:has(items>item>item_number:not(:contains(' + this.trackID + ')))').remove();
+        var orders = $(xml).find('order:has(item_number:contains(' + this.trackID + '))');
+        $(xml).find('orderlist').empty().append(orders);
     }
     return xml;
 };
