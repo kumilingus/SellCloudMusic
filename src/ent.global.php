@@ -1,6 +1,7 @@
 <?php
 
 require_once('./kernel/class.entity.php');
+require_once('./kernel/class.form.php');
 require_once('./kernel/db/class.dblayer.php');
 require_once('./src/soundcloud.php');
 

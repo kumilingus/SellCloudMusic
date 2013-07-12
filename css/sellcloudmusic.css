@@ -430,3 +430,12 @@ span.button{
 span.button:hover{
     color: #2ECC71;
 }
+
+.pdf-generator {
+    background: url(../images/pdf-button.png) no-repeat;
+    cursor:pointer;
+    width: 32px;
+    height: 32px;
+    border: none;
+    float: right;
+ }

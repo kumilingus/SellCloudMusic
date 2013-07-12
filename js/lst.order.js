@@ -22,3 +22,11 @@ OrderList.prototype.processData = function(xml) {
 };
 
 OrderList.prototype.handleErrors = function() {};
+
+OrderList.active = function() {
+
+    $('.pdf-generator').click(function() {
+        document.location.href = 'download.php?id_order=' + $(this).data('id-order');
+    });
+
+};

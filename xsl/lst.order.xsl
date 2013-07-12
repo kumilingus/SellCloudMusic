@@ -37,6 +37,11 @@
             <span class="values">
                 <xsl:value-of select = "substring(timestamp,0,17)"/>
             </span>
+            <div class="pdf-generator">
+                <xsl:attribute name="data-id-order">
+                    <xsl:value-of select="id_order"/>
+                </xsl:attribute>
+            </div>
         </div>
         <div class="item-row">
             <xsl:apply-templates select="items"/>
