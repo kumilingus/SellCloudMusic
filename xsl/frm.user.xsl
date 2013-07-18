@@ -80,7 +80,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label for="soundcloud-connect">Soundcloud account:</label>                        
+                        <label for="soundcloud-connect">Soundcloud account:</label>
                     </td>
                     <td>
                         <input id="soundcloud-connect" type="button"/>
@@ -89,6 +89,46 @@
                                 <xsl:value-of select ="user/soundcloud_username"/>
                             </xsl:if>
                         </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Invoice address:</td>
+                    <td>
+                        <input id="user-address-company" type="text" name="address_company name" placeholder="Company name">
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="user/address_company_name"/>
+                            </xsl:attribute>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td><small>(optional)</small></td>
+                    <td>
+                        <input id="user-address-street" type="text" name="address_number_street" placeholder="Street number and name">
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="user/address_number_street"/>
+                            </xsl:attribute>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="user-address-town" type="text" name="address_town" placeholder="Town or City">
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="user/address_town"/>
+                            </xsl:attribute>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input id="user-address-zip" type="text" name="address_zip" placeholder="ZIP code">
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="user/address_zip"/>
+                            </xsl:attribute>
+                        </input>
                     </td>
                 </tr>
                 <tr>

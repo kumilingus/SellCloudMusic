@@ -72,10 +72,10 @@
                                 </fo:table-cell>
                                 <fo:table-cell>
                                     <fo:block font-size="14pt">
-                                        <fo:block>X Y</fo:block>
-                                        <fo:block>Street name 99</fo:block>
-                                        <fo:block>12345 City</fo:block>
-                                        <fo:block>UTR: XYZXYZXYZ</fo:block>
+                                        <fo:block><xsl:value-of select="user/address_company_name"/></fo:block>
+                                        <fo:block><xsl:value-of select="user/address_number_street"/></fo:block>
+                                        <fo:block><xsl:value-of select="user/address_town"/></fo:block>
+                                        <fo:block><xsl:value-of select="user/address_zip"/></fo:block>
                                     </fo:block>
                                 </fo:table-cell>
                             </fo:table-row>

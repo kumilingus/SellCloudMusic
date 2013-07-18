@@ -25,6 +25,10 @@ if (@isset($_GET) && @isset($_GET['id_order'])) {
         //check if logged in user requesting his own order        
         if ($user->getID() > 0 && $user->getID() == $order->id_user) {
 
+            //change XML wrapper 'login' to 'user'
+            $user->type = 'user';
+            $order->s0 = $user;
+
             $pdffname = $order->txn_id . '.pdf';
             $tmpfname = tempnam("tmp", "order");
 

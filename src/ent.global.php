@@ -144,6 +144,11 @@ class User extends Login {
     public $password_re;
     public $track_count = 0;
     public $paypal_email;
+    //addresss
+    public $address_company_name;
+    public $address_number_street;
+    public $address_town;
+    public $address_zip;
 
     public function __construct($type = __CLASS__) {
         parent::__construct();
