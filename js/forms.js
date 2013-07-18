@@ -66,6 +66,8 @@ Form.prototype.show = function(args) {
         form : this
     };
     
+    args = args || {};
+
     for(var i in defs) {
         if(!args[i]) args[i] = defs[i];
     }

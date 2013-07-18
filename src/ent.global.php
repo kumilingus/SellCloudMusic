@@ -109,6 +109,20 @@ class Track extends TrackView {
 
 }
 
+// Password request (forgotten password)
+class Pwdreq extends Entity {
+    
+    const EMAIL_DOESNT_EXIST = "Email doesn't match our records.";
+    
+    public $email;
+    
+    public function __construct() {
+        $this->setGlobalData(Entity::LABEL_ACCESS, 'none');
+        $this->setGlobalData(dbCommon::LABEL_TABLE, 'users');        
+        $this->setFlags('email', FRM_NOT_MT | FRM_FLG_EMAIL | DBC_FLG_KEY);
+    }
+}
+
 class Login extends Entity {
 
     const IN = 'login';
