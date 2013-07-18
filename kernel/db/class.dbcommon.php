@@ -95,7 +95,7 @@ class dbCommon extends dbConnection {
             return $e;
         }
 
-        if (!$raff instanceof dbError)
+        if (!($raff instanceof dbError))
             $this->commit();
 
         //return number of rows affected
