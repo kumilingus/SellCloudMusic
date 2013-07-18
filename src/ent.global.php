@@ -73,6 +73,8 @@ class Track extends TrackView {
         $soundcloud = Soundcloud::getInstance();
         try {
             $r = json_decode($soundcloud->get('me/tracks/' . $this->id_soundcloud));
+            if ($this->exclusive < 2)
+                    return new ntError('Not available in BETA','exclusive');
             // if download counts > 0 then can't be exclusive 
             if ($this->exclusive > 1 && $r->download_count > 0) {
                 return new ntError('Track has been already downloaded. Can not be imported as "exclusive"', 'exclusive');
@@ -97,6 +99,8 @@ class Track extends TrackView {
     }
 
     public function beforeUpdate() {
+        if ($this->exclusive < 2)
+            return new ntError('Not available in BETA','exclusive');
         if ($this->exclusive > 1 && $this->count_orders > 0) {
             return new ntError('Track has been already sold and is marked down as exlusive. Can not be changed now.', 'exclusive');
         }
