@@ -213,8 +213,7 @@ input.input-error {
 }
 
 div .input-error {
-    border: 2px solid;
-    border-color: #E74C3C;
+    color: #E74C3C;
 }
 
 #slider-range-min {
