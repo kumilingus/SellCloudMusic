@@ -41,7 +41,7 @@ class TrackView extends Entity {
         $this->setGlobalData(Entity::LABEL_ACCESS, 'public');
         $this->setGlobalData(dbCommon::LABEL_TABLE, 'tracks');
         $this->setFlags('price', FRM_FLG_NUMBER | FRM_NOT_MT);
-        $this->setFlags('exclusive', FRM_NO_FLAG);        
+        $this->setFlags('exclusive', FRM_NO_FLAG);
     }
 
     public function afterLoad() {
@@ -74,7 +74,7 @@ class Track extends TrackView {
         try {
             $r = json_decode($soundcloud->get('me/tracks/' . $this->id_soundcloud));
             if ($this->exclusive < 2)
-                    return new ntError('Not available in BETA','exclusive');
+                return new ntError('Not available in BETA', 'exclusive');
             // if download counts > 0 then can't be exclusive 
             if ($this->exclusive > 1 && $r->download_count > 0) {
                 return new ntError('Track has been already downloaded. Can not be imported as "exclusive"', 'exclusive');
@@ -100,7 +100,7 @@ class Track extends TrackView {
 
     public function beforeUpdate() {
         if ($this->exclusive < 2)
-            return new ntError('Not available in BETA','exclusive');
+            return new ntError('Not available in BETA', 'exclusive');
         if ($this->exclusive > 1 && $this->count_orders > 0) {
             return new ntError('Track has been already sold and is marked down as exlusive. Can not be changed now.', 'exclusive');
         }
@@ -111,15 +111,51 @@ class Track extends TrackView {
 
 // Password request (forgotten password)
 class Pwdreq extends Entity {
-    
+
+    const TOKEN_LIFETIME = 1800; // 30 Minutes
     const EMAIL_DOESNT_EXIST = "Email doesn't match our records.";
-    
+    const EMAIL_SUBJECT = "Password reset";
+    const EMAIL_BODY = <<<BODY
+                Hi,
+                you have requested changing your password. Please click the link
+                bellow to reset it.
+
+                %s
+BODY;
+
+    public $id_user;
     public $email;
-    
+    public $pwd_reset_token;
+    public $pwd_reset_timestamp;
+
     public function __construct() {
         $this->setGlobalData(Entity::LABEL_ACCESS, 'none');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'users');        
-        $this->setFlags('email', FRM_NOT_MT | FRM_FLG_EMAIL | DBC_FLG_KEY);
+        $this->setGlobalData(dbCommon::LABEL_TABLE, 'users');
+        $this->setGlobalData(Entity::LABEL_ID, 'id_user');
+        $this->setFlags('email', FRM_NOT_MT | FRM_FLG_EMAIL);
+    }
+
+    public function beforeUpdate() {
+        $this->pwd_reset_timestamp = time();
+        $this->pwd_reset_token = uniqid('', true);
+    }
+
+    public function afterFind() {
+        if ((time() - $this->pwd_reset_timestamp) > Pwdreq::TOKEN_LIFETIME) {
+            return new ntError('Token has expired.');
+        }
+    }
+
+}
+
+class Pwdchng extends Entity {
+
+    public $password;
+    public $password_re;
+
+    public function __construct() {
+        $this->setFlags('password', FRM_NOT_MT | FRM_FLG_PWD | FRM_FLG_MATCH);
+        $this->setFlags('password_re', FRM_NOT_MT | FRM_FLG_PWD | FRM_FLG_MATCH | DBC_FLG_NODB);
     }
 }
 

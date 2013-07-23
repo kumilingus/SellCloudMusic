@@ -6,6 +6,7 @@ require_once("./kernel/class.elist.php");
 
 define('DBC_FLG_NODB', 0x100);
 define('DBC_FLG_KEY', 0x200);
+define('DBC_FLG_NULL', 0x400);
 
 class dbCommon extends dbConnection {
 
@@ -237,7 +238,9 @@ class dbCommon extends dbConnection {
 	      !$entity->isFlagged($key, DBC_FLG_NODB) &&
 	      $entity->isFlagged($key, $flag)) {
 	    $vars[$key] = $this->quote($val);
-	  }
+          } elseif ($entity->isFlagged($key, DBC_FLG_NULL)) {
+	    $vars[$key] = NULL;
+          }
 	}
 
         // escape values

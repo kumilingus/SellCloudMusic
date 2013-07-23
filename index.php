@@ -44,8 +44,10 @@ session_start();
                 if (isset($_GET)) {
                     if (isset($_GET['track'])) {
                         include("scripts/track.php");
-                    } if (isset($_GET['import'])) {
+                    } elseif (isset($_GET['import'])) {
                         include("scripts/list.php");
+                    } elseif (isset($_GET['reset'])) {
+                        include("scripts/reset.php");
                     }
                 }
                 ?>

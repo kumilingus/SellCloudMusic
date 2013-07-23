@@ -39,30 +39,48 @@ if (isset($_POST['login-form-submit'])) {
     $form->updateStatus();
     echo $form->toXML();
 
-} else if (isset($_POST['pwdreq-form-submit'])) {
+} elseif (isset($_POST['pwdreq-form-submit'])) {
 
     session_start();
     header("Content-type: text/xml; charset=utf-8");
-    
+
     $pwdreq = new Pwdreq();
     $form = new Form($pwdreq);
     $pwdreq->loadArray($_POST);
-    
+
     if ($form->dataFiltred()) {
+
         $conn = new dbCommon();
+        $pwdreq->addFlags('email', DBC_FLG_KEY);
+
         if ($r = $conn->findEntity($pwdreq)) {
+
             if ($r instanceof dbError) {
                 $form->errors->db = "Can't access the database. Please try later.";
-            } else {
 
-            // send email
-            
+            } else {
+                // update user (token,timestamp)
+                $r = $conn->saveEntity($pwdreq);
+                if ($r instanceof dbError) {
+                    $form->errors->db = "Can't access the database. Please try later.";
+                } else {
+                    // send an email
+                    include('lib/mail/Mail.php');
+                    $mail = @Mail::factory("mail");
+                    $link = sprintf('%s/index.php?reset=%s', Config::_('host'), $pwdreq->pwd_reset_token);
+                    $header = array("From" => Config::_('mail-from'),"Subject" => Pwdreq::EMAIL_SUBJECT);
+                    $r = $mail->send($pwdreq->email, $header, sprintf(Pwdreq::EMAIL_BODY, $link));
+
+                    if ($r !== true) {
+                        $form->errors->db = "Sending mail failed. Please try later.";
+                    }
+                }
             }
         } else {
             $form->errors->email = Pwdreq::EMAIL_DOESNT_EXIST;
         }
     }
-    
+
     $form->updateStatus();
     echo $form->toXML();
     
