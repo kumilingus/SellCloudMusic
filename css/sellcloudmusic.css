@@ -410,12 +410,16 @@ html,body {
     right: 10px;
 }
 
- .loader {
+.loader {
      display: none;
      color: #bdc3c7;
      position: absolute;
-     top: 0px;
-     right: 0px;
+     top: 15px;
+     right: 15px;
+}
+
+.loader.active {
+    display: block;
 }
 
 span.ui-button-text {

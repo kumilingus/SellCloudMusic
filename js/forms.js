@@ -45,11 +45,11 @@ Form.prototype.xsl = function() {
 };
 
 Form.prototype.startLoading = function() {
-    $('.loader').show();
+  $('.loader').addClass('active');
 };
 
 Form.prototype.stopLoading = function() {
-   setTimeout(function() { $('.loader').hide(); }, 300);
+   $('.loader').removeClass('active');
 };
 
 Form.prototype.processData = function(data) {
@@ -59,6 +59,7 @@ Form.prototype.processData = function(data) {
 Form.prototype.show = function(args) {
 
     this.startLoading();
+
     var defs = {
         xml : null,
         anchor : this.anchor,
