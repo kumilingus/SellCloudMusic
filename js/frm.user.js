@@ -2,7 +2,8 @@ function User(id) {
     this.id = id;    
     this.name = "user";
     this.anchor = "#content";
-}
+};
+
 User.inherits(Form);
 
 User.active = function() {
@@ -11,13 +12,19 @@ User.active = function() {
         dataType: "xml",
         success: function(response) {
             var u = new User(0);
-            if (!$(response).find('status:contains("insert")').length > 0) {
-                u.show({
-                    xml : response,
-                    complete: User.active
-                });
-            } else {
-                $(u.anchor).empty().append("<span>User sucessfully registred.</span>");
+
+            switch($(response).find('status').text()) {
+
+                case 'insert':
+                    $(u.anchor).empty().append("<span>User sucessfully registred.</span>");
+                    break;
+
+                default:
+                    u.show({
+                        xml : response,
+                        complete: User.active
+                    });
+                    break;
             }
             
             $("#soundcloud-connected").text($(response).find('soundcloud_username').text());
@@ -37,4 +44,4 @@ User.active = function() {
             $('#soundcloud-oauth-token').val(SC.accessToken());
         });
     });
-}
+};
