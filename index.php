@@ -52,9 +52,6 @@ session_start();
                 }
                 ?>
             </section>
-            <footer>
-                [testing]
-            </footer>
             <div class="loader">loading ...</div>
         </div>
     </body>
