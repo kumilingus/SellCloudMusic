@@ -94,10 +94,7 @@
             </xsl:attribute>            
             <span class="text">More tracks from <xsl:value-of select="trackview/user/username"/>:</span>
         </div>
-        <script type="text/javascript" src="js/frm.trackview.js"></script>
         <script type="text/javascript" src="lib/paypal/minicart.js"></script>
-        <script>
-            PAYPAL.apps.MiniCart.render({paypalURL:'https://www.sandbox.paypal.com/cgi-bin/webscr',events:{onAddToCart:function(data){if(this.getProductAtOffset(data.offset)){return false;}}}});
-        </script>
+        <script type="text/javascript" src="js/frm.trackview.js"></script>
     </xsl:template>
 </xsl:stylesheet>

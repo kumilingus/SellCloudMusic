@@ -1,14 +1,36 @@
 $(function() {
 
-$.get("api.php",{ type: 'trackviewlist', id_user: $('.more-tracks').data('id-user'), json: true }, function(data) {
-    _.each(data, function(trackview){
-        $('.more-tracks').append( $('<a>',{
-            href: "index.php?track=" + trackview.id_track,
-            text: trackview.s1.title
-        })).fadeIn();
-    });
-        
-}, "json");
+    var userID = $('.more-tracks').data('id-user');
 
-$('.more-tracks').hide();
+    // load all tracks from currently displayed user
+    $.get("api.php", {type: 'trackviewlist', id_user: userID, json: true}, function(data) {
+        _.each(data, function(trackview) {
+            $('.more-tracks').append($('<a>', {
+                href: "index.php?track=" + trackview.id_track,
+                text: trackview.s1.title
+            })).fadeIn();
+        });
+
+    }, "json");
+
+    // render paypal minicart
+    PAYPAL.apps.MiniCart.render({
+        paypalURL: config.paypal.url,
+        events: {
+            onAddToCart: function(data) {
+
+                if (this.getProductAtOffset(data.offset)) {
+                    return false;
+                }
+
+                // check whether the added product is owned by current user
+                if (_.find(this.products, function(p) { return p.settings.custom != userID; })) {
+                    console.log("illegal: mixing products owned by different users");
+                    return false;
+                }
+            }
+        }
+    });
+
+    $('.more-tracks').hide();
 });
