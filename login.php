@@ -29,7 +29,7 @@ if (isset($_POST['login-form-submit'])) {
                     $login->id_user = $usr->getID();
                 }
             } else {
-                $form->errors->logging = login::USER_DOESNT_EXIST;
+                $form->errors->password = login::USER_DOESNT_EXIST;
             }
         }
     } else {
