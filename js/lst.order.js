@@ -26,8 +26,14 @@ OrderList.prototype.handleErrors = function() {};
 
 OrderList.active = function() {
 
-    $('.pdf-generator').click(function() {
-        document.location.href = 'download.php?id_order=' + $(this).data('id-order');
-    });
+    var $list = $('#order-list');
+    if ($list.is(':empty')) {
+        // inform user there's no order
+        $list.append($('<span>', { text: 'There are no orders yet' }).addClass('gray-box'));
+    } else {
 
+        $('.pdf-generator').click(function() {
+            document.location.href = 'download.php?id_order=' + $(this).data('id-order');
+        });
+    }
 };
