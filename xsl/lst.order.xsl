@@ -37,11 +37,11 @@
             <span class="values">
                 <xsl:value-of select = "substring(timestamp,0,17)"/>
             </span>
-            <div class="pdf-generator">
-                <xsl:attribute name="data-id-order">
+        </div>
+        <div class="pdf-generator">
+                 <xsl:attribute name="data-id-order">
                     <xsl:value-of select="id_order"/>
                 </xsl:attribute>
-            </div>
         </div>
         <div class="item-row">
             <xsl:apply-templates select="items"/>
@@ -49,23 +49,23 @@
     </xsl:template>
 
     <xsl:template match="items">
-        <ul class="item-list">
+        <table class="item-list">
             <xsl:apply-templates select="item"/>
-            <li class="item-list-row item-list-row-total">
-                Total:<span class="price">$<xsl:value-of select="sum(item/mc_gross_)"/></span>
-            </li>
-        </ul>
+            <tr class="item-list-row item-list-row-total">
+                <td>Total:</td><td class="price">$<xsl:value-of select="format-number(sum(item/mc_gross_), '#.00')"/></td>
+            </tr>
+        </table>
     </xsl:template>
     
     <xsl:template match="item">
-        <li class="item-list-row">
-            <span>
+        <tr class="item-list-row">
+            <td class= "name">
                 <xsl:value-of select = "item_name"/>
-            </span>
-            <span class="price">
-                $<xsl:value-of select = "mc_gross_"/>
-            </span>
-        </li>    
+            </td>
+            <td class="price">
+                $<xsl:value-of select = "format-number(mc_gross_, '#.00')"/>
+            </td>
+        </tr>
     </xsl:template>
         
 </xsl:stylesheet>

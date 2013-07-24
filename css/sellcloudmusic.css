@@ -351,6 +351,8 @@ html,body {
     padding-bottom: 35px;
 }
 
+/* ORDERS */
+
 .order-row {
     padding: 5px;
     margin: 10px;
@@ -358,13 +360,14 @@ html,body {
     -moz-border-radius: 6px;
     border-radius: 6px;
     font-size: small;
-    color: white;
-    background-color: #f39c12;
+    color: #ecf0f1;
+    background-color: #8e44ad;
 }
 
 .order-row > span.values {
     margin: 10px;
     font-size: x-large;
+    color: #f1c40f;
 }
 
 .order-row > span.keys {
@@ -372,31 +375,39 @@ html,body {
 }
 
 .item-list {
-   list-style:none;
+   margin: 10px;
+   width: calc(100% - 60px);
 }
+
 .item-list-row {
-    padding: 5px;
-    margin: 10px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+
     font-size: x-large;
     color: black;
     background-color: #ecf0f1;
- }
+}
 
- .item-list-row.item-list-row-total {
-     background-color: #bdc3c7;
-     margin-bottom: 50px;
- }
+.item-list-row.item-list-row-total {
+    background-color: #bdc3c7;
+}
 
- .item-list-row > span {
+.item-list-row > td.price {
      margin: 10px;
- }
+     color: #c0392b;
+     text-align: right;
+     width: 120px;
+     padding-right: 40px;
+}
 
- .item-list-row > span.price {
-     color: red;
- }
+.pdf-generator {
+    background: url(../images/pdf-button.png) no-repeat;
+    cursor:pointer;
+    width: 32px;
+    height: 32px;
+    border: none;
+    float: right;
+    position: relative;
+    right: 10px;
+}
 
  .loader {
      display: none;
@@ -431,13 +442,4 @@ span.button{
 
 span.button:hover{
     color: #2ECC71;
-}
-
-.pdf-generator {
-    background: url(../images/pdf-button.png) no-repeat;
-    cursor:pointer;
-    width: 32px;
-    height: 32px;
-    border: none;
-    float: right;
 }
