@@ -181,6 +181,7 @@ input[type="submit"]:hover,button:hover {
     padding: 20px;
     background-color: #ECF0F1;
     width: 40%;
+    min-width: 600px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;    
