@@ -20,7 +20,7 @@
                 <fo:static-content flow-name="xsl-region-before">
                     <fo:block-container absolute-position="absolute" left="100mm" top="Omm">
                         <fo:block> 
-                            <fo:external-graphic src="url('quattroclix.png')"/>
+                            <fo:external-graphic src="url('images/scm-logo.png')"/>
                         </fo:block>
                     </fo:block-container>
                 </fo:static-content>
@@ -90,7 +90,7 @@
                                 <fo:table-column column-width="25mm"/>
                                 <fo:table-column column-width="15mm"/>
                                 <fo:table-column column-width="23mm"/>
-                                <fo:table-header background-color="#f39c12" text-align="center">
+                                <fo:table-header background-color="#8e44ad" color="#f1c40f" text-align="center">
                                     <fo:table-row>
                                         <fo:table-cell border-style="solid" padding="1mm">
                                             <fo:block font-weight="bold">Product Description</fo:block>
