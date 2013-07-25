@@ -70,6 +70,7 @@ input[type="submit"],button {
     -o-transition: 0.25s;
     transition: 0.25s;
     -webkit-backface-visibility: hidden;
+    cursor: pointer;
 }
 
 input[type="submit"]:hover,button:hover {
@@ -102,6 +103,7 @@ input[type="submit"]:hover,button:hover {
 .logout-menu span, .login-menu span{
     margin: 10px;        
     color: #27AE60;
+    cursor: pointer;
 }
 
 .logout-menu span:hover, .login-menu span:hover{
@@ -116,6 +118,7 @@ input[type="submit"]:hover,button:hover {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .track-label.track-imported {
