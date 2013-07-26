@@ -119,6 +119,7 @@ input[type="submit"]:hover,button:hover {
     -moz-border-radius: 6px;
     border-radius: 6px;
     cursor: pointer;
+    width: 280px;
 }
 
 .track-label.track-imported {
@@ -139,24 +140,44 @@ input[type="submit"]:hover,button:hover {
 }
 
 #track-list {
-    clear: both;
-    width: 100%;    
+    width: 300px;
+}
+
+#track-panel {
+    position: absolute;
+    left: 320px;
+    top: 60px;
+    margin: 20px;
+    background-color: #ECF0F1;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    border: 3px solid #27AE60;
+    width: calc(100% - 370px);
+}
+
+#track-edit, #track-info {
+    margin: 20px;
+    padding: 20px;
 }
 
 #track-list-nav {
     float: left;
     clear: both;
-    margin: 20px;
+    margin: 10px;
     padding: 20px;
     background-color: #ECF0F1;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+    border: 3px solid #27AE60;
 }
 
 #track-list-nav a, .more-tracks a{
-    background-color: #c0392b;
+    background-color: #27AE60;
     padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
     margin: 5px;
     color: white;
     -webkit-border-radius: 6px;
@@ -166,30 +187,14 @@ input[type="submit"]:hover,button:hover {
 }
 
 #track-list-nav a:hover, .more-tracks a:hover{
-    background-color: #E74C3C;
+    background-color: #2ECC71;
 }
 
 #track-list-nav a:active, .more-tracks a:active {
     background-color: #f39c12;    
 }
 
-#track-panel {
-    clear: both;
-    width: 100%;
-}
-
-#track-edit, #track-info, .error-box {
-    float: left;
-    margin: 20px;
-    padding: 20px;
-    background-color: #ECF0F1;
-    width: 45%;
-    min-width: 600px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-}
-
+/* FORMS */
 
 .form-info, .form-error {
     font-size: 12.996px;
@@ -210,21 +215,20 @@ input[type="submit"]:hover,button:hover {
     -o-transition: 0.25s;
     transition: 0.25s;
     -webkit-backface-visibility: hidden;
+    margin: 3px;
 }
 
 
 .form-info {
     background-color: #1ABC9C;
-    margin: 3px;
 }
 
 .form-error {
     background-color: #E74C3C;
-    margin: 3px;
 }
 
 input.input-error {
-  border-color: #E74C3C;
+    border-color: #E74C3C;
 }
 
 div .input-error {
@@ -250,6 +254,8 @@ div .input-error {
     top: 30px;
     margin: 20px;
 }
+
+/* TRACKVIEW */
 
 .trackview-form {
     margin: 20px;
@@ -350,7 +356,6 @@ html,body {
 }
 
 #content {
-    clear: both;
     padding: 10px;
     padding-bottom: 35px;
 }
@@ -460,7 +465,7 @@ span.ui-button-text {
     border-radius: 6px;
 }
 
-.gray-box {
+.gray-box, .error-box {
     margin: 20px;
     padding: 20px;
     background-color: #ECF0F1;
@@ -488,4 +493,11 @@ span.button:hover{
     padding: 20px;
     margin-left: 15px;
     float: left;
+}
+
+.adsense {
+    background: url(../images/adsense.jpg) no-repeat;
+    width: 368px;
+    height: 137px;
+    border: 1px solid gray;
 }
