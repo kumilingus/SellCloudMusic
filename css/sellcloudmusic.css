@@ -425,13 +425,14 @@ html,body {
 
 .cancel-button {
     background: url(../images/cancel-button.png) no-repeat;
-    cursor:pointer;
-    width: 24px;
-    height: 24px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
     border: none;
     position: relative;
-    left: -8px;
-    top: 8px;
+    left: -32px;
+    top: 2px;
+    opacity: .5;
 }
 
 /* LOADER */
