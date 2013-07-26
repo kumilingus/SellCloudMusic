@@ -3,6 +3,8 @@ function OrderList(userID) {
     this.trackID = undefined;
     this.name = 'OrderList';
     this.anchor = "#content";
+    this.fromDate = null;
+    this.toDate = null;
 }
 OrderList.inherits(Form);
 
@@ -11,7 +13,15 @@ OrderList.prototype.xsl = function() {
 };
 
 OrderList.prototype.source = function() {
-    return "api.php?id_user="+ this.userID +"&type=" + this.name;
+
+    var queryDate = '';
+
+    if (this.fromDate)
+        queryDate += '&timestamp@1=@g' + this.fromDate;
+    if (this.toDate)
+        queryDate += '&timestamp@2=@l' + this.toDate;
+
+    return "api.php?id_user=" + this.userID + "&type=" + this.name + queryDate;
 };
 
 OrderList.prototype.processData = function(xml) {
@@ -22,18 +32,57 @@ OrderList.prototype.processData = function(xml) {
     return xml;
 };
 
-OrderList.prototype.handleErrors = function() {};
+OrderList.prototype.handleErrors = function() {
+};
 
-OrderList.active = function() {
+OrderList.createFilters = function(orderList) {
+
+    var $from = $('<input>', {
+        type: 'text',
+        id: 'fromDate',
+        placeholder: 'From Date',
+        value: orderList.fromDate
+    }).addClass('datepicker');
+
+    var $to = $('<input>', {
+        type: 'text',
+        id: 'toDate',
+        placeholder: 'To Date',
+        value: orderList.toDate
+    }).addClass('datepicker');
+
+    $('#content').prepend($to).prepend($from);
+};
+
+OrderList.active = function(orderList) {
 
     var $list = $('#order-list');
     if ($list.is(':empty')) {
         // inform user there's no order
-        $list.append($('<span>', { text: 'There are no orders yet' }).addClass('gray-box'));
+        $list.append($('<div>', {text: 'There are no orders.'}).addClass('gray-box'));
     } else {
 
         $('.pdf-generator').click(function() {
             document.location.href = 'download.php?id_order=' + $(this).data('id-order');
         });
+    }
+
+    if (orderList) {
+
+        $('.datepicker').datepicker({
+            maxDate: new Date(),
+            dateFormat: 'yy-mm-dd',
+            showWeek: true,
+            onSelect: function(date) {
+                orderList[$(this).attr('id')] = date;
+                orderList.show({
+                    complete: function() {
+                        OrderList.createFilters(orderList);
+                        OrderList.active(orderList);
+                    }
+                });
+            }
+        });
+
     }
 };

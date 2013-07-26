@@ -66,7 +66,12 @@ Login.active = function() {
 
     $('#view-orders-button').click(function() {
         var o = new OrderList($('#id-user').val());
-        o.show({complete: OrderList.active});
+        o.show({
+            complete: function() {
+                OrderList.createFilters(o);
+                OrderList.active(o);
+            }
+        });
     });
 
     $('#edit-account-button').click(function() {

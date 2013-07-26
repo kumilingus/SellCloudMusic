@@ -205,7 +205,13 @@ class dbCommon extends dbConnection {
 
     private function strip_params($params, $class) {
         $r = 'true' . self::QUERY_CONJUCTION;
-        foreach ($params as $key => $val) {
+        foreach ($params as $ukey => $val) {
+
+            // allow user to set a range of values
+            // for example param@1=@lX, param@2=@gY
+            // eguals: X > param < Y
+            $key = preg_replace('/@[0-9]/', '', $ukey);
+                    
             if (property_exists($class, $key)) {
                 $op = ' = ';
                 if (!strncmp($val, '@g', 2))

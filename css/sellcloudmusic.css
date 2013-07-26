@@ -413,6 +413,11 @@ html,body {
     right: 10px;
 }
 
+.datepicker {
+    margin: 10px;
+}
+
+/* LOADER */
 .loader {
      display: none;
      color: #bdc3c7;
