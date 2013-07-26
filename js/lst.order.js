@@ -51,7 +51,29 @@ OrderList.createFilters = function(orderList) {
         value: orderList.toDate
     }).addClass('datepicker');
 
-    $('#content').prepend($to).prepend($from);
+    var $content = $('#content');
+
+    if (orderList.toDate) {
+        $content.prepend($('<input>', {
+            type: 'button'
+        }).addClass('cancel-button').on('click', function() {
+            orderList.toDate = null;
+            orderList.reload(orderList);
+        }));
+    }
+
+    $content.prepend($to);
+
+    if (orderList.fromDate) {
+        $content.prepend($('<input>', {
+            type: 'button'
+        }).addClass('cancel-button').on('click', function() {
+            orderList.fromDate = null;
+            orderList.reload(orderList);
+        }));
+    }
+
+    $content.prepend($from);
 };
 
 OrderList.active = function(orderList) {
@@ -75,14 +97,18 @@ OrderList.active = function(orderList) {
             showWeek: true,
             onSelect: function(date) {
                 orderList[$(this).attr('id')] = date;
-                orderList.show({
-                    complete: function() {
-                        OrderList.createFilters(orderList);
-                        OrderList.active(orderList);
-                    }
-                });
+                orderList.reload(orderList);
             }
         });
 
     }
+};
+
+OrderList.prototype.reload = function(orderList) {
+    this.show({
+        complete: function() {
+            OrderList.createFilters(orderList);
+            OrderList.active(orderList);
+        }
+    });
 };

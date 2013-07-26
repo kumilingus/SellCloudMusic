@@ -415,6 +415,18 @@ html,body {
 
 .datepicker {
     margin: 10px;
+    font-weight: bold;
+}
+
+.cancel-button {
+    background: url(../images/cancel-button.png) no-repeat;
+    cursor:pointer;
+    width: 24px;
+    height: 24px;
+    border: none;
+    position: relative;
+    left: -8px;
+    top: 8px;
 }
 
 /* LOADER */
