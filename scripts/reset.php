@@ -52,12 +52,12 @@ if ($r instanceof dbError) {
                     //database error
                     include('./errors/database-error.html');
                 } else {
-                    //sucess
-                    echo "<pre>Your password has been sucessfully changed. You can sign in now.</pre>";
+                    //success
+                    echo "<p>Your password has been sucessfully changed. You can sign in now.</p>";
                 }
                 
             } else {
-                echo "<pre>An unauthorized access!</pre>";
+                echo "<p>An unauthorized access!</p>";
             }
         } else {
             echo $form->toHTML();

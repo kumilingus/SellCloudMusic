@@ -81,7 +81,7 @@ input[type="submit"]:hover,button:hover {
     background-color: #2c3e50;
     height: 38px;
     padding-top: 6px;
-    border-bottom: 4px solid #34495;
+    border-bottom: 4px solid #34495e;
 }
 
 #login-form {
@@ -187,7 +187,7 @@ input[type="submit"]:hover,button:hover {
     min-width: 600px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    border-radius: 6px;    
+    border-radius: 6px;
 }
 
 
@@ -476,4 +476,16 @@ span.button{
 
 span.button:hover{
     color: #2ECC71;
+}
+
+#user-form, #pwdreq-form {
+
+    background: #ECF0F1;
+    border: 3px solid #27AE60;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    padding: 20px;
+    margin-left: 15px;
+    float: left;
 }

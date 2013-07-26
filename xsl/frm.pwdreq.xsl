@@ -16,7 +16,7 @@
                 <xsl:value-of select="method"/>
             </xsl:attribute>
             <div class="pwdreq">
-                <pre>For password reset request enter your email address please.</pre>
+                <p>For password reset request enter your email address please.</p>
                 <input id="pwdreq-email" type="email" name="email" placeholder="Email address"/>
                 <input type="submit" value="Send request">
                     <xsl:attribute name="name">
