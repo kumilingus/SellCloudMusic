@@ -18,7 +18,7 @@
             <table class="form-table">
                 <tbody>
                     <xsl:if test="status = 'errors'">
-                        <tr>
+                        <tr class="track-table-row">
                             <td  colspan="2">
                                 <div class="form-error">
                                     <xsl:value-of select="errors"/>
@@ -27,7 +27,7 @@
                         </tr>
                     </xsl:if>
                     <xsl:if test="status != 'load' and status != 'new' and status != 'errors'">
-                        <tr>
+                        <tr class="track-table-row">
                             <td colspan="2">
                                 <div class="form-info">
                                     <xsl:choose>
@@ -39,10 +39,9 @@
                             </td>
                         </tr>
                     </xsl:if>
-                    <tr>
-                        <td>
+                    <tr class="track-table-row">
+                        <td class="track-table-first-column">
                             <label for="track-price">Price:</label>
-                            <div id="slider-range-min"></div>
                         </td>
                         <td>
                             <span class="currency">$</span>
@@ -51,11 +50,14 @@
                                     <xsl:value-of select="track/price"/>
                                 </xsl:attribute>
                             </input>
+                            <div id="slider-range-min"></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
+                    <tr class="track-table-row">
+                        <td class="track-table-first-column">
                             <span id="track-exclusive">Exclusivity:</span>
+                        </td>
+                        <td>
                             <div id="exclusive-radio">
                                 <input type="radio" id="radio1" name="exclusive" value="2">
                                     <xsl:if test="track/exclusive = 2">
@@ -72,7 +74,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="track-table-row">
                         <td colspan = "2">
                             <input type="submit" value="import track">
                                 <xsl:attribute name="name">
@@ -97,6 +99,11 @@
                             <input type="hidden" name="id_track">
                                 <xsl:attribute name="value">
                                     <xsl:value-of select="track/id_track"/>
+                                </xsl:attribute>
+                            </input>
+                            <input type="hidden" name="count_orders">
+                                <xsl:attribute name="value">
+                                    <xsl:value-of select="track/count_orders"/>
                                 </xsl:attribute>
                             </input>
                         </td>

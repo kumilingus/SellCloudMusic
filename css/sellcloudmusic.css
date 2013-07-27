@@ -7,7 +7,7 @@
 */
 
 textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    
+
     border: 2px solid #bdc3c7;
     color: #34495e;
     font-family: "Lato", sans-serif;
@@ -44,19 +44,22 @@ input[type="url"]:focus,
 input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus {
-  border-color: #27AE60;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+    border-color: #27AE60;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 input[type="submit"],button {
+    box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    height: 14px;
     background-color: #27AE60;
     font-size: 12.996px;
-    line-height: 10px;
     border: none;
     color: #ffffff;
     padding: 9px 12px 10px;
+    margin: 0px 3px 0px;
     text-decoration: none;
     text-shadow: none;
     -webkit-border-radius: 6px;
@@ -79,7 +82,7 @@ input[type="submit"]:hover,button:hover {
 
 #login {
     background-color: #2c3e50;
-    height: 38px;
+    height: 34px;
     padding-top: 6px;
     border-bottom: 4px solid #34495e;
 }
@@ -139,6 +142,14 @@ input[type="submit"]:hover,button:hover {
     background-color: #F1C40F;    
 }
 
+.image-exclusive {
+    background: url(../images/exclusive.png) no-repeat;
+    float: right;
+    width: 16px;
+    height: 16px;
+    margin-right: 3px;
+ }
+
 #track-list {
     width: 300px;
 }
@@ -156,9 +167,16 @@ input[type="submit"]:hover,button:hover {
     width: calc(100% - 370px);
 }
 
-#track-edit, #track-info {
-    margin: 20px;
-    padding: 20px;
+#track-edit {
+    margin: 0px 20px 20px 20px;
+}
+
+#track-info {
+    margin: 20px 20px 0px 20px;
+}
+
+#track-form {
+    padding: 20px 20px 0px 20px;
 }
 
 #track-list-nav {
@@ -194,6 +212,10 @@ input[type="submit"]:hover,button:hover {
     background-color: #f39c12;    
 }
 
+span.count-orders {
+    float: right;
+    color: black;
+}
 /* FORMS */
 
 .form-info, .form-error {
@@ -236,23 +258,17 @@ div .input-error {
 }
 
 #slider-range-min {
-    
+
     margin: 10px;
-    width: 100px;
-    float: right;
+    width: 180px;
 }
 
-#exclusive-radio {
-    
-    margin: 20px;
-    float: right;
+.track-table-row {
+    height: 60px;
 }
 
-#track-exclusive {
-    
-    position: relative;
-    top: 30px;
-    margin: 20px;
+.track-table-first-column {
+    width: 110px;
 }
 
 /* TRACKVIEW */
@@ -350,14 +366,10 @@ html,body {
     height: 100%;
 }
 
-#container {
-    min-height: 100%;
-    position: relative;
-}
-
 #content {
+    clear: both;
     padding: 10px;
-    padding-bottom: 35px;
+    margin-bottom: 20px;
 }
 
 /* ORDERS */
@@ -384,8 +396,8 @@ html,body {
 }
 
 .item-list {
-   margin: 10px;
-   width: calc(100% - 60px);
+    margin: 10px;
+    width: calc(100% - 60px);
 }
 
 .item-list-row {
@@ -400,11 +412,11 @@ html,body {
 }
 
 .item-list-row > td.price {
-     margin: 10px;
-     color: #c0392b;
-     text-align: right;
-     width: 120px;
-     padding-right: 40px;
+    margin: 10px;
+    color: #c0392b;
+    text-align: right;
+    width: 120px;
+    padding-right: 40px;
 }
 
 .pdf-generator {
@@ -437,11 +449,11 @@ html,body {
 
 /* LOADER */
 .loader {
-     display: none;
-     color: #bdc3c7;
-     position: absolute;
-     top: 15px;
-     right: 15px;
+    display: none;
+    color: #bdc3c7;
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
 
 .loader.active {

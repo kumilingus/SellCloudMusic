@@ -14,8 +14,7 @@
     </xsl:template>
     <xsl:template match="/tracks/track">
         <div>
-            <xsl:attribute name="class">track-label
-                <xsl:if test="import-id != 0">track-imported</xsl:if>
+            <xsl:attribute name="class">track-label<xsl:if test="import-id != 0"> track-imported</xsl:if>
             </xsl:attribute>
             <xsl:attribute name="data-import-track-id">
                 <xsl:value-of select = "number(import-id)"/>
@@ -29,10 +28,15 @@
             <xsl:attribute name="data-track-id">
                 <xsl:value-of select = "id"/>
             </xsl:attribute>
-            <xsl:value-of select="title"/> 
-            <span class="count-orders">
+            <xsl:value-of select="title"/>
+            <xsl:if test="count-orders &gt; 0">
+            <span class="count-orders" title="Number of orders">
                 <xsl:value-of select="count-orders"/>
             </span>
+            </xsl:if>
+            <xsl:if test="exclusive = 2">
+                <div class="image-exclusive" title="Track is exclusive"/>
+            </xsl:if>
         </div>
         <div class="track-body">
             <div class="track-more">
