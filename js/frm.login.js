@@ -37,12 +37,18 @@ Login.active = function() {
         url: "login.php",
         dataType: "xml",
         success: function(response) {
-            var l = new Login($(response).find('type:parent("login")').text());
-            l.show({
-                xml: response,
-                complete: Login.active
-            });
-            $('#content').empty();
+            var status = $(response).find('status').text();
+
+            if (status === 'errors') {
+                var type = $(response).find('type:parent("login")').text();
+                var l = new Login(type);
+                l.show({
+                    xml: response,
+                    complete: Login.active
+                });
+            } else {
+                document.location.href = "?import=0";
+            }
         }
     });
 

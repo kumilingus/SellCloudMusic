@@ -507,10 +507,3 @@ span.button:hover{
     margin-left: 15px;
     float: left;
 }
-
-.adsense {
-    background: url(../images/adsense.jpg) no-repeat;
-    width: 368px;
-    height: 137px;
-    border: 1px solid gray;
-}

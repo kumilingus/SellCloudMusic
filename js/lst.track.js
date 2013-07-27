@@ -28,5 +28,5 @@ $(function() {
     });
 
     $('.track-body').hide();
-    $('#track-info').append($('<div>').addClass('adsense'));
+    $('.track-label').first().click();
 });
