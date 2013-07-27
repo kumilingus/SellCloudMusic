@@ -28,7 +28,7 @@ Pwdreq.active = function() {
         }
     });
 
-}
+};
 
 
 Login.active = function() {
@@ -37,17 +37,28 @@ Login.active = function() {
         url: "login.php",
         dataType: "xml",
         success: function(response) {
+
             var status = $(response).find('status').text();
 
-            if (status === 'errors') {
-                var type = $(response).find('type:parent("login")').text();
-                var l = new Login(type);
-                l.show({
-                    xml: response,
-                    complete: Login.active
-                });
-            } else {
-                document.location.href = "?import=0";
+            switch (status) {
+
+                case 'errors':
+
+                    var type = $(response).find('type:parent("login")').text();
+                    var l = new Login(type);
+                    l.show({
+                        xml: response,
+                        complete: Login.active
+                    });
+                    break;
+
+                case 'load':
+                    document.location.href = "?import=0";
+                    break;
+
+                case 'new':
+                    document.location.href = "index.php";
+                    break;
             }
         }
     });
