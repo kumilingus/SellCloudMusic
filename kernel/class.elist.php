@@ -37,8 +37,7 @@ abstract class Elist extends Transformer implements Iterator {
     }
 
     function allocate() {
-        $alias = $this->slot;
-        $slot = new $alias();
+        $slot = $this->entity();
         $this->add($slot);
         return $slot;
     }
@@ -48,5 +47,9 @@ abstract class Elist extends Transformer implements Iterator {
         $this->position = min($this->position,$this->counter);
     }
     
+    function entity() {
+        $alias = $this->slot;
+        return new $alias();
+    }
 }
 ?>

@@ -65,7 +65,7 @@ class dbCommon extends dbConnection {
         return $raff;
     }
 
-    private function nt_up(& $entity) {
+    private function nt_up(& $entity, $add2q = '') {
 
         //before update
         $e = $entity->beforeUpdate();
@@ -87,13 +87,13 @@ class dbCommon extends dbConnection {
                         $entity->getGlobalData(Entity::LABEL_ID), //id column name
                         $entity->getID()); //id value
 
-        $raff = $this->exec($q);
+        $raff = $this->exec($q.$add2q);
 
         //after update
-        $e = $entity->afterUpdate();
-        if ($e instanceof ntError) {
+        $e2 = $entity->afterUpdate();
+        if ($e2 instanceof ntError) {
             $this->rollBack();
-            return $e;
+            return $e2;
         }
 
         if (!($raff instanceof dbError))
@@ -103,11 +103,11 @@ class dbCommon extends dbConnection {
         return $raff;
     }
 
-    public function saveEntity(& $param) {
+    public function saveEntity(& $param, $add2q = '') {
         if ($param instanceof Entity) {
             if ($param->getID() > 0) {
                 $param->setStatus(Entity::STATUS_UPD);
-                return $this->nt_up($param);
+                return $this->nt_up($param, $add2q);
             } else {
                 $param->setStatus(Entity::STATUS_INS);
                 return $this->nt_in($param);
@@ -116,7 +116,7 @@ class dbCommon extends dbConnection {
         return -1;
     }
 
-    public function loadEntity(& $param) {
+    public function loadEntity(& $param, $add2q = '') {
         if ($param instanceof Entity && $param->getID() > 0) {
             $e = $param->beforeLoad();
             if ($e instanceof ntError)
@@ -125,7 +125,7 @@ class dbCommon extends dbConnection {
             //build a select query
             $q = sprintf(self::QUERY_SELECT, '*', $param->getGlobalData(self::LABEL_TABLE), sprintf(self::QUERY_PAIR, $param->getGlobalData(Entity::LABEL_ID), $param->getID()));
             //run query and save result into a param
-            $a = $this->query($q)->fetch(PDO::FETCH_ASSOC);
+            $a = $this->query($q.$add2q)->fetch(PDO::FETCH_ASSOC);
             if ($a) {
                 $param->loadArray($a);
                 $e = $param->afterLoad();
@@ -137,13 +137,13 @@ class dbCommon extends dbConnection {
         return -1;
     }
 
-    public function deleteEntity(& $param) {
+    public function deleteEntity(& $param, $add2q = '') {
         if ($param instanceof Entity && $param->getID() > 0) {
             $param->setStatus(Entity::STATUS_DEL);
             //build a delete query
             $q = sprintf(self::QUERY_DELETE, $param->getGlobalData(self::LABEL_TABLE), sprintf(self::QUERY_PAIR, $param->getGlobalData(Entity::LABEL_ID), $param->getID()));
             //return number of rows affected
-            return $this->exec($q);
+            return $this->exec($q.$add2q);
         }
     }
 
