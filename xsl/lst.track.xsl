@@ -49,7 +49,7 @@
             </div>
             <iframe class="track-player" width="100%" height="166" scrolling="no" frameborder="no">
                 <xsl:attribute name="src">
-                    <xsl:value-of select = "concat('https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F',id)"/>
+                    <xsl:value-of select = "concat('https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F',id,'%3Fsecret_token%3D',secret-token)"/>
                 </xsl:attribute>
             </iframe>
             <div class="description">    

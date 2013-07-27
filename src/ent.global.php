@@ -90,6 +90,8 @@ class Track extends TrackView {
         try {
             $soundcloud->put('tracks/' . $this->id_soundcloud, array(
                 "track[downloadable]" => false,
+                "track[streamable]" => true,
+                "track[sharing]" => "public",
                 "track[purchase_url]" => $shopping_url
             ));
         } catch (Exception $e) {
