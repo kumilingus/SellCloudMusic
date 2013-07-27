@@ -103,7 +103,7 @@ input[type="submit"]:hover,button:hover {
 .logout-menu, .login-menu {
     padding-top: 6px;
 }
-.logout-menu span, .login-menu span{
+.logout-menu span, .login-menu span {
     margin: 10px;        
     color: #27AE60;
     cursor: pointer;
@@ -148,7 +148,7 @@ input[type="submit"]:hover,button:hover {
     width: 16px;
     height: 16px;
     margin-right: 3px;
- }
+}
 
 #track-list {
     width: 300px;
@@ -271,6 +271,23 @@ div .input-error {
     width: 110px;
 }
 
+.track-more {
+    padding-bottom: 20px;
+}
+
+.track-more span.key {
+    margin-right: 5px;
+}
+
+.track-more span.val {
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.track-description {
+    padding-top: 10px;
+    font-style: italic;
+}
 /* TRACKVIEW */
 
 .trackview-form {
@@ -506,4 +523,12 @@ span.button:hover{
     padding: 20px;
     margin-left: 15px;
     float: left;
+}
+
+a {
+    color: #27AE60;
+}
+
+a:hover {
+    color: #2ECC71;
 }

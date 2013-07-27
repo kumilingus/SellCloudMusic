@@ -30,9 +30,9 @@
             </xsl:attribute>
             <xsl:value-of select="title"/>
             <xsl:if test="count-orders &gt; 0">
-            <span class="count-orders" title="Number of orders">
-                <xsl:value-of select="count-orders"/>
-            </span>
+                <span class="count-orders" title="Number of orders">
+                    <xsl:value-of select="count-orders"/>
+                </span>
             </xsl:if>
             <xsl:if test="exclusive = 2">
                 <div class="image-exclusive" title="Track is exclusive"/>
@@ -40,21 +40,42 @@
         </div>
         <div class="track-body">
             <div class="track-more">
-                Downloadable: 
-                <xsl:value-of select="downloadable"/> | 
-                Download count: 
-                <xsl:value-of select="download-count"/> | 
-                Purchase URL: 
-                <xsl:value-of select="purchase-url"/>
+                <xsl:if test="bpm != ''">
+                    <span class="key">BPM:</span>
+                    <span class="val">
+                        <xsl:value-of select="bpm"/>
+                    </span>
+                </xsl:if>
+                <span class="key">Downloadable:</span>
+                <span class="val">
+                    <xsl:value-of select="downloadable"/>
+                </span>
+                <span class="key">Download count:</span>
+                <span class="val">
+                    <xsl:value-of select="download-count"/>
+                </span>
+                <xsl:if test="purchase-url != ''">
+                    <span class="key">Purchase URL:</span>
+                    <span class="val">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select = "purchase-url"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="purchase-url"/>
+                        </a>
+                    </span>
+                </xsl:if>
             </div>
             <iframe class="track-player" width="100%" height="166" scrolling="no" frameborder="no">
                 <xsl:attribute name="src">
                     <xsl:value-of select = "concat('https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F',id,'%3Fsecret_token%3D',secret-token)"/>
                 </xsl:attribute>
             </iframe>
-            <div class="description">    
-                <xsl:value-of select="description"/>
-            </div>
+            <xsl:if test="description != ''">
+                <div class="track-description white-box">
+                    <xsl:value-of select="description"/>
+                </div>
+            </xsl:if>
         </div>            
     </xsl:template>
 </xsl:stylesheet>
