@@ -30,7 +30,7 @@ class dbCommon extends dbConnection {
         $e1 = $entity->beforeInsert();
         if ($e1 instanceof ntError)
             return $e1;
-        
+
         if ($this->transactionsEnabled)
             $this->beginTransaction();
         //get entity slots
@@ -174,13 +174,12 @@ class dbCommon extends dbConnection {
             if ($r) {
                 $e2 = $param->afterFind();
                 if ($e2 instanceof ntError) { return $e2; }
-            }
-            
+                }
+
             return $r;
         }
         return 0;
     }
-
 
     public function loadEList(& $list, $param = array()) {
         if ($list instanceof EList) {
@@ -205,27 +204,51 @@ class dbCommon extends dbConnection {
 
     private function strip_params($params, $class) {
         $r = 'true' . self::QUERY_CONJUCTION;
+        $t = '';
+
         foreach ($params as $ukey => $val) {
 
             // allow user to set a range of values
             // for example param@1=@lX, param@2=@gY
             // eguals: X > param < Y
             $key = preg_replace('/@[0-9]/', '', $ukey);
-                    
+
             if (property_exists($class, $key)) {
+
                 $op = ' = ';
-                if (!strncmp($val, '@g', 2))
+
+                if (is_array($val))
+                    $op = ' in ';
+
+                elseif (!strncmp($val, '@g', 2))
                     $op = ' > ';
+
                 elseif (!strncmp($val, '@l', 2))
                     $op = ' < ';
 
-                $t = $val;
-                if (strcmp($op, ' = '))
-                    $t = substr($val, 2);
 
-                $r .= $key . $op . $this->quote($t) . self::QUERY_CONJUCTION;
+                switch ($op) {
+
+                    case ' = ':
+                        $t = $this->quote($val);
+                        break;
+
+                    case ' > ':
+                    case ' < ':
+                        $t = $this->quote(substr($val, 2));
+                        break;
+
+                    case ' in ':
+                        $arr = array_map(array($this,"quote"), $val);
+                        $t = '(' . implode($arr, ',') . ')';
+                        break;
+
+                }
+
+                $r .= $key . $op . $t . self::QUERY_CONJUCTION;
             }
         }
+
         return substr($r, 0, strlen($r) - strlen(self::QUERY_CONJUCTION));
     }
 
@@ -240,19 +263,19 @@ class dbCommon extends dbConnection {
         $vars = array();
 
         foreach(@get_object_vars($entity) as $key => $val) {
-	  if (@isset($val) &&
-	      !$entity->isFlagged($key, DBC_FLG_NODB) &&
-	      $entity->isFlagged($key, $flag)) {
-	    $vars[$key] = $this->quote($val);
-          } elseif ($entity->isFlagged($key, DBC_FLG_NULL)) {
-	    $vars[$key] = NULL;
-          }
-	}
+            if (@isset($val) &&
+                    !$entity->isFlagged($key, DBC_FLG_NODB) &&
+                    $entity->isFlagged($key, $flag)) {
+                $vars[$key] = $this->quote($val);
+            } elseif ($entity->isFlagged($key, DBC_FLG_NULL)) {
+                $vars[$key] = NULL;
+            }
+        }
 
         // escape values
         ///$vars = @array_map(array($this,'escape'),$vars);
         // quote values
-	// $vars = @array_map(array($this, 'quote'), $vars);
+        // $vars = @array_map(array($this, 'quote'), $vars);
         return $vars;
     }
 
