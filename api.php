@@ -106,7 +106,7 @@ if (@isset($_GET['type'])) {
                     $conn = new dbCommon();
                     $e = $conn->loadEntity($ent, $add2q);
                     if ($e instanceof ntError) {
-                        $frm->errors->{$e->slot} = @sprintf($e->message);
+                        $frm->errors->{$e->slot} = $e->message;
                     } elseif (!$e) {
                         error("Record not found");
                     }
@@ -125,12 +125,25 @@ if (@isset($_GET['type'])) {
                     // set entity id to be deleted
                     $ent->setID($_GET['id']);
 
+                    // there in PHP are arrays assigned by copy
+                    $clone_GET = $_GET;
+                    // deleting reserved names for slots
+                    unset($clone_GET['id']);
+                    unset($clone_GET['type']);
+
+                    $ent->loadArray($clone_GET);
+
                     $conn = new dbCommon();
                     $e = $conn->deleteEntity($ent, $add2q);
 
                     if ($e instanceof dbError) {
 
                         $frm->errors->db = @sprintf("%s %s.", @get_class($ent), $e->message);
+
+                    } elseif ($e instanceof ntError) {
+
+                        $frm->errors->{$e->slot} = $e->message;
+
                     } else {
                         // set error if affected arrows equal 0
                         if ($e == 0)
