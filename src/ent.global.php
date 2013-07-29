@@ -99,6 +99,17 @@ class Track extends Entity {
         $this->shopping_url = $shopping_url;
     }
 
+    public function beforeDelete() {
+        $soundcloud = Soundcloud::getInstance();
+        try {
+            $soundcloud->put('tracks/' . $this->id_soundcloud, array(
+                "track[purchase_url]" => ''
+            ));
+        } catch (Exception $e) {
+            return new ntError($e->getMessage());
+        }
+    }
+
     public function beforeUpdate() {
         if ($this->exclusive < 2)
             return new ntError('Not available in BETA', 'exclusive');

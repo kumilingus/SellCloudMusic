@@ -141,13 +141,24 @@ input[type="submit"]:hover,button:hover {
 .track-label.on, .track-label.on:hover {
     background-color: #F1C40F;    
 }
-
-.image-exclusive {
-    background: url(../images/exclusive.png) no-repeat;
+/* track label icons */
+.isExclusive .image-exclusive,
+.hasOrders .image-orders {
+    display: block;
     float: right;
     width: 16px;
     height: 16px;
     margin-right: 3px;
+}
+
+.image-exclusive {
+    display: none;
+    background: url(../images/exclusive.png) no-repeat;
+}
+
+.image-orders {
+    display: none;
+    background: url(../images/order.png) no-repeat;
 }
 
 #track-list {

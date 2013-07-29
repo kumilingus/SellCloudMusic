@@ -28,15 +28,15 @@
             <xsl:attribute name="data-track-id">
                 <xsl:value-of select = "id"/>
             </xsl:attribute>
+            <xsl:attribute name="data-count-orders">
+                <xsl:value-of select = "number(count-orders)"/>
+            </xsl:attribute>
+            <xsl:attribute name="data-exclusive">
+                <xsl:value-of select = "number(exclusive)"/>
+            </xsl:attribute>
             <xsl:value-of select="title"/>
-            <xsl:if test="count-orders &gt; 0">
-                <span class="count-orders" title="Number of orders">
-                    <xsl:value-of select="count-orders"/>
-                </span>
-            </xsl:if>
-            <xsl:if test="exclusive = 2">
-                <div class="image-exclusive" title="Track is exclusive"/>
-            </xsl:if>
+            <div class="image-orders" title="Track has some orders"/>
+            <div class="image-exclusive" title="Track is exclusive"/>
         </div>
         <div class="track-body">
             <div class="track-more">
@@ -54,17 +54,16 @@
                 <span class="val">
                     <xsl:value-of select="download-count"/>
                 </span>
-                <xsl:if test="purchase-url != ''">
-                    <span class="key">Purchase URL:</span>
-                    <span class="val">
-                        <a>
-                            <xsl:attribute name="href">
-                                <xsl:value-of select = "purchase-url"/>
-                            </xsl:attribute>
-                            <xsl:value-of select="purchase-url"/>
-                        </a>
-                    </span>
-                </xsl:if>
+                <span class="key">Purchase URL:</span>
+                <span class="val">
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select = "purchase-url"/>
+                        </xsl:attribute>
+                        <xsl:value-of select="purchase-url"/>
+                    </a>
+                </span>
+
             </div>
             <iframe class="track-player" width="100%" height="166" scrolling="no" frameborder="no">
                 <xsl:attribute name="src">

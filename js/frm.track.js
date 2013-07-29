@@ -21,12 +21,12 @@ Track.prototype.shown = function() {
     $('#exclusive-radio').buttonset();
 
     var anchor = this.anchor;
-    var container = $('.track-label.on'); 
+    var $container = $('.track-label.on'); 
     
     $('#track-form').ajaxForm({
         data: {
-            id_soundcloud: container.data('track-id'),
-            id_user: container.data('import-user-id')
+            id_soundcloud: $container.data('track-id'),
+            id_user: $container.data('import-user-id')
         },
         dataType: 'xml',
         beforeSubmit: function() {
@@ -35,10 +35,25 @@ Track.prototype.shown = function() {
         success: function(response) {
 
             var id = $(response).find('id_track').text();
+            var exclusive = $(response).find('exclusive').text();
 
-            if ($(response).find('status').text() === 'insert') {
-                container.addClass('track-imported');
-                container.data('import-track-id',id);
+            switch ($(response).find('status').text()) {
+
+                case 'insert':
+                    $container.addClass('track-imported');
+                    $container.data('import-track-id',id);
+                    // update purchase url
+                    var link = $(response).find('shopping_url').text();
+                    $container.next().find('.track-more a')
+                            .attr('href',link)
+                            .text(link)
+                            .show();
+                    TrackList.updateMore($container);
+
+                case 'update':
+                    $container.data('exclusive',exclusive);
+                    TrackList.updateIcons(0, $container);
+                    break;
             }
 
             var t = new Track(id);
@@ -53,10 +68,10 @@ Track.prototype.shown = function() {
     
     $('#remove-track-button').click(function() {
 
-        var t = new Track(container.data('import-track-id'));
+        var t = new Track($container.data('import-track-id'));
         $.ajax({
             type: 'DELETE',
-            url: t.source(),
+            url: t.source()+'&id_soundcloud=' + $container.data('track-id'),
             beforeSend: function() {
                 $(anchor).fadeOut();
             },
@@ -65,8 +80,12 @@ Track.prototype.shown = function() {
                     xml: response,
                     complete: function(xml) {
                         if ($(xml).find('status').text() === "delete") {
-                            container.data('import-track-id', NaN);
-                            container.removeClass('track-imported');
+                            $container.removeClass('track-imported');
+                            $container.data('import-track-id', NaN);
+                            $container.data('exclusive', 0);
+                            TrackList.updateIcons(0, $container);
+                            $container.next().find('.track-more a').hide();
+                            TrackList.updateMore($container);
                         }
                         $(anchor).fadeIn();
                     }
