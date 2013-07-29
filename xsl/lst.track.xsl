@@ -41,21 +41,21 @@
         <div class="track-body">
             <div class="track-more">
                 <xsl:if test="bpm != ''">
-                    <span class="key">BPM:</span>
-                    <span class="val">
+                    <span class="key bpm">BPM:</span>
+                    <span class="val bpm">
                         <xsl:value-of select="bpm"/>
                     </span>
                 </xsl:if>
-                <span class="key">Downloadable:</span>
-                <span class="val">
+                <span class="key downloadable">Downloadable:</span>
+                <span class="val downloadable">
                     <xsl:value-of select="downloadable"/>
                 </span>
-                <span class="key">Download count:</span>
-                <span class="val">
+                <span class="key download-count">Download count:</span>
+                <span class="val download-count">
                     <xsl:value-of select="download-count"/>
                 </span>
-                <span class="key">Purchase URL:</span>
-                <span class="val">
+                <span class="key purchase-url">Purchase URL:</span>
+                <span class="val purchase-url">
                     <a>
                         <xsl:attribute name="href">
                             <xsl:value-of select = "purchase-url"/>

@@ -20,7 +20,14 @@ $(function() {
         } 
     });
 
-    $('.track-body').hide();
+    $('.track-body')
+            .hide()
+            .find('.val.purchase-url:has(a[href=""])')
+            .each(function() {
+                $this = $(this);
+                $this.prev().hide();
+                $this.hide();
+            });
 
     $('.track-label')
             .each(TrackList.updateIcons)
@@ -44,6 +51,5 @@ TrackList.updateMore = function(label) {
 
     $label = (label instanceof $) ? label : $(label);
     $('#track-info .track-more')
-        .empty()
         .replaceWith($label.next().children().first().clone().show());
 };

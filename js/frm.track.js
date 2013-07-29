@@ -44,10 +44,15 @@ Track.prototype.shown = function() {
                     $container.data('import-track-id',id);
                     // update purchase url
                     var link = $(response).find('shopping_url').text();
-                    $container.next().find('.track-more a')
+
+                    $trackmore = $container.next().find('.track-more');
+                    $trackmore.find('.val.downloadable').text('false');
+                    $trackmore.find('.purchase-url')
+                            .show()
+                            .find('a')
                             .attr('href',link)
-                            .text(link)
-                            .show();
+                            .text(link);
+
                     TrackList.updateMore($container);
 
                 case 'update':
@@ -84,7 +89,7 @@ Track.prototype.shown = function() {
                             $container.data('import-track-id', NaN);
                             $container.data('exclusive', 0);
                             TrackList.updateIcons(0, $container);
-                            $container.next().find('.track-more a').hide();
+                            $container.next().find('.track-more .purchase-url').hide();
                             TrackList.updateMore($container);
                         }
                         $(anchor).fadeIn();
