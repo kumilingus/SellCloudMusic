@@ -33,6 +33,20 @@ class Item extends Entity {
 class Order extends Entity {
 
     const NUMBER_ITEMS = 'num_cart_items';
+    const EMAIL_SUBJECT = "Your Order";
+    const EMAIL_BODY = <<<BODY
+Hi,
+
+There are the download links to tracks you just purchased.
+
+%s
+
+You can download your invoice on link below.
+
+%s
+
+Thank you for shopping on SellCloudMusic.
+BODY;
 
     public $id_order;
     public $id_user;
