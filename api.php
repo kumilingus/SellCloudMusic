@@ -49,17 +49,24 @@ if (@isset($_GET['type'])) {
         // to currently logged in user
         $add2q = '';
 
+        $method = $_SERVER['REQUEST_METHOD'];
+
         if ($access === 'privileged') {
 
-            if (!User::isStored())
-                error("Unauthorized access!");
+            if (!User::isStored()) {
 
-            $user = User::restore();
-            // AND id_user = id(user)
-            $add2q = dbCommon::QUERY_CONJUCTION . sprintf(dbCommon::QUERY_PAIR, 'id_user', $user->getID());
+                // noone who is not signed in can request existing record
+                if (@isset($_GET['id']) && $_GET['id'] > 0) error("Unauthorized access!");
+
+            } else {
+
+                $user = User::restore();
+                // AND id_user = id(user)
+                $add2q = dbCommon::QUERY_CONJUCTION . sprintf(dbCommon::QUERY_PAIR, 'id_user', $user->getID());
+            }
         }
 
-        switch ($_SERVER['REQUEST_METHOD']) {
+        switch ($method) {
 
             case 'POST':
 
