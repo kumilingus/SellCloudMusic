@@ -335,6 +335,10 @@ abstract class Entity extends Transformer implements Serializable {
     public function afterFind() {
         
     }
+
+    public function beforeDelete() {
+
+    }
 }
 
 ?>

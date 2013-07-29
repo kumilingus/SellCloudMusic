@@ -139,6 +139,12 @@ class dbCommon extends dbConnection {
 
     public function deleteEntity(& $param, $add2q = '') {
         if ($param instanceof Entity && $param->getID() > 0) {
+
+            $e = $param->beforeDelete();
+            if ($e instanceof ntError) {
+                return $e;
+            }
+
             $param->setStatus(Entity::STATUS_DEL);
             //build a delete query
             $q = sprintf(self::QUERY_DELETE, $param->getGlobalData(self::LABEL_TABLE), sprintf(self::QUERY_PAIR, $param->getGlobalData(Entity::LABEL_ID), $param->getID()));
