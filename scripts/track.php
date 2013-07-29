@@ -4,7 +4,7 @@ $conn = new dbCommon();
 $track = new TrackView();
 $track->setID($_GET['track']);
 
-if ($conn->loadEntity($track) && $track->getID() > 0) {
+if ($conn->loadEntity($track) && $track->getID() > 0 && !$track->isSoldOut()) {
 
     $user = new User();
     $user->setID($track->id_user);

@@ -28,20 +28,10 @@ class Slot extends Transformer {
 
 }
 
-class TrackView extends Entity {
-
-    public $id_track;
-    public $price;
-    public $exclusive = 1;
-    public $id_user;
-    public $id_soundcloud;
+class TrackView extends Track {
 
     public function __construct() {
-        $this->setGlobalData(Entity::LABEL_ID, 'id_track');
-        $this->setGlobalData(Entity::LABEL_ACCESS, 'public');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'tracks');
-        $this->setFlags('price', FRM_FLG_NUMBER | FRM_NOT_MT);
-        $this->setFlags('exclusive', FRM_NO_FLAG);
+        parent::__construct();
     }
 
     public function afterLoad() {
@@ -60,12 +50,21 @@ class TrackView extends Entity {
 
 }
 
-class Track extends TrackView {
+class Track extends Entity {
 
+    public $id_track;
+    public $price;
+    public $exclusive = 1;
+    public $id_user;
+    public $id_soundcloud;
     public $count_orders = 0;
 
     public function __construct() {
-        parent::__construct();
+        $this->setGlobalData(Entity::LABEL_ID, 'id_track');
+        $this->setGlobalData(Entity::LABEL_ACCESS, 'public');
+        $this->setGlobalData(dbCommon::LABEL_TABLE, 'tracks');
+        $this->setFlags('price', FRM_FLG_NUMBER | FRM_NOT_MT);
+        $this->setFlags('exclusive', FRM_NO_FLAG);
         $this->setFlags('count_orders', DBC_FLG_NODB);
     }
 
@@ -109,6 +108,9 @@ class Track extends TrackView {
         return $this->beforeInsert();
     }
 
+    public function isSoldOut() {
+        return $this->count_orders > 0 && $this->exclusive == 2;
+    }
 }
 
 // Password request (forgotten password)
@@ -118,11 +120,11 @@ class Pwdreq extends Entity {
     const EMAIL_DOESNT_EXIST = "Email doesn't match our records.";
     const EMAIL_SUBJECT = "Password reset";
     const EMAIL_BODY = <<<BODY
-                Hi,
-                you have requested changing your password. Please click the link
-                bellow to reset it.
+Hi,
+you have requested changing your password. Please click the link
+bellow to reset it.
 
-                %s
+%s
 BODY;
 
     public $id_user;
