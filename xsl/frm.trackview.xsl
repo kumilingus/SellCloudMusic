@@ -75,7 +75,7 @@
                         <xsl:value-of select="trackview/price"/>
                     </xsl:attribute>
                 </input>                
-                <input type="hidden" name="currency_code" value="GBP" />
+                <input type="hidden" name="currency_code" value="USD" />
                 <input type="hidden" name="token">
                     <xsl:attribute name="value">
                         <xsl:value-of select="trackview/token"/>
