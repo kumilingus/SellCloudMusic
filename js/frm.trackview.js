@@ -5,10 +5,13 @@ $(function() {
     // load all tracks from currently displayed user
     $.get("api.php", {type: 'trackviewlist', id_user: userID, json: true}, function(data) {
         _.each(data, function(trackview) {
-            $('.more-tracks').append($('<a>', {
-                href: "index.php?track=" + trackview.id_track,
-                text: trackview.s1.title
-            })).fadeIn();
+            // trackview.s0/s1 are data got from soundcloud
+            if (trackview.s1) {
+                $('.more-tracks').append($('<a>', {
+                    href: "index.php?track=" + trackview.id_track,
+                    text: trackview.s1.title
+                })).fadeIn();
+            }
         });
 
     }, "json");
