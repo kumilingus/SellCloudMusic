@@ -42,7 +42,7 @@ var TrackList = {};
 TrackList.updateIcons = function(index, label) {
 
     $label = (label instanceof $) ? label : $(label);
-    $label.toggleClass('hasOrders', $label.data('count_orders') > 0);
+    $label.toggleClass('hasOrders', $label.data('count-orders') > 0);
     $label.toggleClass('isExclusive', $label.data('exclusive') == 2);
 
 };
