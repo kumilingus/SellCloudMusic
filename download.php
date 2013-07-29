@@ -19,8 +19,25 @@ if (@isset($_GET) && @isset($_GET['id_order'])) {
 
     if ($conn->loadEntity($order) && $order->getID() > 0) {
 
-        session_start();
-        $user = User::restore();
+        $user = new User();
+
+        if (@isset($_GET['secret_token'])) {
+
+            if ($order->secret_token !== $_GET['secret_token']) {
+
+                header('Location: index.php');
+                exit;
+            }
+
+            $user->setID($order->id_user);
+            $conn->loadEntity($user);
+
+        } else {
+
+            session_start();
+            $user = User::restore();
+
+        }
 
         //check if logged in user requesting his own order        
         if ($user->getID() > 0 && $user->getID() == $order->id_user) {

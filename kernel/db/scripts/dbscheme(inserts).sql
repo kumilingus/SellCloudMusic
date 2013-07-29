@@ -175,7 +175,8 @@ CREATE TABLE orders (
     id_order integer NOT NULL,
     txn_id character varying,
     id_user integer,
-    "timestamp" timestamp without time zone DEFAULT now()
+    "timestamp" timestamp without time zone DEFAULT now(),
+    secret_token character varying(20)
 );
 
 

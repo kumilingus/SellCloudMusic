@@ -39,6 +39,7 @@ class Order extends Entity {
     public $txn_id;
     public $timestamp;
     public $items;
+    public $secret_token;
 
     public function __construct() {
         $this->setGlobalData(Entity::LABEL_ID, 'id_order');
@@ -75,6 +76,8 @@ class Order extends Entity {
         // Avoid manual setting of timestamp. Value must be always time when
         // the order is created.
         unset($this->timestamp);
+        // create secret token for download without being logged in
+        $this->secret_token = uniqid();
     }
 
     public function beforeUpdate() {
