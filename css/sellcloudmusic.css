@@ -164,7 +164,7 @@ input[type="submit"]:hover,button:hover {
 #track-list {
     width: 300px;
     min-height: 700px;
-    height: 90%;
+    height: 80%;
     border-right: 1px solid #7F8C8D;
     padding-right: 30px;
 }
@@ -498,7 +498,7 @@ span.ui-button-text {
 .gray-box, .error-box {
     margin: 20px;
     padding: 20px;
-    background-color: #ECF0F1;
+    color: #7F8C8D;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
