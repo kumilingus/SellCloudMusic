@@ -380,6 +380,7 @@ html,body {
     margin: 0px;
     padding: 0px;
     height: 100%;
+    color: #2c3e50;
 }
 
 #content {
@@ -394,7 +395,7 @@ html,body {
     padding: 5px;
     margin: 10px;
     font-size: small;
-    color: black;
+    color: #2c3e50;
     border-bottom: 1px solid #7F8C8D;
 }
 
@@ -416,7 +417,7 @@ html,body {
 .item-list-row {
 
     font-size: x-large;
-    color: #95A5A6;
+    color: #34495e;
 }
 
 .item-list-row.item-list-row-total {
