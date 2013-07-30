@@ -98,6 +98,9 @@ Login.active = function() {
         });
     });
 
+    $('#about-us').click(function() {
+        document.location.href = "index.php";
+    });
 };
 
 $(function() {

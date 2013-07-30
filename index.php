@@ -50,6 +50,8 @@ session_start();
                         include("scripts/reset.php");
                     } elseif (isset($_GET['thankyou'])) {
                         include("scripts/thankyou.php");
+                    } else {
+                        include("scripts/welcome.php");
                     }
                 }
                 ?>

@@ -528,3 +528,11 @@ a {
 a:hover {
     color: #2ECC71;
 }
+
+h1 {
+    font-size: xx-large;
+}
+
+h2 {
+    font-size: x-large;
+}

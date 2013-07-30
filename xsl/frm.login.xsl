@@ -46,6 +46,9 @@
 	    </span>|
 	     <span id="forgotten-password-button">
 	       Forgotten Password
+	     </span>|
+	     <span id="about-us">
+	       SellCloudMusic
 	     </span>
         </div>
     </xsl:template>
