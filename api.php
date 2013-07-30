@@ -164,7 +164,7 @@ if (@isset($_GET['type'])) {
         $list = new $type();
 
         // manage access
-        switch ($list->entity()->getGlobalData(Entity::LABEL_ACCESS)) {
+        switch ($list->entity->getGlobalData(Entity::LABEL_ACCESS)) {
 
             case 'none':
                 error("Access denied!");

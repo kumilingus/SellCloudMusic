@@ -51,5 +51,22 @@ abstract class Elist extends Transformer implements Iterator {
         $alias = $this->slot;
         return new $alias();
     }
+
+    public function __get($name)
+    {
+        switch ($name)
+        {
+            case 'count':
+                return $this->counter;
+                break;
+
+            case 'entity':
+                $alias = $this->slot;
+                return new $alias();
+                break;
+        }
+
+        return null;
+    }
 }
 ?>
