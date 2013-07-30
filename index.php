@@ -48,6 +48,8 @@ session_start();
                         include("scripts/list.php");
                     } elseif (isset($_GET['reset'])) {
                         include("scripts/reset.php");
+                    } elseif (isset($_GET['thankyou'])) {
+                        include("scripts/thankyou.php");
                     }
                 }
                 ?>

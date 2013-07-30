@@ -51,7 +51,7 @@
                 </input>
                 <input type="hidden" name="cancel_return">
                     <xsl:attribute name="value">
-                        <xsl:value-of select="return_url"/>
+                        <xsl:value-of select="cancel_url"/>
                     </xsl:attribute>
                 </input>
                 <input type="hidden" name="return">
