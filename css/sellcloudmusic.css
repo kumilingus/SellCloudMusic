@@ -260,8 +260,17 @@ div .input-error {
 
 #slider-range-min {
 
-    margin: 10px;
+    float: left;
+    margin-top: 6px;
     width: 180px;
+}
+
+#track-price {
+    width: 50px;
+}
+
+#track-form .currency {
+    margin: 4px;
 }
 
 .track-table-row {
@@ -396,7 +405,6 @@ html,body {
     margin: 10px;
     font-size: small;
     color: #2c3e50;
-    border-bottom: 1px solid #7F8C8D;
 }
 
 .order-row > span.values {
@@ -412,6 +420,7 @@ html,body {
 .item-list {
     margin: 10px;
     width: calc(100% - 60px);
+    border-bottom: 1px solid #7F8C8D;
 }
 
 .item-list-row {
@@ -426,14 +435,14 @@ html,body {
 
 .item-list-row > td.price {
     margin: 10px;
-    color: #e74c3c;
+    color: #c0392b;
     text-align: right;
     width: 120px;
     padding-right: 40px;
 }
 
 .item-list-row.item-list-row-total > td.price{
-    color: #c0392b;
+    color: #e74c3c;
 }
 
 

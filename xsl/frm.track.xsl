@@ -76,16 +76,16 @@
                     </tr>
                     <tr class="track-table-row">
                         <td colspan = "2">
-                            <input type="submit" value="import track">
+                            <input type="submit" value="Offer For Sale">
                                 <xsl:attribute name="name">
                                     <xsl:value-of select ="concat(name,'-submit')"/>
                                 </xsl:attribute>
                                 <xsl:if test="track/id_track &gt; 0">
-                                    <xsl:attribute name="value" >apply changes</xsl:attribute>
+                                    <xsl:attribute name="value" >Save Changes</xsl:attribute>
                                 </xsl:if>
                             </input>
                             <xsl:if test="track/id_track &gt; 0">
-                                <button id="remove-track-button">remove track</button>
+                                <button id="remove-track-button">Withdraw From Sale</button>
                             </xsl:if>
                         </td>
                     </tr>
