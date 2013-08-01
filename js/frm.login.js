@@ -98,6 +98,10 @@ Login.active = function() {
         });
     });
 
+    $('#rest-api').click(function() {
+        ;(new AuthToken($('#id-user').val())).show();
+    });
+
     $('#about-us').click(function() {
         document.location.href = "index.php";
     });

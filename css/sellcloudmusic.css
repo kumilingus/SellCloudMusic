@@ -545,3 +545,8 @@ h1 {
 h2 {
     font-size: x-large;
 }
+
+.auth-token {
+    margin: 10px;
+    color: #7F8C8D;
+}

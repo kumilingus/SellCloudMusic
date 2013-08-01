@@ -124,6 +124,27 @@ class Track extends Entity {
     }
 }
 
+// Authorization Token refresher
+class AuthToken extends Entity {
+
+    public $id_user;
+    public $auth_token;
+
+    public function __construct() {
+        $this->setGlobalData(Entity::LABEL_ACCESS, 'privileged');
+        $this->setGlobalData(DBCommon::LABEL_TABLE, 'users');
+        $this->setGlobalData(Entity::LABEL_ID, 'id_user');
+    }
+
+    public function beforeUpdate() {
+        $this->auth_token = uniqid();
+    }
+
+    public function beforeInsert() {
+        return new NTError("Can't create Authorization token. There is one already exists.");
+    }
+}
+
 // Password request (forgotten password)
 class Pwdreq extends Entity {
 
@@ -234,6 +255,8 @@ class User extends Login {
     }
 
     public function beforeInsert() {
+        //generate auth_token;
+        $this->auth_token = uniqid();
 
         $soundcloud = Soundcloud::getInstance($this->soundcloud_oauth_token);
         try {

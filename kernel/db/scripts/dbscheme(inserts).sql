@@ -302,6 +302,7 @@ CREATE TABLE users (
     address_zip character varying(10),
     pwd_reset_token character varying(23),
     pwd_reset_timestamp integer,
+    auth_token character varying(20),
     CONSTRAINT users_id_user_check CHECK ((id_user > (-1)))
 );
 

@@ -38,6 +38,7 @@
             <span id="my-tracks-button">My Tracks</span>|
             <span id="edit-account-button">Edit Account</span>|
             <span id="view-orders-button">Manage Orders</span>|
+            <span id="rest-api">REST API</span>|
             <span id="about-us">SellCloudMusic</span>
         </div>
     </xsl:template>
