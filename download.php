@@ -12,7 +12,7 @@ include_once('./cfg/configuration.php');
 
 if (@isset($_GET) && @isset($_GET['id_order'])) {
 
-    $conn = new dbCommon();
+    $conn = new DBCommon();
 
     $order = new Order();
     $order->setID($_GET['id_order']);

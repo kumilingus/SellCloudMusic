@@ -62,7 +62,7 @@ if (@isset($_GET['type'])) {
 
                 $user = User::restore();
                 // AND id_user = id(user)
-                $add2q = dbCommon::QUERY_CONJUCTION . sprintf(dbCommon::QUERY_PAIR, 'id_user', $user->getID());
+                $add2q = DBCommon::QUERY_CONJUCTION . sprintf(DBCommon::QUERY_PAIR, 'id_user', $user->getID());
             }
         }
 
@@ -81,12 +81,12 @@ if (@isset($_GET['type'])) {
                         error("Unauthorized access!");
                     }
 
-                    $conn = new dbCommon();
+                    $conn = new DBCommon();
                     $e = $conn->saveEntity($ent, $add2q);
 
-                    if ($e instanceof dbError) {
+                    if ($e instanceof DBError) {
                         $frm->errors->db = @sprintf("%s %s.", @get_class($ent), $e->message);
-                    } elseif ($e instanceof ntError) {
+                    } elseif ($e instanceof NTError) {
                         $frm->errors->{$e->slot} = @sprintf($e->message);
                     }
                     // empty passwords slots. we don't want them to be sent to client
@@ -103,9 +103,9 @@ if (@isset($_GET['type'])) {
                         error("Access denied!");
 
                     $ent->setID($_GET['id']);
-                    $conn = new dbCommon();
+                    $conn = new DBCommon();
                     $e = $conn->loadEntity($ent, $add2q);
-                    if ($e instanceof ntError) {
+                    if ($e instanceof NTError) {
                         $frm->errors->{$e->slot} = $e->message;
                     } elseif (!$e) {
                         error("Record not found");
@@ -133,14 +133,14 @@ if (@isset($_GET['type'])) {
 
                     $ent->loadArray($clone_GET);
 
-                    $conn = new dbCommon();
+                    $conn = new DBCommon();
                     $e = $conn->deleteEntity($ent, $add2q);
 
-                    if ($e instanceof dbError) {
+                    if ($e instanceof DBError) {
 
                         $frm->errors->db = @sprintf("%s %s.", @get_class($ent), $e->message);
 
-                    } elseif ($e instanceof ntError) {
+                    } elseif ($e instanceof NTError) {
 
                         $frm->errors->{$e->slot} = $e->message;
 
@@ -182,10 +182,10 @@ if (@isset($_GET['type'])) {
         }
 
         // load elist from db
-        $conn = new dbCommon();
+        $conn = new DBCommon();
         $e = $conn->loadEList($list, $_GET);
 
-        if ($e instanceof dbError) {
+        if ($e instanceof DBError) {
             error($e->message);
         } else {
             display($list);

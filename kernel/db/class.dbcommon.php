@@ -8,7 +8,7 @@ define('DBC_FLG_NODB', 0x100);
 define('DBC_FLG_KEY', 0x200);
 define('DBC_FLG_NULL', 0x400);
 
-class dbCommon extends dbConnection {
+class DBCommon extends DBConnection {
 
     const LABEL_TABLE = '__TBL';
     const QUERY_INSERT = "INSERT INTO %s (%s) VALUES (%s)";
@@ -28,7 +28,7 @@ class dbCommon extends dbConnection {
     private function nt_in(& $entity) {
         //before insert
         $e1 = $entity->beforeInsert();
-        if ($e1 instanceof ntError)
+        if ($e1 instanceof NTError)
             return $e1;
 
         if ($this->transactionsEnabled)
@@ -43,7 +43,7 @@ class dbCommon extends dbConnection {
                         @implode(@array_values($vars), ',')); //values
         //rows affected  
         $raff = $this->exec($q);
-        if ($raff instanceof dbError) {
+        if ($raff instanceof DBError) {
             if ($this->transactionsEnabled)
                 $this->rollBack();
             return $raff;
@@ -53,7 +53,7 @@ class dbCommon extends dbConnection {
 
         //after insert
         $e2 = $entity->afterInsert();
-        if ($e2 instanceof ntError) {
+        if ($e2 instanceof NTError) {
             if ($this->transactionsEnabled)
                 $this->rollBack();
             return $e2;
@@ -69,7 +69,7 @@ class dbCommon extends dbConnection {
 
         //before update
         $e = $entity->beforeUpdate();
-        if ($e instanceof ntError)
+        if ($e instanceof NTError)
             return $e;
 
         $this->beginTransaction();
@@ -78,7 +78,7 @@ class dbCommon extends dbConnection {
         //change slots value into a string pair
 
         @array_walk($vars, function (& $val, $key) {
-                            $val = @sprintf(dbCommon::QUERY_PAIR, $key, $val);
+                            $val = @sprintf(DBCommon::QUERY_PAIR, $key, $val);
                         });
 
         //build query
@@ -91,12 +91,12 @@ class dbCommon extends dbConnection {
 
         //after update
         $e2 = $entity->afterUpdate();
-        if ($e2 instanceof ntError) {
+        if ($e2 instanceof NTError) {
             $this->rollBack();
             return $e2;
         }
 
-        if (!($raff instanceof dbError))
+        if (!($raff instanceof DBError))
             $this->commit();
 
         //return number of rows affected
@@ -119,7 +119,7 @@ class dbCommon extends dbConnection {
     public function loadEntity(& $param, $add2q = '') {
         if ($param instanceof Entity && $param->getID() > 0) {
             $e = $param->beforeLoad();
-            if ($e instanceof ntError)
+            if ($e instanceof NTError)
                 return $e;
             $param->setStatus(Entity::STATUS_SET);
             //build a select query
@@ -129,7 +129,7 @@ class dbCommon extends dbConnection {
             if ($a) {
                 $param->loadArray($a);
                 $e = $param->afterLoad();
-                if ($e instanceof ntError)
+                if ($e instanceof NTError)
                     return $e;
             }
             return $a;
@@ -141,7 +141,7 @@ class dbCommon extends dbConnection {
         if ($param instanceof Entity && $param->getID() > 0) {
 
             $e = $param->beforeDelete();
-            if ($e instanceof ntError) {
+            if ($e instanceof NTError) {
                 return $e;
             }
 
@@ -157,7 +157,7 @@ class dbCommon extends dbConnection {
         if ($param instanceof Entity && $param->getID() == 0) {
 
             $e1 = $param->beforeFind();
-            if ($e1 instanceof ntError) {
+            if ($e1 instanceof NTError) {
                 return $e1;
             }
             $param->setStatus(Entity::STATUS_SET);
@@ -165,13 +165,13 @@ class dbCommon extends dbConnection {
             $vars = $this->get_nt_vars($param, DBC_FLG_KEY);
             //change slots value into a string pair
             @array_walk($vars, function (& $val, $key) {
-                                $val = @sprintf(dbCommon::QUERY_PAIR, $key, $val);
+                                $val = @sprintf(DBCommon::QUERY_PAIR, $key, $val);
                             });
             $q = sprintf(self::QUERY_SELECT, '*', $param->getGlobalData(self::LABEL_TABLE), @implode(@array_values($vars), self::QUERY_CONJUCTION));
 
             $r = $this->query($q)->fetch(PDO::FETCH_ASSOC);
 
-            if ($r instanceof dbError) {
+            if ($r instanceof DBError) {
                 return $r;
             }
 
@@ -179,7 +179,7 @@ class dbCommon extends dbConnection {
 
             if ($r) {
                 $e2 = $param->afterFind();
-                if ($e2 instanceof ntError) { return $e2; }
+                if ($e2 instanceof NTError) { return $e2; }
                 }
 
             return $r;

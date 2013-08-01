@@ -9,13 +9,13 @@ include_once('./cfg/configuration.php');
 $pwdreq = new Pwdreq();
 $pwdreq->pwd_reset_token = $_GET['reset'];
 $pwdreq->setFlags('pwd_reset_token', DBC_FLG_KEY);
-$conn = new dbCommon();
+$conn = new DBCommon();
 $r = $conn->findEntity($pwdreq);
 
-if ($r instanceof dbError) {
+if ($r instanceof DBError) {
     // database error
     include('./errors/database-error.html');
-} elseif (($r instanceof ntError) || ($pwdreq->getID() == 0)) {
+} elseif (($r instanceof NTError) || ($pwdreq->getID() == 0)) {
     // token expired or not found
     include('./errors/token-expired.html');
 } else {
@@ -36,7 +36,7 @@ if ($r instanceof dbError) {
 
             $r = $conn->loadEntity($user);
 
-            if ($r instanceof dbError) {
+            if ($r instanceof DBError) {
                 //database error
                 include('./errors/database-error.html');
             } elseif ($user->pwd_reset_token === $pwdreq->pwd_reset_token) {
@@ -48,7 +48,7 @@ if ($r instanceof dbError) {
                 
                 $r = $conn->saveEntity($user);
 
-                if ($r instanceof dbError) {
+                if ($r instanceof DBError) {
                     //database error
                     include('./errors/database-error.html');
                 } else {

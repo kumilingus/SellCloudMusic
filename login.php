@@ -19,9 +19,9 @@ if (isset($_POST['login-form-submit'])) {
         if ($form->dataFiltred()) {
             $usr = new User();
             $usr->loadObject($login);
-            $conn = new dbCommon();
+            $conn = new DBCommon();
             if ($r = $conn->findEntity($usr)) {
-                if ($r instanceof dbError) {
+                if ($r instanceof DBError) {
                     $form->errors->db = "Can't access the database. Please try later.";
                 } else {
                     $usr->store();
@@ -50,18 +50,18 @@ if (isset($_POST['login-form-submit'])) {
 
     if ($form->dataFiltred()) {
 
-        $conn = new dbCommon();
+        $conn = new DBCommon();
         $pwdreq->addFlags('email', DBC_FLG_KEY);
 
         if ($r = $conn->findEntity($pwdreq)) {
 
-            if ($r instanceof dbError) {
+            if ($r instanceof DBError) {
                 $form->errors->db = "Can't access the database. Please try later.";
 
             } else {
                 // update user (token,timestamp)
                 $r = $conn->saveEntity($pwdreq);
-                if ($r instanceof dbError) {
+                if ($r instanceof DBError) {
                     $form->errors->db = "Can't access the database. Please try later.";
                 } else {
                     // send an email

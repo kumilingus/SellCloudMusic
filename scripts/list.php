@@ -6,7 +6,7 @@ if ($usr->getID() > 0) {
     $limit = Config::_("tracks-per-page");
     
     //get database tracks
-    $conn = new dbCommon();
+    $conn = new DBCommon();
     $statement = $conn->query("SELECT id_soundcloud, id_track, count_orders, exclusive FROM tracks WHERE id_user = " . $usr->getID());
     $data = array_map('reset', $statement->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_ASSOC));
     // get soundcloud tracks

@@ -1,6 +1,6 @@
 <?php
 
-class dbError {
+class DBError {
 
     private static $__messages = array(
         23505 => "already exists",
@@ -33,7 +33,7 @@ class dbError {
 
 }
 
-abstract class dbConnection {
+abstract class DBConnection {
 
     private static $conn = NULL; // connection link
     public $transactionsEnabled = true;
@@ -64,7 +64,7 @@ abstract class dbConnection {
                 if ($this->transactionsEnabled && self::$conn->inTransaction()) {
                     self::$conn->rollBack();
                 }
-                $result = new dbError($e);
+                $result = new DBError($e);
             }
             return $result;
         }

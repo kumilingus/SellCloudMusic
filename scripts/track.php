@@ -1,6 +1,6 @@
 <?php
 
-$conn = new dbCommon();
+$conn = new DBCommon();
 $track = new TrackView();
 $track->setID($_GET['track']);
 

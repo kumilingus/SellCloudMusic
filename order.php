@@ -65,14 +65,14 @@ if (!$fp) {
             }
 
             //create db connection
-            $conn = new dbCommon();
+            $conn = new DBCommon();
 
             //id user is kept in custom variable. see frm.trackview.xsl
             $user = new User();
             $user->setID($_POST['custom']);
             $eu = $conn->loadEntity($user);
 
-            if ($eu instanceof dbError) {
+            if ($eu instanceof DBError) {
                 log_e($eu->message);
                 return;
             };
@@ -107,7 +107,7 @@ if (!$fp) {
                 'id_track' => $trackids
             ));
 
-            if ($et instanceof dbError || $et instanceof ntError) {
+            if ($et instanceof DBError || $et instanceof NTError) {
                 log_e($et->message);
                 return;
             };
@@ -117,9 +117,9 @@ if (!$fp) {
             // create order
             $eo = $conn->saveEntity($order);
 
-            if ($eo instanceof dbError || $eo instanceof ntError) {
+            if ($eo instanceof DBError || $eo instanceof NTError) {
 
-                if ($eo instanceof dbError || preg_match('/txn_id_unique/', $eo->message)) {
+                if ($eo instanceof DBError || preg_match('/txn_id_unique/', $eo->message)) {
                     // order has been previously processed
                     return;
                 }

@@ -25,7 +25,7 @@ class Item extends Entity {
     public function __construct() {
         $this->setGlobalData(Entity::LABEL_ID, 'id_item');
         $this->setGlobalData(Entity::LABEL_ACCESS, 'none');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'items');
+        $this->setGlobalData(DBCommon::LABEL_TABLE, 'items');
     }
 
 }
@@ -58,7 +58,7 @@ BODY;
     public function __construct() {
         $this->setGlobalData(Entity::LABEL_ID, 'id_order');
         $this->setGlobalData(Entity::LABEL_ACCESS, 'privileged');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'orders');
+        $this->setGlobalData(DBCommon::LABEL_TABLE, 'orders');
         $this->setFlags('items', DBC_FLG_NODB);
         //inicialization
         $this->items = new Items();
@@ -75,10 +75,10 @@ BODY;
     }
 
     public function afterLoad() {
-        $conn = new dbCommon();
+        $conn = new DBCommon();
         $r = $conn->query(sprintf(Items::QUERY_SELECT, $conn->quote($this->id_order)));
-        if ($r instanceof dbError) {
-            return new ntError("Can not load items from database.");
+        if ($r instanceof DBError) {
+            return new NTError("Can not load items from database.");
         } else {
             foreach ($r->fetchAll(PDO::FETCH_CLASS, 'Item') as $item) {
                 $this->items->add($item);
@@ -99,12 +99,12 @@ BODY;
     }
 
     public function afterInsert() {
-        $conn = new dbCommon();
+        $conn = new DBCommon();
         $conn->transactionsEnabled = false;
         foreach ($this->items as $item) {
             $item->id_order = $this->id_order;
-            if ($conn->saveEntity($item) instanceof dbError) {
-                return new ntError("Item insertion failed.");
+            if ($conn->saveEntity($item) instanceof DBError) {
+                return new NTError("Item insertion failed.");
             }
         }
     }

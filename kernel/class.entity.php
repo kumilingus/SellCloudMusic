@@ -8,7 +8,7 @@ define('ENT_FLG_SAFE', 0x40);
 define('SLOT_FLAG', 0);
 define('SLOT_DATA', 1);
 
-class ntError {
+class NTError {
 
     public $message;
     public $slot;

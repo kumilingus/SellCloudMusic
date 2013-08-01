@@ -43,7 +43,7 @@ class TrackView extends Track {
                 unset($r->user);
                 $this->s1 = new Slot('track', $r);
             } catch (Exception $e) {
-                return new ntError($e->getMessage());
+                return new NTError($e->getMessage());
             }
         }
     }
@@ -62,7 +62,7 @@ class Track extends Entity {
     public function __construct() {
         $this->setGlobalData(Entity::LABEL_ID, 'id_track');
         $this->setGlobalData(Entity::LABEL_ACCESS, 'public');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'tracks');
+        $this->setGlobalData(DBCommon::LABEL_TABLE, 'tracks');
         $this->setFlags('price', FRM_FLG_NUMBER | FRM_NOT_MT);
         $this->setFlags('exclusive', FRM_NO_FLAG);
         $this->setFlags('count_orders', DBC_FLG_NODB);
@@ -73,13 +73,13 @@ class Track extends Entity {
         try {
             $r = json_decode($soundcloud->get('me/tracks/' . $this->id_soundcloud));
             if ($this->exclusive < 2)
-                return new ntError('Not available in BETA', 'exclusive');
+                return new NTError('Not available in BETA', 'exclusive');
             // if download counts > 0 then can't be exclusive 
             if ($this->exclusive > 1 && $r->download_count > 0) {
-                return new ntError('Track has been already downloaded. Can not be imported as "exclusive"', 'exclusive');
+                return new NTError('Track has been already downloaded. Can not be imported as "exclusive"', 'exclusive');
             }
         } catch (Exception $e) {
-            return new ntError($e->getMessage());
+            return new NTError($e->getMessage());
         }
     }
 
@@ -94,7 +94,7 @@ class Track extends Entity {
                 "track[purchase_url]" => $shopping_url
             ));
         } catch (Exception $e) {
-            return new ntError($e->getMessage());
+            return new NTError($e->getMessage());
         }
         $this->shopping_url = $shopping_url;
     }
@@ -106,15 +106,15 @@ class Track extends Entity {
                 "track[purchase_url]" => ''
             ));
         } catch (Exception $e) {
-            return new ntError($e->getMessage());
+            return new NTError($e->getMessage());
         }
     }
 
     public function beforeUpdate() {
         if ($this->exclusive < 2)
-            return new ntError('Not available in BETA', 'exclusive');
+            return new NTError('Not available in BETA', 'exclusive');
         if ($this->exclusive > 1 && $this->count_orders > 0) {
-            return new ntError('Track has been already sold and is marked down as exlusive. Can not be changed now.', 'exclusive');
+            return new NTError('Track has been already sold and is marked down as exlusive. Can not be changed now.', 'exclusive');
         }
         return $this->beforeInsert();
     }
@@ -145,7 +145,7 @@ BODY;
 
     public function __construct() {
         $this->setGlobalData(Entity::LABEL_ACCESS, 'none');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'users');
+        $this->setGlobalData(DBCommon::LABEL_TABLE, 'users');
         $this->setGlobalData(Entity::LABEL_ID, 'id_user');
         $this->setFlags('email', FRM_NOT_MT | FRM_FLG_EMAIL);
     }
@@ -157,7 +157,7 @@ BODY;
 
     public function afterFind() {
         if ((time() - $this->pwd_reset_timestamp) > Pwdreq::TOKEN_LIFETIME) {
-            return new ntError('Token has expired.');
+            return new NTError('Token has expired.');
         }
     }
 
@@ -220,7 +220,7 @@ class User extends Login {
         $this->type = @strtolower($type);
         $this->setGlobalData(Entity::LABEL_ID, 'id_user');
         $this->setGlobalData(Entity::LABEL_ACCESS, 'privileged');
-        $this->setGlobalData(dbCommon::LABEL_TABLE, 'users');
+        $this->setGlobalData(DBCommon::LABEL_TABLE, 'users');
         $this->setFlags('password_re', FRM_NOT_MT | FRM_FLG_PWD | FRM_FLG_MATCH | DBC_FLG_NODB);
         $this->addFlags('password', FRM_FLG_MATCH | DBC_FLG_KEY);
         $this->addFlags('email', DBC_FLG_KEY);
@@ -240,7 +240,7 @@ class User extends Login {
             $r = json_decode($soundcloud->get('me'));
             $this->id_soundcloud = $r->id;
         } catch (Exception $e) {
-            return new ntError($e->getMessage(), 'soundcloud');
+            return new NTError($e->getMessage(), 'soundcloud');
         }
 
         $this->hsh_pwd();
@@ -268,7 +268,7 @@ class User extends Login {
             $this->soundcloud_username = $r->username;
             $this->track_count = $r->track_count;
         } catch (Exception $e) {
-            return new ntError($e->getMessage());
+            return new NTError($e->getMessage());
         }
     }
 
