@@ -133,7 +133,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="submit" value="confirm">
+                        <input type="submit">
+                            <xsl:attribute name="value">
+                                <xsl:choose>
+                                    <xsl:when test="prev_status = 'new'">Sign up</xsl:when>
+                                    <xsl:otherwise>Update Account</xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:attribute>
                             <xsl:attribute name="name">
                                 <xsl:value-of select ="concat(name,'-submit')"/>
                             </xsl:attribute>

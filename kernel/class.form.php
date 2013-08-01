@@ -159,10 +159,11 @@ class Form extends Transformer {
     }
 
     public function updateStatus() {
+        $this->prev_status = $this->entity->getStatus();
         if ($this->errors->exist()) {
             $this->status = FRM_STAT_ERR;
         } else {
-            $this->status = $this->entity->getStatus();
+            $this->status = $this->prev_status;
         }
     }
 
