@@ -342,7 +342,7 @@ div .input-error {
 }
 
 .trackview-form .price {
-    color: #f1c40f;
+    color: #e74c3c;
 }
 
 .trackview-form input[type="submit"] {
@@ -426,23 +426,23 @@ html,body {
 .item-list-row {
 
     font-size: x-large;
-    color: #34495e;
+    color: #7F8C8D;
 }
 
 .item-list-row.item-list-row-total {
-    color: #7F8C8D;
+    color: #34495e;
 }
 
 .item-list-row > td.price {
     margin: 10px;
-    color: #c0392b;
+    color: #e74c3c;
     text-align: right;
     width: 120px;
     padding-right: 40px;
 }
 
 .item-list-row.item-list-row-total > td.price{
-    color: #e74c3c;
+    color: #c0392b;
 }
 
 
