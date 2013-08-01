@@ -157,8 +157,16 @@ if (@isset($_GET['type'])) {
 
         // update form status if any errors occured
         $frm->updateStatus();
-        // send form to output
-        display($frm);
+
+        // send form or entity to output
+        if (isset($_GET['formwrap'])) {
+            // output entity wrapped with form
+            display($frm);
+        } else {
+            // if there are any errors output them
+            display($frm->errors->exist() ? $frm->errors : $ent);
+        }
+
     } elseif (is_subclass_of($type, 'EList')) {
 
         $list = new $type();
