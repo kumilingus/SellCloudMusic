@@ -42,7 +42,7 @@ if ($usr->getID() > 0) {
 
     if ($usr->track_count > $limit) {
         //navigation
-        echo '<div id="track-list-nav">Pages: ';
+        echo '<div id="track-list-nav" style="opacity:0">Pages: ';
         for ($i = 0; $i < $usr->track_count; $i += $limit){
             echo '<a href="?import=' . $i . '">'.($i / $limit + 1).'</a>&nbsp;';
         }

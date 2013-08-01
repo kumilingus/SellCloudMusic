@@ -15,17 +15,6 @@ session_start();
         <link rel="stylesheet" href="lib/jquery/jquery-ui-1.9.2.custom.min.css" type = "text/css">        
     </head>
     <body>
-        <script type="text/javascript" src="cfg/config.js"></script>
-        <script type="text/javascript" src="lib/underscore/underscore-min.js"></script>         
-        <script type="text/javascript" src="lib/jquery/jquery.js"></script>        
-        <script type="text/javascript" src="lib/jquery/jquery-ui-1.9.2.custom.min.js"></script>
-        <script type="text/javascript" src="lib/jquery/jquery.form.js"></script>
-        <script type="text/javascript" src="lib/jquery/jquery.transform.js"></script>
-        <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
-        <script type="text/javascript" src="js/forms.js"></script>
-        <script type="text/javascript" src="js/frm.login.js"></script>        
-        <script type="text/javascript" src="js/frm.user.js"></script>
-        <script type="text/javascript" src="js/lst.order.js"></script>
         <div id="container">
             <header id="login">
                 <?php
@@ -58,5 +47,19 @@ session_start();
             </section>
             <div class="loader">loading ...</div>
         </div>
+        <script type="text/javascript" src="cfg/config.js"></script>
+        <script type="text/javascript" src="lib/underscore/underscore-min.js"></script>
+        <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+        <script type="text/javascript" src="lib/jquery/jquery-ui-1.9.2.custom.min.js"></script>
+        <script type="text/javascript" src="lib/jquery/jquery.form.js"></script>
+        <script type="text/javascript" src="lib/jquery/jquery.transform.js"></script>
+        <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
+        <script type="text/javascript" src="js/forms.js"></script>
+        <script type="text/javascript" src="js/frm.login.js"></script>
+        <script type="text/javascript" src="js/frm.user.js"></script>
+        <script type="text/javascript" src="js/lst.order.js"></script>
+        <script type="text/javascript" src="js/frm.track.js"></script>
+        <script type="text/javascript" src="js/lst.track.js"></script>
+        <script type="text/javascript" src="js/frm.trackview.js"></script>
     </body>
 </html>

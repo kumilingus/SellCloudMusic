@@ -2,9 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html"/>
     <xsl:template match="tracks">
-        <script type="text/javascript" src="js/frm.track.js"></script>
-        <script type="text/javascript" src="js/lst.track.js"></script>        
-        <div id="track-list">
+        <div id="track-list" style="opacity:0">
             <xsl:apply-templates match="track"/>
         </div>
         <div id="track-panel">

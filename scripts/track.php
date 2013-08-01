@@ -19,9 +19,10 @@ if ($conn->loadEntity($track) && $track->getID() > 0 && !$track->isSoldOut()) {
         ));
 
         echo $trackFrm->toHTML();
-        exit;
+    } else {
+        include('./errors/track-not-found.html');
     }
+} else {
+    include('./errors/track-not-found.html');
 }
-
-include('./errors/track-not-found.html');
 ?>

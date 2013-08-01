@@ -35,6 +35,9 @@ $(function() {
             .mouseout(function() { $(this).removeClass('over'); })
             .first()
             .click();
+
+    // display track-list after all js loaded
+    $('#track-list,#track-list-nav').css('opacity', 1);
 });
 
 var TrackList = {};
