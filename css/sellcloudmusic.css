@@ -420,7 +420,7 @@ html,body {
 .item-list {
     margin: 10px;
     width: calc(100% - 60px);
-    border-bottom: 1px solid #7F8C8D;
+    border-bottom: 1px dashed #7F8C8D;
 }
 
 .item-list-row {
