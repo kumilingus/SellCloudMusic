@@ -3,7 +3,7 @@ $(function() {
     var userID = $('.more-tracks').data('id-user');
 
     // load all tracks from currently displayed user
-    $.get("api.php", {type: 'trackviewlist', id_user: userID, json: true}, function(data) {
+    $.get("api.php", {type: 'trackviewlist', id_user: userID, output: 'json'}, function(data) {
         _.each(data, function(trackview) {
             // trackview.s0/s1 are data got from soundcloud
             if (trackview.s1) {

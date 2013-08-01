@@ -11,9 +11,26 @@ include_once('./cfg/configuration.php');
 if (!@isset($_GET))
     exit;
 
+if (!isset($_GET['output']))
+    $_GET['output'] = 'xml';
+
 // helpers
 function display($entity) {
-    echo (@isset($_GET['json']) ? $entity->toJSON() : $entity->toXML());
+
+    switch (strtolower($_GET['output'])) {
+
+        case 'json':
+            echo $entity->toJSON();
+            break;
+        case 'html':
+            if ($entity instanceof Errors) {
+                echo $entity->message;
+            } else echo $entity->toHTML();
+            break;
+        default:
+            echo $entity->toXML();
+            break;
+    }
 }
 
 function error($message) {
@@ -21,11 +38,17 @@ function error($message) {
     exit;
 }
 
-// output either in JSON or XML
-if (@isset($_GET['json'])) {
-    header("Content-type: text/json; charset=utf-8");
-} else {
-    header("Content-type: text/xml; charset=utf-8");
+// output either in JSON, XML or HTML
+switch (strtolower($_GET['output'])) {
+    case 'json':
+        header("Content-type: text/json; charset=utf-8");
+        break;
+    case 'html':
+        $_GET['formwrap'] = true;
+        break;
+    default:
+        header("Content-type: text/xml; charset=utf-8");
+        break;
 }
 
 if (@isset($_GET['type'])) {
@@ -145,10 +168,10 @@ if (@isset($_GET['type'])) {
                         $frm->errors->{$e->slot} = $e->message;
 
                     } else {
-                        // set error if affected arrows equal 0
+                    // set error if affected arrows equal 0
                         if ($e == 0)
                             $frm->errors->db = "Don't exists";
-                        // empty entity
+                    // empty entity
                         $ent->clear();
                     }
                 }
