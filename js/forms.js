@@ -37,7 +37,7 @@ Form.prototype.handleErrors = function(xml) {
 };
 
 Form.prototype.source = function() {
-    return "api.php?id="+ this.id +"&type=" + this.name;
+    return "api.php?id="+ this.id +"&type=" + this.name + '&formwrap';
 };
 
 Form.prototype.xsl = function() {
