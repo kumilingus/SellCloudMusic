@@ -98,6 +98,11 @@ if (@isset($_GET['type'])) {
 
                 $ent->loadArray($_POST);
 
+                if (!isset($_GET['formwrap'])) {
+                    // if we not dealing with forms we don't want to check token
+                    unset($ent->token);
+                }
+
                 if ($frm->dataFiltred()) {
 
                     if ($add2q != '' && @isset($ent->id_user) && $ent->id_user != $user->getID()) {
