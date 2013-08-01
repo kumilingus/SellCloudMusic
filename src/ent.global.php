@@ -134,6 +134,7 @@ class AuthToken extends Entity {
         $this->setGlobalData(Entity::LABEL_ACCESS, 'privileged');
         $this->setGlobalData(DBCommon::LABEL_TABLE, 'users');
         $this->setGlobalData(Entity::LABEL_ID, 'id_user');
+        $this->setFlags('auth_token', DBC_FLG_KEY);
     }
 
     public function beforeUpdate() {

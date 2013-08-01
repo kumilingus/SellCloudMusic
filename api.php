@@ -76,16 +76,35 @@ if (@isset($_GET['type'])) {
 
         if ($access === 'privileged') {
 
-            if (!User::isStored()) {
+            $authTokenUsed = @isset($_GET['auth_token']);
+
+            if (!User::isStored() && !$authTokenUsed) {
 
                 // noone who is not signed in can request existing record
                 if (@isset($_GET['id']) && $_GET['id'] > 0) error("Unauthorized access!");
 
             } else {
 
-                $user = User::restore();
+                if ($authTokenUsed) {
+
+                    $authToken = new AuthToken();
+                    $authToken->auth_token = $_GET['auth_token'];
+                    // try to look for authToken in database
+                    $conn =  new DBCommon();
+                    $r = $conn->findEntity($authToken);
+
+                    if ($r instanceof NTError || $authToken->getID() < 1) {
+                        error("Unauthorized access!");
+                    } else {
+                        $userID = $authToken->getID();
+                    }
+
+                } else {
+                    $user = User::restore();
+                    $userID = $user->getID();
+                }
                 // AND id_user = id(user)
-                $add2q = DBCommon::QUERY_CONJUCTION . sprintf(DBCommon::QUERY_PAIR, 'id_user', $user->getID());
+                $add2q = DBCommon::QUERY_CONJUCTION . sprintf(DBCommon::QUERY_PAIR, 'id_user', $userID);
             }
         }
 
@@ -105,7 +124,7 @@ if (@isset($_GET['type'])) {
 
                 if ($frm->dataFiltred()) {
 
-                    if ($add2q != '' && @isset($ent->id_user) && $ent->id_user != $user->getID()) {
+                    if ($add2q != '' && @isset($ent->id_user) && $ent->id_user != $userID) {
                         error("Unauthorized access!");
                     }
 
