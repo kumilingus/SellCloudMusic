@@ -191,7 +191,13 @@ class Form extends Transformer {
     public function toHTML() {
         $this->generateToken();
         $doc = new DOMDocument();
-	$doc->load($this->getXSL());
+
+        $xslfile = $this->getXSL();
+        if (!file_exists($xslfile)) {
+            return "No stylesheet associated";
+        }
+
+	$doc->load($xslfile);
         $xs = new XSLTProcessor();
         $xs->importStyleSheet($doc);
         return $xs->transformToXML($this->toDOM());
