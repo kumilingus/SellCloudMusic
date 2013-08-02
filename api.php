@@ -216,6 +216,10 @@ if (@isset($_GET['type'])) {
 
     } elseif (is_subclass_of($type, 'EList')) {
 
+        if ($_GET['output'] === 'html') {
+            error("Lists can't be displayed as HTML");
+        }
+
         $list = new $type();
 
         // manage access
