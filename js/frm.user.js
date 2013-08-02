@@ -5,13 +5,6 @@ function User(id) {
 }
 User.inherits(Form);
 
-function AuthToken(id) {
-    this.id = id;
-    this.name = 'authtoken';
-    this.anchor = '#content';
-}
-AuthToken.inherits(Form);
-
 User.active = function() {
 
     $('#user-form').ajaxForm({
@@ -50,17 +43,4 @@ User.active = function() {
             $('#soundcloud-oauth-token').val(SC.accessToken());
         });
     });
-};
-
-AuthToken.prototype.shown = function() {
-
-    $('#authtoken-form').submit(_.bind(function() {
-        $.post('api.php?type=authtoken&output=json', {
-            id_user: this.id
-        }, function(data) {
-            $('.auth-token').text(data.auth_token || data.message);
-        }, 'json');
-        return false;
-    }, this));
-
 };

@@ -37,6 +37,8 @@ session_start();
                         include("scripts/list.php");
                     } elseif (isset($_GET['reset'])) {
                         include("scripts/reset.php");
+                    } elseif (isset($_GET['apidoc'])) {
+                        include("scripts/apidoc.php");
                     } elseif (isset($_GET['thankyou'])) {
                         include("scripts/thankyou.php");
                     } else {
@@ -61,5 +63,6 @@ session_start();
         <script type="text/javascript" src="js/frm.track.js"></script>
         <script type="text/javascript" src="js/lst.track.js"></script>
         <script type="text/javascript" src="js/frm.trackview.js"></script>
+        <script type="text/javascript" src="js/frm.authtoken.js"></script>
     </body>
 </html>

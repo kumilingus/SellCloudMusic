@@ -99,7 +99,7 @@ Login.active = function() {
     });
 
     $('#rest-api').click(function() {
-        ;(new AuthToken($('#id-user').val())).show();
+        document.location.href = "?apidoc";
     });
 
     $('#about-us').click(function() {
