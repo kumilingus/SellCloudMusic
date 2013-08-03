@@ -12,7 +12,7 @@ session_start();
     <head>
         <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8">
         <link rel="stylesheet" href="css/sellcloudmusic.css" type="text/css">
-        <link rel="stylesheet" href="lib/jquery/jquery-ui-1.9.2.custom.min.css" type = "text/css">        
+        <link rel="stylesheet" href="lib/jquery/jquery-ui.min.css" type = "text/css">
     </head>
     <body>
         <div id="container">
@@ -52,8 +52,8 @@ session_start();
         <script type="text/javascript" src="cfg/config.js"></script>
         <script type="text/javascript" src="lib/underscore/underscore-min.js"></script>
         <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-        <script type="text/javascript" src="lib/jquery/jquery-ui-1.9.2.custom.min.js"></script>
-        <script type="text/javascript" src="lib/jquery/jquery.form.js"></script>
+        <script type="text/javascript" src="lib/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="lib/jquery/jquery.form.min.js"></script>
         <script type="text/javascript" src="lib/jquery/jquery.transform.js"></script>
         <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
         <script type="text/javascript" src="js/forms.js"></script>
