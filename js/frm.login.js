@@ -98,7 +98,7 @@ Login.active = function() {
         });
     });
 
-    $('#rest-api').click(function() {
+    $('#api-doc').click(function() {
         document.location.href = "?apidoc";
     });
 

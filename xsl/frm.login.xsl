@@ -47,8 +47,8 @@
 	     <span id="forgotten-password-button">
 	       Forgotten Password
 	     </span>|
-             <span id="rest-api">
-                 REST API
+             <span id="api-doc">
+                 API Documentation
              </span>|
 	     <span id="about-us">
 	       SellCloudMusic
