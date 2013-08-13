@@ -1,0 +1,578 @@
+%%%  Vzor pro použití makra pro diplomovou práci
+%%%  (c) Miloš Kudělka, David Skoupil, březen 1998
+%%%  Vzorový soubor revidován a doplněn v září 2001
+%%%  (c) 2001 Vilém Vychodil, <vilem.vychodil@upol.cz>
+%%%  Vzorový soubor upraven v květnu 2009
+%%%  (c) 2009 Jan Outrata, <jan.outrata@upol.cz>
+%%%
+%%%  Po přeložení programem CSLaTeX (třikrát) je potřeba použít
+%%%  program DVIPS a takto získaný PostScriptový soubor vytisknout
+%%%  na PostScriptové tiskárně nebo pomocí programu GhostScript.
+%%%
+%%%  Rovněž je možné použít program DVIPDFM a vytvořit z dokumentu
+%%%  soubor ve formátu PDF včetně hypertextových odkazů.
+
+
+%%% Deklarace hlavičky dokumentu, použijte písmo velikosti 12 bodů.
+\documentclass[12pt]{article}
+
+%%% Připojení dodatečného stylu pro diplomové práce. V případě
+%%% (magisterské) diplomové práce použijte nepovinný argument
+%%% `master', který zajistí vysázení správného označení práce
+%%% ``DIPLOMOVÁ PRÁCE'' na titulní straně (výchozí je ``BAKALÁŘSKÁ
+%%% PRÁCE'').
+%%%
+%%% Nepovinné argumenty `tables' a `figures' použijte pouze v případě,
+%%% že váš dokument obsahuje tabulky a obrázky a chcete vytvořit
+%%% jejich seznamy za obsahem.
+%%%
+%%% Argument `joinlists' způsobí zřetězení obsahu a seznamů tabulek a obrázků.
+%%% Není-li použít, všechny seznamy jsou uvedeny na samostatných stránkách.
+%%%
+%%% Pokud chcete vytvářet pouze dokument ve formátu PostScript, můžete uvést
+%%% dodatečný argument `nopdf'. Tím se potlačí chybová hlášení při použití
+%%% programu `dvips'.
+\usepackage[tables,figures]{updiplom}
+
+%%% Dodatečné standardní styly.
+\usepackage[utf8]{inputenc}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=PHP,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  morekeywords={extends, public, abstract, class, as}
+}
+%%% Parametry pro vytvoření úvodních stránek. Makrem \subtitle je možné
+%%% vytvořit druhý řádek v názvu diplomové práce.
+\title{SellCloudMusic}
+\subtitle{Internetový obchod s hudebními podklady}
+\author{Roman Brückner}
+\year{2013}
+\date{30. červenec 2013}
+
+%%% Pomocí \docinfo je možné vytvořit název pro PDF dokument, zpravidla je
+%%% dobré použít předcházející název, ale bez diakritiky. Možné je však zvolit
+%%% úpolně jiný výstižný název. Při tvorbě PostScriptu bude příkaz ignorován.
+\docinfo{Roman Brückner}{SellCloudMusic}
+
+%%% Vytvoření anotace. Pouze jeden odstavec!
+\annotation{%
+Anotace stručně popisuje zpracovanou práci a neměla by
+ přesáhnout zhruba 10~řádků. V~žádném případě by neměla být rozdělena
+do více odstavců.}
+
+%%% Nepovinný text poděkování. Pouze jeden odstavec!
+\thanks{%
+Poděkování vedoucímu práce a mé přítelkyni za to, že jsem ji po dobu psání práce zanedbával.}
+
+\begin{document}
+
+%%% Vytvoření úvodních stránek, obsahu a seznamu tabulek a obrázků.
+\maketitle
+\newpage
+
+
+%%% Text diplomové práce.
+\section{Úvod}
+\section{Použité technologie}
+
+\subsection{HTML}
+HTML je značkovací jazyk pro nestrukturální text (hypertext). V projektu je použito HTML 5.0, které není k dnešnímu datu ješte oficiálně vydané, ale jehož specifikace je ve fázi ``Candidate Recommendation'' (tj. pro vývojáře webových aplikací je již k dispozici)\cite{w3c}
+
+\subsection{XML}
+XML je rovněž značkovací jazyk, který je velmi obecný (nemá předdefinované žádné značky (tagy)). Je designovaný pro přenos informací bez ohledu na platformu. Je dobře čitelný jak pro člověka, tak pro počítač.
+
+\subsection{JSON}
+JSON neboli JavaScript Object Notation je alternativou k XML a je také platformově nezávislý. Výhodou oproti XML je, že většina moderních prohlížečů má v sobě zabudované nativní parsery pro JSON a že je výsledný zápis díky absenci tagů podstatně menší. Nevýhodou je nemožnost definovat jazykovou sadu.
+
+\subsection{PHP}
+PHP je skriptovací objektově orientovaný jazyk běžící na straně serveru, který intrepretuje php kód. Na klienta posíla již jen HTML.
+
+\begin{description}
+\item[PEAR] je PHP framework a nástroj pro šíření znovupoužitelných tříd a komponent.
+\item[MAIL] je balíček z repositáře PEAR. Usnadňuje rozesílání emailů a je dobře konfigurovatelný.
+\item[Soundcloud] je knihovna poskytující snadné rozhraní pro volání API Soundcloudu.
+\item[APC] je knihovna využívající část operační paměti jako vyrovnavací paměť pro opakovaný přístup ke zdrojům. Získávání těchto zdrojů původním způsobem je obvykle časově náročnější než jejich získávání z vyrovnávací paměti. (např. z HDD). Tato knihovna vyžaduje podpůrný program běžící na serveru (více v sekci \ref{apc}).
+\end{description}
+
+\subsection{JavaScript}
+JavaScript(JS) je skriptovací jazyk běžící na straně klienta, tedy v browseru. Jeho syntax vychází z Javy.
+
+\begin{description}
+\item[jQuery] je knihovna usnadňující práci s DOM elementy, ošetřující rozdíly v implementaci napříč prohlížeči.
+\item[jQuery Form] je JQuery plugin, který poskytuje absolutní kontrolu nad tím, jakým způsobem se odesílají HTML formuláře.
+\item[JQuery UI] je Query nástavba implementující nestandartní prvky uživatelského rozhraní (např. kalendář).
+\item[jQuery Transform] provádí XSL transformace na straně klienta. Použito z důvodu odlehčení zátěže serveru.
+\item[PAYPAL minicart] je povedený widget využívající local storage prohlížeče na ukládání produktů, které jsou odeslány na Paypal jako jedna objednávka. Vytvaří tak dojem nákupního košíku.
+\end{description}
+
+\subsection{XSL}
+
+\begin{description}
+\item[XSLT]
+\item[XSL-FO] Apache FOP
+\end{description}
+
+\subsection{REST}
+
+\subsection{PostgreSQL}
+
+PostgreSQL je open source objektově-relační databázový systém podobný MySQL databázi.
+
+%%%%%%%%%%%%%%%%%
+%%% INTEGRACE %%%
+%%%%%%%%%%%%%%%%%
+
+\section{Integrace}
+
+\subsection{Soundcloud}
+
+Soundcloud (\url{https://soundcloud.com}) je sociální síť zaměřující se na sdílení hudby ve vysoké kvalitě
+
+\subsection{PayPal}
+
+PayPal (\url{https://paypal.com}) je internetový platební systém, vynikající vysokou bezpečností, poskytující jeho uživatelům záruky k vrácení peněz.
+PayPal je od roku 2002 dceřinou společností firmy Ebay (\url{http://ebay.com}).
+
+\subsection{FOP}
+
+\section{Uživatelská příručka}
+
+V SellCloudMusic se uživatelé dělí do dvou rolí. Producent a jeho zákazník.
+
+\subsection{Producent}
+
+Producent je člověk, který produkuje hudební podklady a využívá služeb Soundcloudu k propagování jeho tvorby.
+
+\subsubsection{Registrace}
+\subsubsection{Zapomenuté heslo}
+\subsubsection{Nabídnutí podkladů k prodeji}
+\subsubsection{Editatace Účtu}
+\subsubsection{Správa Objednávek}
+
+\subsection{Zákazník}
+
+Typický zákazník na proti tomu je zpěvák, či interpret hudební poezie (RAP), který na webu hledá hudbu ke svým textům. Může to být například i zaměstnanec reklamní agentury hledající vhodný hudební doprovod ke své inzerci.
+Zákazník vlastní PayPal účet, nebo se nebrání si jej vytvořit.
+
+\subsubsection{První kontakt}
+Soundcloud widgety si mohou žít na webu vlastními životy, tak jak je uživatelé sociálních sítí mezi sebou sdílejí. Zákazník, který navštíví stránku z vnořeným widgetem, si může podklad poslechnout a kliknutím na ikonku koupě (Buy) dostat na SellCloudMusic.
+
+\subsubsection{Nákupní košík}
+Zákazník, který byl přesměrován na stránku SellCloudMusic si může hudební podklad znovu poslechnout a dát si ho do košíku. Z košíku může přejít rovnou k platbě, to jest být přesměrován na Paypal. Alternativně si může prohlednout zbytek producentovi tvorby a vybrané podklady opět přidat do košíku.
+Důležité je si uvědomit, že částka za zboží v košíku putuje rovnou k producentovi. V košíku tedy není možné míchat podklady od různých producentů. Uživatelské rozhraní to ani nedovuluje.
+
+\subsubsection{Platba}
+Jakmile se zákazník ocitne na stránce PayPalu má několik možností.
+\begin{itemize}
+\item Koupi si rozmyslet a vrátit se na SellCloudMusic.
+\item Pokud má existující PayPal účet, objednávku zaplatit.
+\item Pokud nemá existující PayPal účet, tak si jej nejdříve vytvořit a poté objednávku zaplatit.
+\end{itemize}
+
+Po zaplacení je zákazník automaticky přesměrován zpátky na SellCloudMusic jen v případě, že má producent nastavený AUTO\_RETURN na PayPalu. V opačném případě musí kliknout na link návratu.
+
+\subsubsection{Notifikace}
+Krátce po zaplacení obdrží zákazník dva emaily. Jeden z PayPalu, informující ho o provedené platbě a jeden ze SellCloudMusic obsahující:
+\begin{itemize}
+\item ke každému zakoupenému hudebnímu podkladu URL k jeho stažení
+\item jedno URL ke stažení faktury ve formátu PDF
+\end{itemize}
+
+
+\section{Technická dokumentace}
+
+\subsection{Framework}
+Tato práce používá vlastní framework pro práci s databází a s jejími daty. Framework dokáže z databáze získávat a do ní zapisovat záznamy, s těmi dále pracovat, validovat je a transformovat do různých formátů.
+
+\subsubsection{Transformer}
+Abstraktní třída \verb|Transformer| umožnuje jejím potomkům převádět data, která nesou, do následujících formátů:
+
+\begin{description}
+
+  \item[XML] Extensible Markup Language -
+  \item[JSON] JavaScript Object Notation -
+  \item[DOM] Document Object Model - 
+
+\end{description}
+
+
+\lstset{language=PHP, morekeywords={extends, public,class}}
+\begin{lstlisting}
+class Track extends Transformer {
+  public id = 45;
+  public title = 'my title';
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+"<track><id>45</id><title>my title</title></track>"
+\end{lstlisting}
+
+\subsubsection{Entity}
+Abstraktní třída \verb|Entity| reprezentuje záznam v databázi. Popisuje strukturu dat a jejich vlastnosti. Určuje chování objektu při práci s databází.
+
+Pro každý veřejný (PUBLIC) atribut existuje v databázi odpovídající sloupec.
+
+\lstset{language=PHP}
+\begin{lstlisting}
+  class Track extends Entity {
+
+    public $id_track;
+    public $price;
+    public $exclusive = 1;
+    public $id_user;
+    public $id_soundcloud;
+    public $count_orders = 0;
+  }
+\end{lstlisting}
+
+Třída Track pak odpovídá jednomu záznamu z databáze patřícího do  následující tabulky.
+
+\lstset{language=SQL}
+\begin{lstlisting}
+CREATE TABLE tracks (
+    id_track integer NOT NULL,
+    price numeric,
+    exclusive smallint DEFAULT 0 NOT NULL,
+    id_user integer,
+    id_soundcloud integer,
+    count_orders integer DEFAULT 0
+);
+\end{lstlisting}
+
+Vlastnosti a požadavky na data se nastavují uvnitř konstruktoru třídy. Tyto metadata lze rozdělit do dvou skupin.
+\begin{itemize} 
+\item \textbf{Globální} metadata - určující vlastnosti týkající se celé entity
+\item \textbf{Atributová} - určující vlastnosti vztahující se k jejím atributům (slotům).
+\end{itemize}
+
+Předdefinovaná globální metadata jsou:
+
+\begin{itemize}
+\item \textbf{Entity::LABEL\_ID} - jméno slotu jehož hodnota jednoznačně určuje instanci entity mezi entitami stejného typu
+\item \textbf{DBCommon::LABLE\_TABLE} - jméno tabulky TABLE v databázi pro případné ukládání, načítání apod.
+\item \textbf{Entity::LABEL\_ACCESS} - stupeň přístupnosti při získávání entity z API. Public (bez omezení) / Privileged (pouze entity patřící přihlášenému uživateli, či za pomoci secret\_token) / None (není možno získavat je z API)
+\end{itemize}
+
+Nastavují se voláním funkce setGlobalData(key, value).
+
+Atributová metadata se nastavují pomocí funkce setFlags(slotName, flags) a příznaků tzv. Flagů. Předdefinované flagy jsou:
+
+\begin{itemize}
+\item \textbf{FRM\_NO\_FLAG} libovolná hodnota
+\item \textbf{FRM\_NOT\_MT} není prázdný (bez hodnoty)
+\item \textbf{FRM\_FLG\_EMAIL} splňuje formát emailu
+\item \textbf{FRM\_FLG\_PWD} splňuje požadavky na heslo
+\item \textbf{FRM\_FLG\_TOKEN} porovnává se s hodnotou uloženou v SESSION
+\item \textbf{FRM\_FLG\_MATCH} atributy s tímto příznakem musí mít stejné hodnoty (rozumí se ve smyslu operátoru ===)
+\item \textbf{FRM\_FLG\_NUMBER} je číslo
+\end{itemize}
+
+Nové příznaky lze do formuláře přidávat pomocí statické funkce Form::SetFlagAndFunction(flag, callable), kde funkce callable akceptuje 2 parametry (valueOfAttribute, context).
+
+\lstset{language=PHP}
+\begin{lstlisting}
+  public function __construct() {
+    // tells what slot will be used as an ID when working with DB
+    $this->setGlobalData(Entity::LABEL_ID, 'id_track');
+    // what level of accessibility the entity has
+    // when its being requested through API
+    $this->setGlobalData(Entity::LABEL_ACCESS, 'public');
+    // what DB table the entity belongs to
+    $this->setGlobalData(dbCommon::LABEL_TABLE, 'tracks');
+    // slot 'price' is a number and can't be empty
+    $this->setFlags('price', FRM_FLG_NUMBER | FRM_NOT_MT);
+    // tells that slot 'exclusive' has no description
+    $this->setFlags('exclusive', FRM_NO_FLAG);
+    // slot 'count_orders' shouldn't be taken into account
+    // within any DB operation
+    $this->setFlags('count_orders', DBC_FLG_NODB);
+  }
+\end{lstlisting}
+
+Chování entity je pak definováno pomocí přepsání jedné či několika z devíti metod předka.
+Jedná se o metody AfterInsert, BeforeInsert, AfterUpdate, BeforeUpdate, BeforeFind, AfterFind a BeforeDelete.
+V případě, že jakákoli z těchto metod skončí chybou tj. vrací instanci ntError, operace na databázi se zruší.
+\begin{lstlisting}
+  // determine what is happening after the record is inserted
+  // into the DB
+  public function afterInsert() {
+
+    // create instance of soundcloud
+    $soundcloud = Soundcloud::getInstance();
+    // build url to the page where track is available
+    // for sell
+    $shopping_url = Config::_('shopping-url') . $this->id_track;
+    // alternate track on the Soundcloud server
+    try {
+      $soundcloud->put('tracks/' . $this->id_soundcloud, array(
+      "track[downloadable]" => false,
+      "track[streamable]" => true,
+      "track[sharing]" => "public",
+      "track[purchase_url]" => $shopping_url
+      ));
+    } catch (Exception $e) {
+      return new ntError($e->getMessage());
+    }
+    // save built url to the object
+    $this->shopping_url = $shopping_url;
+  }
+\end{lstlisting}
+
+\subsubsection{ntError}
+Tato jednoduchá třída pouze signalizuje chybu v průběhu vykonávání After/Before metod. Uchovává chybové hlášení a pokud lze aplikovat i slot na kterém se chyba vyskytla.
+
+\subsubsection{Form}
+Třída \verb|Form| reprezentuje formulář pro práci s \verb|Entity|. Kontroluje, zda data v nich obsažená, splňují vlastnosti určené v jejich definici (konstruktoru). Formulář asociovaný s entitou lze transformovat do HTML za pomocí XSL transformace. XSL soubor (pokud není uvedeno jinak) je hledán v adresáři /xsl pod názvem frm.<<entity-name>>.xsl. Třída vyžaduje existující SESSION, jelikož v něm ukládá ID formulářů tzv. Tokeny.
+
+\begin{lstlisting}
+  $track = new Track();
+  $form = new Form($track, array('action' => 'api.php'));
+  //check if form was submitted
+  if (isset($_POST) && $_POST[$form->name.'-submit']) {
+    // fill entity slots with from POST request
+    $track->loadArray($_POST);
+    // check if form data are valid
+    if ($form->dataFiltered()) {
+      // insert ot update track into the DB
+      $conn->saveEntity($track);
+    }
+  }
+  // display form
+  echo $form->toHTML();
+\end{lstlisting}
+
+\subsubsection{Elist}
+Třída \verb|EList| obsahuje libovolný počet instancí \verb|Entity| a implementuje interface \verb|Iterator|. Lze ji tedy procházet například pomocí konstrukce \verb|foreach|.
+
+\begin{lstlisting}
+  foreach($myEList as $myEntity) {
+    // do something with myEntity
+  }
+\end{lstlisting}
+
+\subsubsection{DBConnection}
+Abstraktní vrstva pro komunikaci s databází. Její záměnou lze pohodlně přejít na jiný druh relační databáze (např. MySQL).
+
+\subsubsection{DBCommon}
+Singleton třída, která se stará o operace s entitami.
+
+\subsubsection{DBError}
+
+
+\subsection{REST API}
+
+V SCM je implementováno jednoduché API. 
+
+JS skripty na klientovi volají SCM API a získaná XML data transformují pomocí XSL transformací do HTML.
+
+Získávání některých dat je omezeno jen pro přihlášené uživatele. To jest uživatele, pro které v daný moment existuje záznam v SESSION.
+API nemusíme ovšem volat jen z browseru. Je možné např. získávat skrz API data pro učetní systém.
+V takovém případě je se k datům možno dostat pomocí autorizačního tokenu (auth\_token). Pokud je platný token přidán mezi URL parametry lze k datům přistupovat jako přihlášený uživatel.
+
+Ukázka volání API pro vygenerování nového autorizačního tokenu.
+\begin{lstlisting}
+  \$.post('api.php?type=authtoken&output=json', {
+    id_user: 44 // my user ID
+  }, function(data) {
+    console.log(data.auth_token);
+  }, 'json');
+\end{lstlisting}
+
+\subsection{Databázová struktura}
+
+\section{Testování}
+
+
+\section{Install}
+
+Instalace se provede z příkazové řádky konzole. Většina příkazů je nutno provádět jako superuživatel. Přepnutí do módu superuživate se provede následovně:\newline
+
+\texttt{sudo su}
+
+\subsection{LAPP}
+
+SellCloudMusic je navrhnutý pro běh na LAPP serveru (Linux, Apache, PHP, PostgreSQL).
+
+\subsubsection{Apache}
+\texttt{apt-get install apache2}
+
+\subsubsection{PHP}
+
+SellCloudMusic vyžaduje verzi PHP 5.4.0 a výše.\newline
+
+\texttt{apt-get install php5}
+
+\subsubsection{PostgreSQL}
+
+\texttt{apt-get install postgresql}
+
+Nastavení nového hesla uživatele postgres se provede pomocí příkazové řádky psql.\newline
+
+\texttt{sudo -u postgres psql postgres}
+
+\texttt{postgre=\# \textbackslash password postgres}\newline
+
+Pro opuštění psql příkazové řádky se použije \texttt{Ctrl + d}\newline
+
+Nová databáze se vytvoří ze souboru \texttt{dbscheme.sql} (dump soubor)\newline
+
+\texttt{sudo -u postgres psql < db.scheme.sql}\newline
+
+
+\texttt{sudo apt-get install php5-pgsql}
+
+
+Instalace Apache FOP k transformaci XML dokumentů do PDF
+
+\texttt{sudo apt-get install fop}
+
+\texttt{sudo apt-get install php5-curl php5-xsl}
+
+
+Zdrojové soubory SellCloudMusic jsou uloženy jak na přiloženém CD, tak i v repositáři na Githubu (\url{https://github.com}).\newline
+
+\texttt{sudo apt-get install git}
+
+\texttt{cd /var/www}
+
+\texttt{git clone https://github.com/kumilingus/SellCloudMusic}
+
+
+\texttt{sudo apt-get install php-pear}
+
+
+\subsubsection{Instalace APC (nepovinná)}\label{apc}
+
+\texttt{sudo apt-get install php-apc php5-dev libpcre3-dev}
+
+\texttt{sudo pecl install apc}
+
+\texttt{sudo echo "extension=apc.so" > /etc/php5/apache2/conf.d/apc.ini}
+
+\subsubsection{Zprovozněné mailové služby}
+
+\texttt{sudo install mailutils}
+\texttt{sudo pear install Mail}
+
+\subsubsection{Nastavení databáze}
+
+
+%%% Závěr práce v~češtině
+\begin{conclusions-cz}
+  Závěr práce v češtině.
+\end{conclusions-cz}
+
+%%% Závěr práce v~angličtině
+\begin{conclusions-en}
+  Conclusion in english.
+\end{conclusions-en}
+
+
+%%% Vytvoření seznamu literatury.
+\newpage
+\begin{thebibliography}{99}
+
+\bibitem{smith} Smith, John. \emph{User and program.}
+                Publisher, City, 1990.
+\bibitem{kovar} Kovář, Jan. \emph{Jak programovat.}
+                Nakladatelství, Město, 1990.
+\bibitem{slozi} Novotný, Martin.
+                \link{\emph{Překladač s~nakladačem.}}{http://www.inf.upol.cz}
+                Elektronická publikace, 2001.
+\bibitem{w3c}   W3C consortium
+                \link{\emph{HTML5 Candidate Recommendation.}}{http://www.w3.org/TR/html5/}
+                Elektronická publikace, 2013.
+
+\end{thebibliography}
+
+
+%%% Přílohy.
+\newpage
+\appendix
+
+\section{První příloha} \label{PrvniPriloha}
+Závěrečné poznámky, k~programování.
+
+\newpage
+\section{Obsah přiloženého CD} \label{ObsahCD}
+V~samotném závěru práce je uveden stručný popis obsahu přiloženého
+CD/DVD, tj. závazné adresářové struktury, důležitých souborů apod.
+
+\begin{description}
+
+\item[\texttt{bin/}] \hfill \\
+Instalátor \textsc{Instalator} programu a další program
+\textsc{Program} spustitelné přímo z CD/DVD. / Kompletní adresářová
+struktura webové aplikace \textsc{Webovka} (v ZIP archivu) pro
+zkopírování na webový server. Adresář obsahuje i všechny potřebné
+knihovny a další soubory pro bezproblémové spuštění programu / pro
+bezproblémový provoz na webovém serveru.
+
+\item[\texttt{doc/}] \hfill \\
+Dokumentace práce ve formátu PDF, vytvořená dle závazného stylu KI PřF
+pro diplomové práce, včetně všech příloh, a všechny soubory nutné pro
+bezproblémové vygenerování PDF souboru dokumentace (v ZIP archivu),
+tj. zdrojový text dokumentace, vložené obrázky, apod.
+
+\item[\texttt{src/}] \hfill \\
+Kompletní zdrojové texty programu \textsc{Program} / webové aplikace
+\textsc{Webovka} se všemi potřebnými (převzatými) zdrojovými texty,
+knihovnami a dalšími soubory pro bezproblémové vytvoření spustitelných
+verzí programu / adresářové struktury pro zkopírování na webový server
+(v ZIP archivu).
+
+\item[\texttt{readme.txt}] \hfill \\
+Instrukce pro instalaci a spuštění programu \textsc{Program}, včetně
+požadavků pro jeho provoz. / Instrukce pro nasazení webové aplikace
+\textsc{Webovka} na webový server, včetně požadavků pro její provoz, a
+webová adresa, na které je aplikace nasazena pro testovací účely a pro
+účel obhajoby práce.
+
+\end{description}
+
+Navíc CD/DVD obsahuje:
+
+\begin{description}
+
+\item[\texttt{data/}] \hfill \\
+Ukázková a testovací data použitá v práci a pro potřeby obhajoby
+práce.
+
+\item[\texttt{install/}] \hfill \\
+Instalátory aplikací, knihoven a jiných souborů nutných pro provoz
+programu / webové aplikace, které nejsou standardní součástí operačního
+systému.
+
+\item[\texttt{literature/}] \hfill \\
+Některé položky literatury odkazované z dokumentace práce.
+
+\end{description}
+
+U veškerých odjinud převzatých materiálů obsažených na CD/DVD jejich
+zahrnutí dovolují podmínky pro jejich šíření nebo přiložený souhlas
+držitele copyrightu. Pro materiály, u kterých toto není splněno, je
+uveden jejich zdroj (webová adresa) v textu dokumentace práce nebo v
+souboru \texttt{readme.txt}.
+
+\end{document}
