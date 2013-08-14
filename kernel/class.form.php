@@ -89,7 +89,7 @@ class Form extends Transformer {
                     });
 
             Form::setFlagAndFunction(FRM_FLG_PWD, function($p, $t) {
-                        return strlen($p) > 1;
+                        return strlen($p) > 7 && preg_match("#[0-9]+#", $p) && preg_match("#[a-zA-Z]+#", $p);
                     });
 
             Form::setFlagAndFunction(FRM_FLG_MATCH, function($p, $t) {
