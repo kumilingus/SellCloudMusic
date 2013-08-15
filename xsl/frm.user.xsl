@@ -78,6 +78,12 @@
                         </input>
                     </td>
                 </tr>
+		<tr>
+		  <td></td>
+		  <td>
+		    <small><a href="https://www.paypal.com/uk/cgi-bin/webscr?cmd=_registration-run" target="_blank">Create PayPal account</a></small>
+		  </td>
+		</tr>
                 <tr>
                     <td>
                         <label for="soundcloud-connect">Soundcloud account:</label>
