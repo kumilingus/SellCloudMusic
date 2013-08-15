@@ -38,7 +38,7 @@
                 <xsl:value-of select = "substring(timestamp,0,17)"/>
             </span>
         </div>
-        <div class="pdf-generator">
+        <div class="pdf-generator" title="Download invoice as PDF">
                  <xsl:attribute name="data-id-order">
                     <xsl:value-of select="id_order"/>
                 </xsl:attribute>
