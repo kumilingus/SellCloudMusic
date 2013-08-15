@@ -18,7 +18,7 @@
             <div class="pwdreq">
                 <p>For password reset request enter your email address please.</p>
                 <input id="pwdreq-email" type="email" name="email" placeholder="Email address"/>
-                <input type="submit" value="Send request">
+                <input type="submit" value="Send Request">
                     <xsl:attribute name="name">
                         <xsl:value-of select ="concat(name,'-submit')"/>
                     </xsl:attribute>

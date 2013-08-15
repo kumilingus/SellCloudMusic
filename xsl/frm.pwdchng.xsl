@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="submit" value="change">
+                        <input type="submit" value="Change Password">
                             <xsl:attribute name="name">
                                 <xsl:value-of select ="concat(name,'-submit')"/>
                             </xsl:attribute>
