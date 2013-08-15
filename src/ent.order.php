@@ -41,7 +41,7 @@ There are the download links to tracks you just purchased.
 
 %s
 
-You can download your invoice on link below.
+You can download your invoice on the link below.
 
 %s
 
