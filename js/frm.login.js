@@ -23,7 +23,7 @@ Pwdreq.active = function() {
                     complete: Pwdreq.active
                 });
             } else {
-                $(p.anchor).empty().append('<pre>Further instuctions about resetting password has been sent to your email.</pre>');
+                $(p.anchor).empty().append('<p>Further instuctions about resetting password has been sent to your email.</p>');
             }
         }
     });
