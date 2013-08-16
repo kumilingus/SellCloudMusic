@@ -81,7 +81,7 @@
 		<tr>
 		  <td></td>
 		  <td>
-		    <small><a href="https://www.paypal.com/uk/cgi-bin/webscr?cmd=_registration-run" target="_blank">Create PayPal account</a></small>
+		    <small><a href="https://www.paypal.com/webapps/mpp/product-selection" target="_blank">Create PayPal business account</a></small>
 		  </td>
 		</tr>
                 <tr>
