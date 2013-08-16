@@ -31,6 +31,8 @@ if (isset($_POST['login-form-submit'])) {
             } else {
                 $form->errors->password = login::USER_DOESNT_EXIST;
             }
+        } else {
+            $form->errors->password = login::USER_DOESNT_EXIST;
         }
     } else {
         User::clearStored();
