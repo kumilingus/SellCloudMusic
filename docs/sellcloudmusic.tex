@@ -127,6 +127,7 @@ JavaScript(JS) je skriptovací jazyk běžící na straně klienta, tedy v brows
 \item[jQuery UI] je Query nástavba implementující nestandartní prvky uživatelského rozhraní (např. kalendář).
 \item[jQuery Transform] provádí XSL transformace na straně klienta. Použito z důvodu odlehčení zátěže serveru.
 \item[PAYPAL minicart] je povedený widget využívající local storage prohlížeče na ukládání produktů, které jsou odeslány na Paypal jako jedna objednávka. Vytvaří tak dojem nákupního košíku.
+\item[Soundcloud SDK] je knihovna poskytující snadné rozhraní pro volání API Soundcloudu na straně klienta.
 \end{description}
 
 \subsection{XSL}
@@ -156,7 +157,7 @@ Soundcloud (\url{https://soundcloud.com}) je online platforma a sociální síť
 
 \subsubsection{REST API}
 
-Přes API soundcloudu lze manipulovat (získávat, vytvářet, měnit a mazat) s klíčovými abstrakcemi (resources). K tomuto rozhraní se přistupuje pomocí PHP knihovny \emph{Soundcloud}, která vhodným způsobem obaluje volání funkcí knihovny \emph{libcurl}. Příklad volání této PHP knihovny lze vidět v sekci \ref{entity} na ukázce \ref{afterinsert}. SellCloudMusic ke své činnosti potřebuje přístup jen ke dvěma.
+Přes API soundcloudu lze manipulovat (získávat, vytvářet, měnit a mazat) s klíčovými abstrakcemi (resources). K tomuto rozhraní se přistupuje pomocí PHP knihovny \emph{Soundcloud}, která vhodným způsobem obaluje volání funkcí knihovny \emph{libcurl}. SellCloudMusic ke své činnosti potřebuje přístup jen ke dvěma.
 
 \begin{description}
 \item{\textbf{User}} je abstrakce uživatele. SellCloudMusic využívá jen následující parametry.
@@ -189,7 +190,9 @@ Jakým způsobem a za jakých se tyto parametry mění je popsáno v další pod
 
 \subsubsection{SellCloudMusic}
 
-Při registraci je SellCloudMusic (SCM) účet jednoznačně svázán s jedním Soundcloud (SC) účtem. K samotnému svázání se v prohlížeči využíva JavaScriptová knihovna \emph{SoundCloud SDK}. Otevře se nové okno a producent se za pomoci jeho uživatelského jména a hesla přihlásí k SC a zároveň tímto dává SC aplikaci právo pracovat z jeho SC účtem. Pro tento účel je nezbytné vytvořit aplikaci na Soundcloudu a nastavit u ní \texttt{redirect-uri}, který bude směřovat na soubor \texttt{callback.html} hostovaný na serveru SellCloudMusic (callback.html je dostupný ke stažení přímo na stránkách Soundcloudu).
+Při registraci je SellCloudMusic (SCM) účet jednoznačně svázán s jedním Soundcloud (SC) účtem. K tomuto svázání se v prohlížeči odcílí použitím JavaScriptová knihovny \emph{SoundCloud SDK}.
+
+Po stisknutí \emph{connect} tlačítla vyskočí nové okno a tím, že se producent za pomoci jeho uživatelského jména a hesla přihlásí k SC účtu, dává SC aplikaci právo s tímto účtem pracovat. Pro tento účel je nezbytné vytvořit aplikaci na Soundcloudu a nastavit u ní \texttt{redirect-uri}, který bude směřovat na soubor \texttt{callback.html} hostovaný na serveru SellCloudMusic (callback.html je dostupný ke stažení přímo na stránkách Soundcloudu). Více o registraci aplikace v sekci \ref{scapp}.
 
 Na konci tohoto procesu je obdržen přístupový klíč \texttt{accessToken}, pomocí kterého se bude v budoucnu přistupovat k producentovu SC účtu. Ten je uložen do databáze spolu s ostatními údaji při registraci.
 
@@ -198,7 +201,7 @@ Díky tomuto je producent schopný vidět všechny jeho hudební skladby nahran�
 K změnám \emph{Track} parametrů dochází v následujících případech. Pokud byl hudební podklad:
 
 \begin{description}
-\item{\textbf{nabídnut k prodeji}} - dojde k nastavení
+\item{\textbf{nabídnut k prodeji}} - dojde k nastavení následujících parametrů. Jak je proces změny implementován lze vidět v sekci \ref{entity} na ukázce \ref{afterinsert}.
   \begin{itemize}
   \item downloadable = false
   \item streamable = true
@@ -246,8 +249,112 @@ Jejich zobrazení záleží na nastavení konkretní hudební skladby. Toho je v
 PayPal (\url{https://paypal.com}) je internetový platební systém, vynikající vysokou bezpečností, poskytující jeho uživatelům záruky k vrácení peněz.
 PayPal je od roku 2002 dceřinou společností firmy Ebay (\url{http://ebay.com}).
 
+\subsubsection{IPN}
+
+IPN (Instant Payment Notification) je služba, která automaticky zasíláním zpráv informuje obchodníka o událostech spojených s transakcemi na PayPalu. Obchodníci se na základě doručené zprávy mohou rozhodnout zdali expedovat zboží, povolit digitalní stažení apod. 
+
+PayPal vysílá IPN zprávy dokud mu druhá strana neodpoví (maximálně 4 dny). Interval mezi odesláním roste s každou nezodpovězenou zprávou.
+
+Ačkoliv Paypal vysílá zprávy okamžitě po přijetí platby, spolehlivost internetového připojení není vždy 100\% a může dojít k jejich ztrátě, či zpoždení. Není tedy vhodné při odbavení objednávky, čekat na IPN zprávu. Je tedy žádoucí proces odbavení implementovat nezávisle na IPN zprávách a k poslechu zpráv vytvořit samostatný script \emph{IPN Listener}. Pokud je nutné o průběhu platby informovat uživatele v reálném čase, je možné použít PDT mechanismus (Payment Data Transfer\cite{ppdocs}).
+
+\subsubsection{IPN Listener}
+
+Pro poslech IPN zpráv je nutné:
+
+\begin{enumerate}
+\item Vytvořit IPN listener, který zachytává IPN zprávy a dále je zpracovává
+\item \label{ppacc:ipnurl} Specifikovat URL adresu k IPN listeneru v PayPal účtu
+\item IPN listener musí být nepřetržitě dostupný.
+\end{enumerate}
+
+Bod \ref{ppacc:ipnurl} lze obejít přidáním parametru \texttt{notify\_url} při odesílání objednávacího formuláře. Toho je využito i v SellCloudMusic, takže producent není nucen měnit nastavení na PayPal účtu.\newline
+
+Script IPN Listeneru musí po zachycení zprávy:
+
+\begin{enumerate}
+\item Potvrdit PayPalu, že zpráva byla doručena.
+
+  \begin{enumerate}
+  \item Odeslat POST zprávu začínající \texttt{cmd=\_notify-validate} a k ní přilepenou přesnou kopii přijaté zprávy (všechny proměnne a jejich hodnoty ve stejném pořadí).
+  \item Jakmile PayPal zprávu obdrží, odešle další zprávu s HTTP kódem 200 a tělem obsahující pouze \texttt{VERIFIED} nebo \texttt{INVALID}.
+  \item Zkontrolovat zda PayPal zprávu ověřil (tělo zprávy obsahuje VERIFIED)
+  \end{enumerate}
+
+\item Ověřit, zda se jedná o validní zprávu. Zkontrolují se následující položky.
+
+  \begin{enumerate}
+  \item \texttt{Payment\_status} obsahuje \texttt{Completed}.
+  \item \texttt{tnx\_id} nebylo již jednou zpracováno.
+  \item \texttt{receiver\_email} je opravdu email z PayPal účtu.
+  \item \texttt{payment\_amount} a \texttt{payment\_currency} jsou správné.
+  \end{enumerate}
+
+\item Zpracovat zprávu, dle potřeb obchodníka.
+\end{enumerate}
+
+V tomu projektu se IPN listener nazývá \texttt{order.php}.
+
+\subsubsection{Testování}
+
+Testovaní PayPalu se provadí na tzv. \emph{sandbox} účtech. Pro jejich vytvoření je nutné nejdříve zaregistrovat běžný PayPal účet.
+K samotnému testování aplikace jsou pak potřeba dva sandbox účty.
+\begin{description}
+\item{Producent} - Uživatelské jméno \textbf{business} účtu se uvede při registraci v kolonce \emph{PayPal Account}.
+\item{Zákazník} - Uživatelské jméno \textbf{personal} nebo \textbf{business} účtu se uvede při platbě na stránkách PayPalu.
+\end{description}
+
+Na stránkách \emph{PayPal developers} (\url{https://developer.paypal.com/}) lze mimo jiné prohlížet a debugovat transakce, zasílat testovací IPN zprávy a spravovat sandbox účty.
+
 %%% apache FOP
 \subsection{Apache FOP}\label{fop}
+
+Apache FOP (formatting object processor) je multiplatformní aplikace vytvořená v Javě sloužící k sazbě XSL-FO dokumentů do různých formátů (PostScript, PDF, SVG, PNG, TIFF, RTF, MIF, PCL a text/plain).
+Její spuštění se provádí přes příkazovou řádku například takto:\newline
+
+\texttt{fop -xsl XSLDOC -xml XMLDOC -pdf OUTPUT}\newline
+
+Kde \texttt{XSLDOC} a \texttt{XMLDOC} jsou jména souborů, ze kterých se generuje výstup. \texttt{OUTPUT} může být jméno souboru, do kterého se výstup ukládá, či pomlčka (\texttt{-}) pro tištění výsledku na obrazovku.
+
+Apache FOP se v projektu používá pro generování PDF faktur objednávek. Bylo tedy nutné napsát XSL-FO dokument určující pravidla pro generování výsledného pdf a dynamicky vytvářet XML dokumenty z objednávek uložených v databázi.
+Následující odstavec ukazuje jak toho bylo docíleno v jazyce PHP.\newline
+
+\lstset{language=PHP}
+Vytvoří se instance objednávky a nastaví se její \emph{id} na parametr zaslaný jako GET požadavek.
+\begin{lstlisting}
+  $order = new Order();
+  $order->setID($_GET['id_order']);
+\end{lstlisting}
+
+Vytvoří se instance databáze a pomocí ní se načte objednávka.
+\begin{lstlisting}
+  $conn = new DBCommon();
+  $conn->loadEntity($order)
+\end{lstlisting}
+
+Dočasně se vytvoří soubor s náhodným názvem a zapíše se do něj objednávka ve formátu XML.
+\begin{lstlisting}
+  $tmpfname = tempnam("tmp", "order");
+  $handle = fopen($tmpfname, "w");
+  fwrite($handle, $order->toXML());
+  fclose($handle);
+\end{lstlisting}  
+
+V HTTP hlavičče se nastaví typ internetového média na pdf soubor a jeho jméno.
+\begin{lstlisting}  
+  header('Content-type: application/pdf');
+  header(sprintf('Content-Disposition: attachment; filename="%s.pdf"', $order->txn_id));
+\end{lstlisting}  
+
+Zavolá se FOP aplikace a nezměněný výsledek se odešle na výstup.
+\begin{lstlisting}
+  $fopcmd = sprintf("fop -xsl xsl/pdf.order.xsl -xml %s -pdf -", $tmpfname);
+  passthru($fopcmd);
+\end{lstlisting}
+
+Smaže se dočasný soubor.
+\begin{lstlisting}
+  unlink($tmpfname);
+\end{lstlisting}    
 
 \newpage
 %%%%%%%%%%%%%%%%%%%
@@ -833,6 +940,9 @@ možnost vyzkoušet si
 \bibitem{slozi} Novotný, Martin.
                 \link{\emph{Překladač s~nakladačem.}}{http://www.inf.upol.cz}
                 Elektronická publikace, 2001.
+\bibitem{ppdocs} PayPal
+                \link{\emph{PayPal developers documentation.}}{https://developer.paypal.com/webapps/developer/docs/}
+                Elektronická publikace, 2013.
 \bibitem{w3cHTML5} W3C consortium
                 \link{\emph{HTML5 Candidate Recommendation.}}{http://www.w3.org/TR/html5/}
                 Elektronická publikace, 2013.
