@@ -54,7 +54,7 @@ class Track extends Entity {
 
     public $id_track;
     public $price;
-    public $exclusive = 1;
+    public $exclusive = 2;
     public $id_user;
     public $id_soundcloud;
     public $count_orders = 0;

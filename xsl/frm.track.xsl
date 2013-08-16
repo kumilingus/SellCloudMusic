@@ -53,6 +53,7 @@
                             <div id="slider-range-min"></div>
                         </td>
                     </tr>
+<!--                    
                     <tr class="track-table-row">
                         <td class="track-table-first-column">
                             <span id="track-exclusive">Exclusivity:</span>
@@ -74,6 +75,7 @@
                             </div>
                         </td>
                     </tr>
+-->
                     <tr class="track-table-row">
                         <td colspan = "2">
                             <input type="submit" value="Offer For Sale">
