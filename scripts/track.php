@@ -15,7 +15,8 @@ if ($conn->loadEntity($track) && $track->getID() > 0 && !$track->isSoldOut()) {
             "action" => "https://www.sandbox.paypal.com/cgi-bin/webscr",
             "cancel_url" => Config::_('host').$_SERVER['REQUEST_URI'],
             "paypal_account" => $user->paypal_email,
-            "return_url" => Config::_('sellcloudmusic-url').'/?thankyou'
+            "return_url" => Config::_('sellcloudmusic-url').'/?thankyou',
+            "notify_url" => Config::_('sellcloudmusic-url').'/order.php'
         ));
 
         echo $trackFrm->toHTML();

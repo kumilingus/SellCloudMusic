@@ -59,7 +59,11 @@
                         <xsl:value-of select="return_url"/>
                     </xsl:attribute>
                 </input>
-                <input type="hidden" name="notify_url" value="http://86.21.126.98/sellcloudmusic/order.php" />
+                <input type="hidden" name="notify_url">
+                    <xsl:attribute name="value">
+                        <xsl:value-of select="notify_url"/>
+                    </xsl:attribute>
+                </input>
                 <input type="hidden" name="item_name">
                     <xsl:attribute name="value">
                         <xsl:value-of select="trackview/track/title"/>                        
