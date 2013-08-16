@@ -82,7 +82,7 @@ do více odstavců.}
 
 %%% Nepovinný text poděkování. Pouze jeden odstavec!
 \thanks{%
-Poděkování vedoucímu práce a mé přítelkyni za to, že jsem ji po dobu psání práce zanedbával.}
+Poděkování vedoucímu práce dr. Mackovi za jeho věcné připomínky a panu doc. Krupkovi, že mi obhajobu vzhledem ke komplikacím při odevzdávání umožnil.}
 
 \begin{document}
 
@@ -93,10 +93,14 @@ Poděkování vedoucímu práce a mé přítelkyni za to, že jsem ji po dobu ps
 
 %%% Text diplomové práce.
 \section{Úvod}
+
+
+
+
 \section{Použité technologie}
 
 \subsection{HTML}
-HTML je značkovací jazyk pro nestrukturální text (hypertext). V projektu je použito HTML 5.0, které není k dnešnímu datu ješte oficiálně vydané, ale jehož specifikace je ve fázi ``Candidate Recommendation'' (tj. pro vývojáře webových aplikací je již k dispozici)\cite{w3c}
+HTML je značkovací jazyk pro nestrukturální text (hypertext). V projektu je použito HTML 5.0, které není k dnešnímu datu ješte oficiálně vydané, ale jehož specifikace je ve fázi ``Candidate Recommendation'' (tj. pro vývojáře webových aplikací je již k dispozici)\cite{w3cHTML5}
 
 \subsection{XML}
 XML je rovněž značkovací jazyk, který je velmi obecný (nemá předdefinované žádné značky (tagy)). Je designovaný pro přenos informací bez ohledu na platformu. Je dobře čitelný jak pro člověka, tak pro počítač.
@@ -109,7 +113,7 @@ PHP je skriptovací objektově orientovaný jazyk běžící na straně serveru,
 
 \begin{description}
 \item[PEAR] je PHP framework a nástroj pro šíření znovupoužitelných tříd a komponent.
-\item[MAIL] je balíček z repositáře PEAR. Usnadňuje rozesílání emailů a je dobře konfigurovatelný.
+\item[Mail] je balíček z repositáře PEAR. Usnadňuje rozesílání emailů a je dobře konfigurovatelný.
 \item[Soundcloud] je knihovna poskytující snadné rozhraní pro volání API Soundcloudu.
 \item[APC] je knihovna využívající část operační paměti jako vyrovnavací paměť pro opakovaný přístup ke zdrojům. Získávání těchto zdrojů původním způsobem je obvykle časově náročnější než jejich získávání z vyrovnávací paměti. (např. z HDD). Tato knihovna vyžaduje podpůrný program běžící na serveru (více v sekci \ref{apc}).
 \end{description}
@@ -120,40 +124,135 @@ JavaScript(JS) je skriptovací jazyk běžící na straně klienta, tedy v brows
 \begin{description}
 \item[jQuery] je knihovna usnadňující práci s DOM elementy, ošetřující rozdíly v implementaci napříč prohlížeči.
 \item[jQuery Form] je JQuery plugin, který poskytuje absolutní kontrolu nad tím, jakým způsobem se odesílají HTML formuláře.
-\item[JQuery UI] je Query nástavba implementující nestandartní prvky uživatelského rozhraní (např. kalendář).
+\item[jQuery UI] je Query nástavba implementující nestandartní prvky uživatelského rozhraní (např. kalendář).
 \item[jQuery Transform] provádí XSL transformace na straně klienta. Použito z důvodu odlehčení zátěže serveru.
 \item[PAYPAL minicart] je povedený widget využívající local storage prohlížeče na ukládání produktů, které jsou odeslány na Paypal jako jedna objednávka. Vytvaří tak dojem nákupního košíku.
 \end{description}
 
 \subsection{XSL}
-
+XSL\cite{w3cXSL} je rodina jazyků k manipulaci XML dokumentů. Obsahuje celkem 3 jazyky a každý z nich je v projektu nějakým způsobem použit.
 \begin{description}
-\item[XSLT]
-\item[XSL-FO] Apache FOP
+\item[XSLT] je XML jazyk pro transformaci dokumentů. V projektu je využit ke generování HTML kódu z XML dat.
+\item[XSL-FO] je XML jazyk pro formátování XML dokumentů. Prostřednictvím aplikace z názvem \textbf{Apache FOP}(\ref{fop}) lze ze stejných XML dat vygenerovat PDF soubor.
+\item[XPATH] je jazyk využívaný k odkazování se na jednotlivé části XML dokumentů.
 \end{description}
 
-\subsection{REST}
-
 \subsection{PostgreSQL}
-
 PostgreSQL je open source objektově-relační databázový systém podobný MySQL databázi.
 
+\newpage
 %%%%%%%%%%%%%%%%%
 %%% INTEGRACE %%%
 %%%%%%%%%%%%%%%%%
 
 \section{Integrace}
 
+Tato sekce pojednává o použitých aplikacích a způsobech, jakým jsou integrovány do projektu.
+
+%%% soundcloud
 \subsection{Soundcloud}
 
-Soundcloud (\url{https://soundcloud.com}) je sociální síť zaměřující se na sdílení hudby ve vysoké kvalitě
+Soundcloud (\url{https://soundcloud.com}) je online platforma a sociální síť zaměřující se na sdílení hudby ve vysoké kvalitě. Společnost se sídlem v Berlíně byla založena v roce 2007 a v dnešní době má více jak 10 miliónů uživatelů. Podporované hudební formáty jsou AIFF, WAVE, FLAC, OGG, MP2, MP3, AAC, AMR a WMA. Při každém vkládání nového hudebního souboru (uploadu) se provede kontrola jedinečnosti oproti rozsahlé databázi. Ve výsledku obsahuje Soundcloud jen unikátní autorské hudební díla. Soundcloud poskytuje bohaté REST API, pomocí kterého byla aplikace úspěšně integrována.
 
+\subsubsection{REST API}
+
+Přes API soundcloudu lze manipulovat (získávat, vytvářet, měnit a mazat) s klíčovými abstrakcemi (resources). K tomuto rozhraní se přistupuje pomocí PHP knihovny \emph{Soundcloud}, která vhodným způsobem obaluje volání funkcí knihovny \emph{libcurl}. Příklad volání této PHP knihovny lze vidět v sekci \ref{entity} na ukázce \ref{afterinsert}. SellCloudMusic ke své činnosti potřebuje přístup jen ke dvěma.
+
+\begin{description}
+\item{\textbf{User}} je abstrakce uživatele. SellCloudMusic využívá jen následující parametry.
+
+\begin{itemize}
+\item{id} - jednoznačný identifikátor uživatele(např. 123)
+\item{username} - uživatelské jméno uživatele (např. "DJ Bobo")
+\item{track\_count} - počet hudebních skladeb nahraných uživatelem (např. 7)
+\end{itemize}
+
+Tuto abstrakci využíva projekt jen jako zdroj informací o producentovi. Nikdy její parametry nemění.
+
+\item{\textbf{Track}} je abstrakce hudební skladby. Mimo jiných obsahuje následující parametry.
+
+\begin{itemize}
+\item{id} - jednoznačný identifikátor hudební skladby (např. 123)
+\item{sharing} -  sdílení je veřejné či pouze soukromé ("public" / "private")
+\item{downloadable} - stahování je povolené, či zakázané (true / false)
+\item{download\_count} - počet stáhnutí (např. 4)
+\item{download\_url} - URL, ke stažení hudební skladby (např. "http://api.soundcloud.com/tracks/3/download")
+\item{purchase\_url} - URL, kde je hudební podklad možne koupit (např. "www.amazon.com/product/789")
+\item{streamable} - poslech ve widgetu je povolený, či zakázaný (true / false) 
+\item{BPM} - beats per minute, neboli tempo hudební skladby (např. 120)
+\item{description} - popisek (např. "This is my first track.")
+\end{itemize}
+
+\end{description}
+
+Jakým způsobem a za jakých se tyto parametry mění je popsáno v další podkapitole.
+
+\subsubsection{SellCloudMusic}
+
+Při registraci je SellCloudMusic (SCM) účet jednoznačně svázán s jedním Soundcloud (SC) účtem. K samotnému svázání se v prohlížeči využíva JavaScriptová knihovna \emph{SoundCloud SDK}. Otevře se nové okno a producent se za pomoci jeho uživatelského jména a hesla přihlásí k SC a zároveň tímto dává SC aplikaci právo pracovat z jeho SC účtem. Pro tento účel je nezbytné vytvořit aplikaci na Soundcloudu a nastavit u ní \texttt{redirect-uri}, který bude směřovat na soubor \texttt{callback.html} hostovaný na serveru SellCloudMusic (callback.html je dostupný ke stažení přímo na stránkách Soundcloudu).
+
+Na konci tohoto procesu je obdržen přístupový klíč \texttt{accessToken}, pomocí kterého se bude v budoucnu přistupovat k producentovu SC účtu. Ten je uložen do databáze spolu s ostatními údaji při registraci.
+
+Díky tomuto je producent schopný vidět všechny jeho hudební skladby nahrané na SC kdykoli je přihlášený na SCM. 
+
+K změnám \emph{Track} parametrů dochází v následujících případech. Pokud byl hudební podklad:
+
+\begin{description}
+\item{\textbf{nabídnut k prodeji}} - dojde k nastavení
+  \begin{itemize}
+  \item downloadable = false
+  \item streamable = true
+  \item sharing = "public"
+  \item purchase\_url = KONKRÉTNÍ\_URL\_NA\_SELLCLOUDMUSIC
+  \end{itemize}
+
+\item{\textbf{odebrán z prodeje}} - dojde k vymazání
+  \begin{itemize}
+  \item purchase\_url = ""
+  \end{itemize}
+
+\item{\textbf{prodán jako exklusivní}} - dojde k nastavení
+  \begin{itemize}
+  \item downloadable = true
+  \item sharing = "private"
+  \item purchase\_url = ""
+  \end{itemize}
+
+\item{\textbf{prodán jako neexklusivní}} - prozatím neimplementováno. viz \ref{exclusivity}.
+\end{description}
+
+\subsubsection{Exklusivita a API} \label{exclusivity}
+
+Rozhraní Soundcloudu v současné době neumožnuje získávat soukromé URL (secret link)ke stažení hudebního podkladu, který je veřejný (\texttt{sharing = public}) a zároveň má zakázaný download (\texttt{downloadable = false}). Jinými slovy to znamená, že neumožnuje producentovi sdílet svoji tvorbu mezi veřejností, a zároveň mít kontrolu nad tím, jaká skupina posluchačů, bude mít možnost si hudební podklad i stáhnout. V praxi to nyní funguje tak, že si producent na Soundcloudu vytvoří dvě kopii hudebního podkladu. Jeden nastaví jako veřejný a zakáže na něm download. Druhý nastaví jako soukromý a download naopak povolí. Posluchačům, kteří pak mají právo stahovat, pošle secret link ke stažení ze soukromé kopie.
+Na téma \emph{secret linků} se na webu vede nejedna diskuze a představitelé Soundcloudu přislíbili, že tento nedostatek napraví. Je jen otázkou času, kdy se tak stane.
+Z toho důvodu je SellCloudMusic v tuto chvíli zaměřen čistě na exklusivní hudební podklady. Nicméně návrh projektu je na tuto eventualitu připraven a dovolí, jakmile to bude možné, chybějící funkcionalitu velmi rychle doimplementovat.
+
+\subsubsection{Widgets} \label{widget}
+Do projektu jsou vkládány komponenty, umožnující přehrávání hudby přímo z prohlížeče. Každá taková komponenta (widget) obsahuje kromě ovládacích prvků přehrávače, také tlačítka pro sdílení na ostatních sociálních sítích. Následující dvě tlačítka jsou popsány blíže, jelikož jsou zasadní pro pochopení, jakým způsobem SellCloudMusic pracuje.
+
+\begin{description}
+\item{\textbf{buy}} je URL odkazující na stránku, kde lze hudební dílo koupit. Je viditelné pokud je \texttt{purchase\_url} validní url adresa.
+\item{\textbf{download}} je URL ke staženího hudebního díla. Je viditelné pokud je (\texttt{downloadable = true}).
+\end{description}
+
+Jejich zobrazení záleží na nastavení konkretní hudební skladby. Toho je využito poté v SellCloudMusic.
+
+
+
+
+%%% paypal
 \subsection{PayPal}
 
 PayPal (\url{https://paypal.com}) je internetový platební systém, vynikající vysokou bezpečností, poskytující jeho uživatelům záruky k vrácení peněz.
 PayPal je od roku 2002 dceřinou společností firmy Ebay (\url{http://ebay.com}).
 
-\subsection{FOP}
+%%% apache FOP
+\subsection{Apache FOP}\label{fop}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%
+%%% USER MANUAL %%%
+%%%%%%%%%%%%%%%%%%%
 
 \section{Uživatelská příručka}
 
@@ -163,16 +262,133 @@ V SellCloudMusic se uživatelé dělí do dvou rolí. Producent a jeho zákazní
 
 Producent je člověk, který produkuje hudební podklady a využívá služeb Soundcloudu k propagování jeho tvorby.
 
-\subsubsection{Registrace}
-\subsubsection{Zapomenuté heslo}
+%%% registration
+\subsubsection{Registrace} \label{reg}
+
+\begin{enumerate}
+
+\item Producent klikne na \emph{Sign Up} na horní liště.
+\item \label{reg:fill} Vyplní kolonky zobrazeného formuláře. Formulář obsahuje následující položky.
+
+\begin{itemize}
+\item{\textbf{email}} Emailová adresa a uživatelské jméno na SellCloudMusic.
+\item{\textbf{password}} Heslo, které musí obsahovat nejméně 7 znaků a alespoň jedno číslo a jedno písmeno.
+\item{\textbf{re password}} Potvrzení hesla.
+\item{\textbf{soundcloud account}} Zde se nachází tlačítko ke spojení se Soundcloud účtem. Po kliknutí se otevře nové okno prohlížeče a požádá producenta, aby se ke svému účtu přihlásil. Po úspěšném přihlášení se okno zavře a vedle tlačítka se objeví producentovo jméno.
+\item{\textbf{paypal account}} Emailová adresa, která jednoznačně identifikuje producentův PayPal účet.
+\item{\textbf{address}} Adresa je nepovinná a používá se jen při tisku faktur.
+\end{itemize}
+
+\item Po vyplnění údajů klikne na tlačítko \emph{Sign up}. Pokud některý z vyplněných údajů nevyhovuje požadavkům na něj kladených jde zpět k bodu \ref{reg:fill}.
+\item Zobrazí se informace o úspěšné registraci.
+
+\end{enumerate}
+%%% forgotten password
+\subsubsection{Zapomenuté heslo} \label{fpwd}
+
+\begin{enumerate}
+\item \label{fpwd:menu}Producent klikne na \emph{Forgotten password} na horní liště.
+\item \label{fpwd:fill} Vyplní emailovou adresu zobrazeného formuláře. Formulář obsahuje pouze kolonku pro email.
+\item Po vyplnění emailové adresy klikne na tlačítko \emph{Send Request}. Pokud emailová adresa nebyla nalezena v databázi jde zpět k bodu \ref{fpwd:fill}.
+\item Producent obrží email s předmětem \emph{Password Reset} (ukázka \ref{mail:chpwd}) na emailovou schránku korespondující s emailem z bodu \ref{fpwd:fill}. Pokud se email nezobrazí v doručené poště, prohlédne složku spam.
+
+\renewcommand{\lstlistingname}{Ukázka}
+\lstset{language=HTML}
+\begin{lstlisting}[caption={Email o změně hesla},label={mail:chpwd}]
+Hi,
+you have requested changing your password. Please click the link
+bellow to reset it.
+
+http://www.sellcloudmusic.com/index.php?reset=ABCDEFGHIJKLMNOPQRSTUVWZ
+\end{lstlisting}
+
+\item Na následující kroky má producent 30 minut. Jinak musí zpět k bodu \ref{fpwd:menu}.
+\item Po kliknutí na link obsažený v emailu, je přesměrován zpět na SellCloudMusic.
+\item \label{rpwd:fill} Vyplní dvakrát heslo zobrazeného formuláře. Formulář obsahuje pouze dvě kolonky - {Password} a {Re-Password}.
+\item Po vyplnění hesla klikne na tlačítko \emph{Change Password}. Pokud heslo nesplňuje požadavky na něj kladené, nebo se hesla navzájem neshodují jde zpět k bodu \ref{rpwd:fill}.
+\item Zobrazí se informace o úspěšně provedené změně hesla.
+\end{enumerate}
+
+%%% log in
+\subsubsection{Přihlášení}
+
+\begin{enumerate}
+\item Pro přihlášení musí být producent registrován (\ref{reg}).
+\item Pokud je producent registrován, ale nezná své heslo, požádá o nové heslo prostřednictvím \ref{fpwd}.
+\item \label{login:fill} Producent vyplní uživatelské jméno a heslo v horní liště.
+\item Pokud uživatelské jméno a heslo nesouhlasí se záznamy uloženými v databázi, jde zpět k bodu \ref{login:fill}.
+\item Zobrazí se informace o úspěšném přihlášení.
+\end{enumerate}
+
+%%% log out
+\subsubsection{Odhlášení}
+
+\begin{enumerate}
+\item Producent musí být přihlášený.
+\item Klikne na tlačítko \emph{logout}.
+\item Zobrazí se formulář pro přihlášení.
+\end{enumerate}
+
+%%% offer for sale
 \subsubsection{Nabídnutí podkladů k prodeji}
+\begin{enumerate}
+\item Producent musí být přihlášený.
+\item Producent klikne na \emph{My Tracks} na horní liště.
+\item Vybere si hudební podklad z pravého panelu.
+
+\item Na levém panelu se zobrazí se detail hudebního podkladu. Ten obsahuje:
+
+  \begin{itemize}
+  \item{\textbf{Informace o hudebním podkladu}} - BPM (beats per minute), stažitelnost, počet stažení, URL ke koupi.
+  \item{\textbf{Soundcloud Widget}} - Viz. \ref{widget}
+  \item{\textbf{Editor hudebního podkladu}} - Umožnuje nabízet a rušit nabídky hudebních podkladů, nastavovat cenu (a exklusivitu \ref{exclusivity}).
+  \item{\textbf{Objednávky}} - Po kliknití na tlačítko \emph{show} se zobrazí příslušné objednávky obsahující aktuální hudební podklad.
+  \end{itemize}
+
+\item \label{offer:price} Producent nastaví cenu pomocí slideru. Ta je v rozmezí od \$1 do \$200. Pro hodnoty nad \$200 musí editovat textové pole vedle slideru.
+\item Klikne na tlačítko \emph{Offer For Sale}.
+\item Hudební podklad se nabídne k prodeji pokud splňuje následující podmínky.
+
+  \begin{itemize}
+  \item Pokud existuje objednávka, podklad není exklusivní.
+  \item Pokud byl již podklad v minulosti stažen, podklad není exklusivní.
+  \end{itemize}
+
+  Pokud podmínky nesplňuje musí producent zpět k bodu \ref{offer:price}.
+
+\end{enumerate}
+
+%%% edit account
 \subsubsection{Editatace Účtu}
+\begin{enumerate}
+\item Producent musí být přihlášený.
+\item Producent klikne na \emph{Edit Account} na horní liště.
+\item \label{edacc:fill} Změní vybrané kolonky zobrazeného formuláře. Formulář obsahuje stejné položky jako formulář v sekci \ref{reg}.
+\item Po vyplnění údajů klikne na tlačítko \emph{Update Account}. Pokud některý z vyplněných údajů nevyhovuje požadavkům na něj kladených jde zpět k bodu \ref{edacc:fill}.
+\item Zobrazí se informace o úspěšné změně údajů.
+\end{enumerate}
+
+%%% manage orders
 \subsubsection{Správa Objednávek}
+\begin{enumerate}
+\item Producent musí být přihlášený.
+\item Producent klikne na \emph{Manage Orders} na horní liště.
+\item Zobrazí se list všech objednávek přihlášeného producenta. S němi lze provádět následující operace:
+
+  \begin{itemize}
+  \item Filtrovat objednávky dle data vzniku za použití dvou komponent pro výběr datumu, označených jako \emph{From Date} a \emph{To Date}.
+  \item Ke každé objednávce lze stáhnout její elektronickou podobu ve formátu PDF stisknutim příslušné ikonky, nacházející se na levé straně okna.
+  \end{itemize}
+  
+\end{enumerate}
+
 
 \subsection{Zákazník}
 
 Typický zákazník na proti tomu je zpěvák, či interpret hudební poezie (RAP), který na webu hledá hudbu ke svým textům. Může to být například i zaměstnanec reklamní agentury hledající vhodný hudební doprovod ke své inzerci.
 Zákazník vlastní PayPal účet, nebo se nebrání si jej vytvořit.
+
+Zákazník se narozdíl od producenta nemusí ani nemůže registrovat.
 
 \subsubsection{První kontakt}
 Soundcloud widgety si mohou žít na webu vlastními životy, tak jak je uživatelé sociálních sítí mezi sebou sdílejí. Zákazník, který navštíví stránku z vnořeným widgetem, si může podklad poslechnout a kliknutím na ikonku koupě (Buy) dostat na SellCloudMusic.
@@ -192,12 +408,34 @@ Jakmile se zákazník ocitne na stránce PayPalu má několik možností.
 Po zaplacení je zákazník automaticky přesměrován zpátky na SellCloudMusic jen v případě, že má producent nastavený AUTO\_RETURN na PayPalu. V opačném případě musí kliknout na link návratu.
 
 \subsubsection{Notifikace}
-Krátce po zaplacení obdrží zákazník dva emaily. Jeden z PayPalu, informující ho o provedené platbě a jeden ze SellCloudMusic obsahující:
+Krátce po zaplacení obdrží zákazník dva emaily. Jeden z PayPalu, informující ho o provedené platbě a jeden ze SellCloudMusic (ukázka \ref{mail:order}) obsahující:
 \begin{itemize}
 \item ke každému zakoupenému hudebnímu podkladu URL k jeho stažení
 \item jedno URL ke stažení faktury ve formátu PDF
 \end{itemize}
 
+\lstset{language=HTML}
+\begin{lstlisting}[caption={Email při úspěšně dokončené objednávce},label={mail:order}]
+Hi,
+
+There are the download links to tracks you just purchased.
+
+1. Producent - Track Title 1:
+https://api.soundcloud.com/tracks/1/download?client_id=X&secret_token=A
+
+2. Producent - Track Title 2:
+https://api.soundcloud.com/tracks/2/download?client_id=Y&secret_token=B
+
+
+You can download your invoice on the link below.
+
+http://www.sellcloudmusic.com/download.php&id_order=9&secret_token=I
+\end{lstlisting}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PROGRAMMING DOCS %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Technická dokumentace}
 
@@ -228,7 +466,7 @@ class Track extends Transformer {
 "<track><id>45</id><title>my title</title></track>"
 \end{lstlisting}
 
-\subsubsection{Entity}
+\subsubsection{Entity} \label{entity}
 Abstraktní třída \verb|Entity| reprezentuje záznam v databázi. Popisuje strukturu dat a jejich vlastnosti. Určuje chování objektu při práci s databází.
 
 Pro každý veřejný (PUBLIC) atribut existuje v databázi odpovídající sloupec.
@@ -313,7 +551,7 @@ Nové příznaky lze do formuláře přidávat pomocí statické funkce Form::Se
 Chování entity je pak definováno pomocí přepsání jedné či několika z devíti metod předka.
 Jedná se o metody AfterInsert, BeforeInsert, AfterUpdate, BeforeUpdate, BeforeFind, AfterFind a BeforeDelete.
 V případě, že jakákoli z těchto metod skončí chybou tj. vrací instanci ntError, operace na databázi se zruší.
-\begin{lstlisting}
+\begin{lstlisting}[caption={metoda afterInsert}, label={afterinsert}]
   // determine what is happening after the record is inserted
   // into the DB
   public function afterInsert() {
@@ -378,21 +616,20 @@ Abstraktní vrstva pro komunikaci s databází. Její záměnou lze pohodlně p�
 Singleton třída, která se stará o operace s entitami.
 
 \subsubsection{DBError}
-
+Jednoduchá třída nesoucí informace o chybě vzniklé při práci s databází.
 
 \subsection{REST API}
 
-V SCM je implementováno jednoduché API. 
+V SellCloudMusic je implementováno jednoduché API. 
 
-JS skripty na klientovi volají SCM API a získaná XML data transformují pomocí XSL transformací do HTML.
+JS skripty na straně klienta volají toto API a získaná XML data transformují pomocí XSL transformací do HTML.
 
 Získávání některých dat je omezeno jen pro přihlášené uživatele. To jest uživatele, pro které v daný moment existuje záznam v SESSION.
-API nemusíme ovšem volat jen z browseru. Je možné např. získávat skrz API data pro učetní systém.
-V takovém případě je se k datům možno dostat pomocí autorizačního tokenu (auth\_token). Pokud je platný token přidán mezi URL parametry lze k datům přistupovat jako přihlášený uživatel.
+API se nemusí ovšem volat jen z prohlížeče (Pomocí API je například možné získávat data pro učetní systémy).
+V takovém případě je se k datům možno přistupovat pomocí autorizačního tokenu (auth\_token). Pokud je platný token přidán mezi URL parametry lze k datům přistupovat jako přihlášený uživatel.
 
-Ukázka volání API pro vygenerování nového autorizačního tokenu.
-\begin{lstlisting}
-  \$.post('api.php?type=authtoken&output=json', {
+\begin{lstlisting}[caption={Volání API pro vygenerování nového autorizačního tokenu}]
+  jQuery.post('api.php?type=authtoken&output=json', {
     id_user: 44 // my user ID
   }, function(data) {
     console.log(data.auth_token);
@@ -404,7 +641,12 @@ Ukázka volání API pro vygenerování nového autorizačního tokenu.
 \section{Testování}
 
 
-\section{Install}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PROGRAMMING DOCS %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Minimální požadavky a nastavení}
 
 Instalace se provede z příkazové řádky konzole. Většina příkazů je nutno provádět jako superuživatel. Přepnutí do módu superuživate se provede následovně:\newline
 
@@ -421,9 +663,11 @@ SellCloudMusic je navrhnutý pro běh na LAPP serveru (Linux, Apache, PHP, Postg
 
 SellCloudMusic vyžaduje verzi PHP 5.4.0 a výše.\newline
 
-\texttt{apt-get install php5}
+\texttt{apt-get install php5}\newline
 
-\subsubsection{PostgreSQL}
+\subsubsection{PostgreSQL} \label{pgsql}
+
+Instalace PostgreSQL databáze.
 
 \texttt{apt-get install postgresql}
 
@@ -439,30 +683,25 @@ Nová databáze se vytvoří ze souboru \texttt{dbscheme.sql} (dump soubor)\newl
 
 \texttt{sudo -u postgres psql < db.scheme.sql}\newline
 
+\subsection{Závislosti}
+
+\subsubsection{PHP}
+
+Je nutné nainstalovat některé PHP knihovny.\newline
 
 \texttt{sudo apt-get install php5-pgsql}
 
-
-Instalace Apache FOP k transformaci XML dokumentů do PDF
-
-\texttt{sudo apt-get install fop}
-
 \texttt{sudo apt-get install php5-curl php5-xsl}
-
-
-Zdrojové soubory SellCloudMusic jsou uloženy jak na přiloženém CD, tak i v repositáři na Githubu (\url{https://github.com}).\newline
-
-\texttt{sudo apt-get install git}
-
-\texttt{cd /var/www}
-
-\texttt{git clone https://github.com/kumilingus/SellCloudMusic}
-
 
 \texttt{sudo apt-get install php-pear}
 
+\subsubsection{Apache FOP} 
+
+\texttt{sudo apt-get install fop}
 
 \subsubsection{Instalace APC (nepovinná)}\label{apc}
+
+Aplikace běží bez problému i bez APC. Pro rychlejší odezvy serveru je doporučeno APC nainstalovat.\newline
 
 \texttt{sudo apt-get install php-apc php5-dev libpcre3-dev}
 
@@ -470,17 +709,111 @@ Zdrojové soubory SellCloudMusic jsou uloženy jak na přiloženém CD, tak i v 
 
 \texttt{sudo echo "extension=apc.so" > /etc/php5/apache2/conf.d/apc.ini}
 
-\subsubsection{Zprovozněné mailové služby}
+\subsubsection{Mailové služby}
 
-\texttt{sudo install mailutils}
+Program k odesílání emailů.\newline
+
+\texttt{sudo install mailutils}\newline
+
+PHP Knihovna k odesílání emailů.\newline
+
 \texttt{sudo pear install Mail}
 
-\subsubsection{Nastavení databáze}
+\subsection{SellCloudMusic}
 
+\subsubsection{Zdrojové soubory}
+
+Zdrojové soubory SellCloudMusic jsou uloženy jak na přiloženém CD, tak i v repositáři na Githubu (\url{https://github.com}). Je tedy možné soubory zkopírovat přímo z CD nebo nainstalovat program \texttt{git}.\newline
+
+\texttt{sudo apt-get install git}
+
+\texttt{cd /var/www}
+
+\texttt{git clone https://github.com/kumilingus/SellCloudMusic}
+
+\subsubsection{Soundcloud aplikace} \label{scapp}
+
+Ke správnému chodu SellCloudMusic je nutné zaregistrovat aplikaci na Soundcloudu skrz kterou se přistupuje k resourcům. To se provede přímo na stránkách Soundcloudu na adrese \url{http://soundcloud.com/you/apps}. Je nutné mít účet a být přihlášen.
+
+Stisknutím \emph{Register a new application} se otevře okno pro registraci aplikace. Zde je nutné vyplnit jméno (\emph{Title of your app}) aplikace  a \emph{Redirect URI for Authentication}. Jméno aplikace může být jakékoliv, URL musí obsahovat cestu v internetu k souboru callback.html (např. http://www.sellcloudmusic.com/development/callback.html).
+Položky  \emph{Client ID} a \emph{Client Secret} jsou pak nezbytné při změně konfiguračního souboru v sekci \ref{scmconf}.
+
+\subsubsection{Konfigurace} \label{scmconf}
+
+Jako poslední krok je třeba nakonfigurovat SellCloudMusic. To se provede editováním souboru \texttt{config.ini}.\newline
+
+\texttt{cd /var/www}
+
+\texttt{vi /cfg/config.ini}
+
+\begin{itemize}
+\item Změnit heslo \texttt{password} k databázi na řádku začinajícím ``\texttt{dns =}''. Heslo je stejné jako v podkapitole \ref{pgsql}.
+\item Změnit \texttt{client-id}, \texttt{client-secret} a \texttt{redirect-uri} v sekci \texttt{[soundcloud]}. Viz předcházející podkapitola (\ref{scapp}).
+\item Změnit všechny proměnné v sekci \texttt{[general]}.
+  \begin{itemize}
+  \item \texttt{host} je cesta k serveru v internetu.
+  \item \texttt{sellcloudmusic-url} je cesta v internetu k adresáři se souborem \texttt{index.php}.
+  \item \texttt{shopping-url} je URL ke stránce s hudebním podkladem a nákupním košíkem. Skládá se z \texttt{sellcloudmusic-url} + \texttt{/index.php?track=}
+  \end{itemize}
+\end{itemize}
+
+\lstset{language=sh}
+\begin{lstlisting}[caption={config.ini}]
+[database]
+;; data source name 
+dsn = "pgsql:host=localhost;port=5432;dbname=postgres;user=postgres;password=heslo123"
+
+[soundcloud]
+
+client-id = d4fba231c11b5b47b4ee5a8e3dbbc144
+
+client-secret = 5779eaffe5ea3d195ebe8f221e611bce
+
+redirect-uri = "http://www.sellcloudmusic.com/development/callback.html"
+
+[general]
+
+shopping-url = "http://www.sellcloudmusic.com/development/index.php?track="
+
+host = "http://www.sellcloudmusic.com/development"
+
+server-name = "http://www.sellcloudmusic.com"
+
+tracks-per-page = 12
+
+[mail]
+
+mail-from = "SellCloudMusic <info@sellcloudmusic.com>"
+
+mail-copy = "sellcloudmusic@gmail.com"
+
+\end{lstlisting}
+
+A editováním souboru \texttt{/cfg/config.js}.
+
+\texttt{cd /var/www}
+
+\texttt{vi /cfg/config.ini}\newline
+
+Zde je nutné změnit následující proměnné.
+
+\begin{itemize}
+\item{\texttt{client-id} a \texttt{client-secret}} viz podkapitola (\ref{scapp}).
+\item{\texttt{config.paypal.url}} - pro ostrý provoz přepsat na\newline \url{https://www.paypal.com/cgi-bin/webscr}. Výchozí hodnotou je testovací stránka PayPalu.
+\end{itemize}
 
 %%% Závěr práce v~češtině
 \begin{conclusions-cz}
-  Závěr práce v češtině.
+
+Jelikož mi psaní práce díky pracovním povinostem zabralo téměř 2 roky, některé části projektu, již nevnímám 
+
+Psaní a testování vlastního frameworku zabralo asi nejvíce času. Jakkoliv jsem s výsledkem spokojený, využít již existující framework (např. cakePHP) by ušetřilo spoustu času, který bych mohl investovat do řešení samotného problému prodeje hudebních podkladů. Například obejít zmíněný problém s exklusivitou zapomocí Dropboxu (či jiného uložného prostoru v cloudu).
+
+Co se týče implementace na straně klienta, zde by bylo na místě použít knihovnu například \emph{Backbone JS} implementující architekturu MCV a systém událostí.
+
+Při Psaní této aplikace jsem se dostal ke konfiguraci serveru 
+možnost vyzkoušet si 
+
 \end{conclusions-cz}
 
 %%% Závěr práce v~angličtině
@@ -500,9 +833,12 @@ Zdrojové soubory SellCloudMusic jsou uloženy jak na přiloženém CD, tak i v 
 \bibitem{slozi} Novotný, Martin.
                 \link{\emph{Překladač s~nakladačem.}}{http://www.inf.upol.cz}
                 Elektronická publikace, 2001.
-\bibitem{w3c}   W3C consortium
+\bibitem{w3cHTML5} W3C consortium
                 \link{\emph{HTML5 Candidate Recommendation.}}{http://www.w3.org/TR/html5/}
                 Elektronická publikace, 2013.
+\bibitem{w3cXSL} W3C consortium
+                \link{\emph{Extensible Stylesheet Language (XSL) verion 1.1}}{http://www.w3.org/TR/html5/}
+                Elektronická publikace, 2006.
 
 \end{thebibliography}
 
