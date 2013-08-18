@@ -69,7 +69,7 @@ if (isset($_POST['login-form-submit'])) {
                     // send an email
                     include('lib/mail/Mail.php');
                     $mail = @Mail::factory("mail");
-                    $link = sprintf('%s/index.php?reset=%s', Config::_('host'), $pwdreq->pwd_reset_token);
+                    $link = sprintf('%s/index.php?reset=%s', Config::_('sellcloudmusic-url'), $pwdreq->pwd_reset_token);
                     $header = array("From" => Config::_('mail-from'),"Subject" => Pwdreq::EMAIL_SUBJECT);
                     $r = $mail->send($pwdreq->email, $header, sprintf(Pwdreq::EMAIL_BODY, $link));
 
