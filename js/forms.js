@@ -102,7 +102,7 @@ Form.prototype.show = function(args) {
         } else {
             xml = args.xml;
         }
-        args.form.stopLoading();
+	setTimeout(function() { args.form.stopLoading() }, 10);
         $(args.anchor).empty();
         var callback = function() {
             if (args.form.shown) args.form.shown();
