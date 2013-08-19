@@ -186,7 +186,7 @@ if (!$fp) {
                 }
 
                 //building link to download invoice
-                $invoice_link = Config::_('host') . '/download.php?' . http_build_query(array(
+                $invoice_link = Config::_('sellcloudmusic-url') . '/download.php?' . http_build_query(array(
                             'id_order' => $order->getID(),
                             'secret_token' => $order->secret_token
                 ));
