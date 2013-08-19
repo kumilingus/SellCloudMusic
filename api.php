@@ -232,11 +232,36 @@ if (@isset($_GET['type'])) {
             case 'privileged':
 
                 session_start();
-                if (!User::isStored())
+
+                $authTokenUsed = @isset($_GET['auth_token']);
+
+                if (!User::isStored() && !$authTokenUsed) {
+
                     error("Unauthorized access!");
 
+                } else {
+
+                    if ($authTokenUsed) {
+
+                        $authToken = new AuthToken();
+                        $authToken->auth_token = $_GET['auth_token'];
+                        // try to look for authToken in database
+                        $conn =  new DBCommon();
+                        $r = $conn->findEntity($authToken);
+
+                        if ($r instanceof NTError || $authToken->getID() < 1) {
+                            error("Unauthorized access!");
+                        } else {
+                            $userID = $authToken->getID();
+                        }
+
+                    } else {
+                        $userID = User::restore()->getID();
+                    }
+                }
+
                 // make sure that we query records belonging just to logged user
-                $_GET['id_user'] = User::restore()->id_user;
+                $_GET['id_user'] = $userID;
                 break;
         }
 
