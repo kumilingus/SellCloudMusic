@@ -191,7 +191,7 @@ if (!$fp) {
                             'secret_token' => $order->secret_token
                 ));
 
-                // sending email
+                // sending email to
                 include('lib/mail/Mail.php');
 
                 $mail = @Mail::factory("mail");
@@ -206,6 +206,34 @@ if (!$fp) {
 
                 if ($em !== true) {
                     log_e($em);
+                    return;
+                }
+
+                // sending email to producent
+
+                $header_user = array(
+                    "From" => Config::_('mail-from'),
+                    "Bcc" => Config::_('mail-copy'),
+                    "Subject" => "Track sold."
+                );
+
+                $email_body_user = <<<BODY
+Hi,
+
+congratulation! A new order has been created.
+
+The following tracks have been sold.
+
+%s
+
+BODY;
+                // remove links from email
+                foreach($links as $key => $value) if($key&1) unset($links[$key]);
+
+                $emu = $mail->send($user->email, $header_user, sprintf($email_body_user, @implode($links, PHP_EOL)));
+
+                if ($emu !== true) {
+                    log_e($emu);
                     return;
                 }
             }
